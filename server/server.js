@@ -395,10 +395,10 @@ app.get('/api/logistics/trade-in-fleet', authGuard, async (req, res) => {
 });
 
 // SPA fallback — serve index.html for all non-API, non-static routes
-app.get('/{*splat}', (req, res) => {
+app.get('*', (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`Porsche Backend API server is running on http://localhost:${PORT}`);
+  console.log(`Porsche Backend API server is running on port ${PORT}`);
 });

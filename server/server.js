@@ -355,6 +355,45 @@ app.get('/api/exec/radial', authGuard, async (req, res) => {
   });
 });
 
+// Trade-In & Renewal Alerts — SUV Fleet (Cayenne & Macan)
+app.get('/api/logistics/trade-in-fleet', authGuard, async (req, res) => {
+  const vehicles = [
+    { ownerName: 'Carlos Llenas', model: 'Cayenne', variant: 'Cayenne', powertrain: 'ICE', ageMonths: 42, currentMileage: 58000, mileageThreshold: 65000 },
+    { ownerName: 'Mía Espaillat', model: 'Macan', variant: 'Macan 4 Electric', powertrain: 'Electric', ageMonths: 22, currentMileage: 32000, mileageThreshold: 50000 },
+    { ownerName: 'Juan Vicini', model: 'Cayenne', variant: 'Cayenne E-Hybrid', powertrain: 'Hybrid', ageMonths: 34, currentMileage: 48000, mileageThreshold: 55000 },
+    { ownerName: 'Ana Ramírez', model: 'Macan', variant: 'Macan GTS', powertrain: 'ICE', ageMonths: 12, currentMileage: 15000, mileageThreshold: 55000 },
+    { ownerName: 'Pedro Báez', model: 'Macan', variant: 'Macan Turbo Electric', powertrain: 'Electric', ageMonths: 38, currentMileage: 42000, mileageThreshold: 50000 },
+    { ownerName: 'Sofía Sánchez', model: 'Cayenne', variant: 'Cayenne S', powertrain: 'ICE', ageMonths: 16, currentMileage: 22000, mileageThreshold: 60000 },
+    { ownerName: 'Ricardo Grullón', model: 'Macan', variant: 'Macan', powertrain: 'ICE', ageMonths: 48, currentMileage: 72000, mileageThreshold: 60000 },
+    { ownerName: 'Laura Fernández', model: 'Cayenne', variant: 'Cayenne Turbo GT', powertrain: 'ICE', ageMonths: 8, currentMileage: 9000, mileageThreshold: 50000 },
+    { ownerName: 'Tomás Hernández', model: 'Macan', variant: 'Macan 4 Electric', powertrain: 'Electric', ageMonths: 30, currentMileage: 45000, mileageThreshold: 50000 },
+    { ownerName: 'Elena Grimaldi', model: 'Cayenne', variant: 'Cayenne E-Hybrid', powertrain: 'Hybrid', ageMonths: 36, currentMileage: 55000, mileageThreshold: 55000 },
+    { ownerName: 'Luis Toral', model: 'Macan', variant: 'Macan GTS', powertrain: 'ICE', ageMonths: 28, currentMileage: 51000, mileageThreshold: 55000 },
+    { ownerName: 'Camila Castillo', model: 'Cayenne', variant: 'Cayenne', powertrain: 'ICE', ageMonths: 50, currentMileage: 85000, mileageThreshold: 65000 },
+  ];
+
+  const fleet = vehicles.map((v, idx) => {
+    const ageRatio = v.ageMonths / 36;
+    const mileageRatio = v.currentMileage / v.mileageThreshold;
+    const readiness = Math.max(ageRatio, mileageRatio);
+
+    let status = 'Not Yet';
+    if (readiness >= 1.0) {
+      status = 'Ready';
+    } else if (readiness >= 0.85) {
+      status = 'Approaching';
+    }
+
+    return {
+      id: `TF-${1001 + idx}`,
+      ...v,
+      status,
+    };
+  });
+
+  return res.json({ fleet });
+});
+
 // SPA fallback — serve index.html for all non-API, non-static routes
 app.get('/{*splat}', (req, res) => {
   res.sendFile(path.join(distPath, 'index.html'));

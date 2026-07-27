@@ -24,10 +24,14 @@ import {
   ShoppingCart,
   X,
   Package,
-  ArrowRight
+  ArrowRight,
+  RefreshCw,
+  Car,
+  Flame,
+  BatteryCharging
 } from 'lucide-react';
 import { api } from '../services/api';
-import type { PartItem, Vehicle } from '../services/api';
+import type { PartItem, Vehicle, TradeInFleetVehicle } from '../services/api';
 
 interface PartOrder {
   partId: string;
@@ -55,6 +59,11 @@ export default function Logistics() {
   const [submittedOrders, setSubmittedOrders] = useState<Record<string, PartOrder>>({});
   const [isOrdering, setIsOrdering] = useState(false);
 
+  const [tradeInFleet, setTradeInFleet] = useState<TradeInFleetVehicle[]>([]);
+  const [filterModel, setFilterModel] = useState<'All' | 'Cayenne' | 'Macan'>('All');
+  const [filterPowertrain, setFilterPowertrain] = useState<'All' | 'ICE' | 'Hybrid' | 'Electric'>('All');
+  const [sentOffers, setSentOffers] = useState<Record<string, boolean>>({});
+
   const handleOrderPart = async () => {
     if (!orderModal) return;
     setIsOrdering(true);
@@ -78,6 +87,10 @@ export default function Logistics() {
           setFleet(data.fleet);
           setScheduledVins(data.scheduledVins);
         })
+        .catch(console.error);
+
+      api.logistics.getTradeInFleet()
+        .then(data => setTradeInFleet(data.fleet))
         .catch(console.error);
     };
 
@@ -435,6 +448,147 @@ export default function Logistics() {
             </tbody>
           </table>
         </div>
+      </section>
+
+      <section className="porsche-card-glow p-6 rounded-2xl flex flex-col gap-6">
+        <div className="flex justify-between items-start">
+          <div>
+            <h2 className="text-lg font-semibold text-slate-900 tracking-wide flex items-center gap-2">
+              <RefreshCw size={18} className="text-porsche-gold" />
+              Trade-In & Renewal Alerts
+            </h2>
+            <p className="text-xs text-porsche-muted font-light mt-0.5">Predictive trade-in triggers for Cayenne & Macan fleet — based on age (≥3 yr) and optimal depreciation mileage thresholds.</p>
+          </div>
+        </div>
+
+        {(() => {
+          const filtered = tradeInFleet.filter(v =>
+            (filterModel === 'All' || v.model === filterModel) &&
+            (filterPowertrain === 'All' || v.powertrain === filterPowertrain)
+          );
+
+          const counts = {
+            notYet: filtered.filter(v => v.status === 'Not Yet').length,
+            approaching: filtered.filter(v => v.status === 'Approaching').length,
+            ready: filtered.filter(v => v.status === 'Ready').length,
+            readyMacanHE: filtered.filter(v => v.status === 'Ready' && v.model === 'Macan' && (v.powertrain === 'Hybrid' || v.powertrain === 'Electric')).length,
+          };
+
+          return (
+            <div className="flex flex-col gap-6">
+              <div className="flex items-center gap-4 text-xs flex-wrap">
+                <button onClick={() => setFilterModel('All')} className={`px-3 py-1.5 rounded-lg border font-semibold transition-all tracking-wide ${filterModel === 'All' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-porsche-border hover:border-slate-400'}`}>All Models</button>
+                <button onClick={() => setFilterModel('Cayenne')} className={`px-3 py-1.5 rounded-lg border font-semibold transition-all tracking-wide flex items-center gap-1.5 ${filterModel === 'Cayenne' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-porsche-border hover:border-slate-400'}`}><Car size={12} /> Cayenne</button>
+                <button onClick={() => setFilterModel('Macan')} className={`px-3 py-1.5 rounded-lg border font-semibold transition-all tracking-wide flex items-center gap-1.5 ${filterModel === 'Macan' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-porsche-border hover:border-slate-400'}`}><Car size={12} /> Macan</button>
+                <span className="w-px h-5 bg-porsche-border mx-1" />
+                <button onClick={() => setFilterPowertrain('All')} className={`px-3 py-1.5 rounded-lg border font-semibold transition-all tracking-wide ${filterPowertrain === 'All' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-porsche-border hover:border-slate-400'}`}>All Types</button>
+                <button onClick={() => setFilterPowertrain('ICE')} className={`px-3 py-1.5 rounded-lg border font-semibold transition-all tracking-wide flex items-center gap-1.5 ${filterPowertrain === 'ICE' ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-600 border-porsche-border hover:border-slate-400'}`}><Flame size={12} /> ICE</button>
+                <button onClick={() => setFilterPowertrain('Hybrid')} className={`px-3 py-1.5 rounded-lg border font-semibold transition-all tracking-wide flex items-center gap-1.5 ${filterPowertrain === 'Hybrid' ? 'bg-porsche-gold text-white border-porsche-gold' : 'bg-white text-porsche-gold border-porsche-gold/40 hover:border-porsche-gold'}`}><RefreshCw size={12} /> Hybrid</button>
+                <button onClick={() => setFilterPowertrain('Electric')} className={`px-3 py-1.5 rounded-lg border font-semibold transition-all tracking-wide flex items-center gap-1.5 ${filterPowertrain === 'Electric' ? 'bg-porsche-cyan text-white border-porsche-cyan' : 'bg-white text-porsche-cyan border-porsche-cyan/40 hover:border-porsche-cyan'}`}><BatteryCharging size={12} /> Electric</button>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                <div className="p-4 rounded-2xl bg-slate-50 border border-porsche-border flex flex-col gap-1">
+                  <span className="text-2xl font-bold text-slate-900 font-mono">{counts.notYet}</span>
+                  <span className="text-[10px] text-porsche-muted font-semibold uppercase tracking-wider">Not Yet</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-porsche-gold/5 border border-porsche-gold/20 flex flex-col gap-1">
+                  <span className="text-2xl font-bold text-porsche-gold font-mono">{counts.approaching}</span>
+                  <span className="text-[10px] text-porsche-gold font-semibold uppercase tracking-wider">Approaching</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-porsche-emerald/5 border border-porsche-emerald/20 flex flex-col gap-1">
+                  <span className="text-2xl font-bold text-porsche-emerald font-mono">{counts.ready}</span>
+                  <span className="text-[10px] text-porsche-emerald font-semibold uppercase tracking-wider">Ready</span>
+                </div>
+                <div className="p-4 rounded-2xl bg-porsche-cyan/5 border border-porsche-cyan/20 flex flex-col gap-1">
+                  <span className="text-2xl font-bold text-porsche-cyan font-mono">{counts.readyMacanHE}</span>
+                  <span className="text-[10px] text-porsche-cyan font-semibold uppercase tracking-wider">Ready — Hybrid/Electric Macan</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filtered.map((v) => {
+                  const offerSent = sentOffers[v.id];
+                  return (
+                    <div key={v.id} className="border border-porsche-border rounded-2xl p-4 flex flex-col gap-3 hover:shadow-glow transition-shadow bg-white">
+                      <div className="flex justify-between items-start">
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold text-slate-900">{v.ownerName}</span>
+                          <span className="text-[10px] text-slate-700 font-medium">{v.variant}</span>
+                        </div>
+                        <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border shrink-0 ${
+                          v.status === 'Ready' ? 'bg-porsche-emerald/10 text-porsche-emerald border-porsche-emerald/20' :
+                          v.status === 'Approaching' ? 'bg-porsche-gold/10 text-porsche-gold border-porsche-gold/20' :
+                          'bg-slate-100 text-porsche-muted border-slate-200'
+                        }`}>
+                          {v.status}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1.5">
+                        <span className={`text-[9px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded border ${
+                          v.powertrain === 'Electric' ? 'bg-porsche-cyan/10 text-porsche-cyan border-porsche-cyan/20' :
+                          v.powertrain === 'Hybrid' ? 'bg-porsche-gold/10 text-porsche-gold border-porsche-gold/20' :
+                          'bg-slate-100 text-slate-600 border-slate-200'
+                        }`}>
+                          {v.powertrain}
+                        </span>
+                        <span className="text-[9px] text-porsche-muted font-mono bg-slate-50 px-1.5 py-0.5 rounded border border-porsche-border">{v.model}</span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-[10px]">
+                        <div>
+                          <span className="text-porsche-muted">Age</span>
+                          <p className="font-semibold text-slate-800 font-mono">{Math.floor(v.ageMonths / 12)}yr {v.ageMonths % 12}mo</p>
+                        </div>
+                        <div>
+                          <span className="text-porsche-muted">Mileage</span>
+                          <p className="font-semibold text-slate-800 font-mono">{v.currentMileage.toLocaleString()} km</p>
+                        </div>
+                        <div>
+                          <span className="text-porsche-muted">Threshold</span>
+                          <p className="font-semibold text-slate-800 font-mono">{v.mileageThreshold.toLocaleString()} km</p>
+                        </div>
+                        <div>
+                          <span className="text-porsche-muted">Id</span>
+                          <p className="font-semibold text-slate-800 font-mono text-[9px]">{v.id}</p>
+                        </div>
+                      </div>
+
+                      <div className="h-1.5 w-full bg-slate-100 border border-porsche-border rounded-full overflow-hidden">
+                        <div className={`h-full rounded-full transition-all ${
+                          v.status === 'Ready' ? 'bg-porsche-emerald' :
+                          v.status === 'Approaching' ? 'bg-porsche-gold' :
+                          'bg-slate-300'
+                        }`} style={{ width: `${Math.min(100, Math.max(5, Math.round(Math.max(v.ageMonths / 36, v.currentMileage / v.mileageThreshold) * 100)))}%`}} />
+                      </div>
+
+                      {v.status === 'Ready' && (
+                        <button
+                          onClick={() => setSentOffers(prev => ({ ...prev, [v.id]: true }))}
+                          disabled={offerSent}
+                          className={`w-full py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider border transition-all ${
+                            offerSent
+                              ? 'bg-porsche-emerald/10 border-porsche-emerald/20 text-porsche-emerald cursor-default'
+                              : 'bg-porsche-emerald text-white border-porsche-emerald hover:bg-porsche-emerald/90 hover:shadow-glow-green active:scale-[0.97]'
+                          }`}
+                        >
+                          {offerSent ? 'Offer Sent' : 'Send Renewal Offer'}
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {filtered.length === 0 && (
+                <div className="py-12 text-center text-sm text-porsche-muted border border-dashed border-porsche-border rounded-2xl">
+                  No vehicles match the selected filters.
+                </div>
+              )}
+            </div>
+          );
+        })()}
       </section>
 
       <AnimatePresence>

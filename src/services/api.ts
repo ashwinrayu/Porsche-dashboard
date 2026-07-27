@@ -42,6 +42,18 @@ export interface PartItem {
   status: 'Critical' | 'Low' | 'Normal';
 }
 
+export interface TradeInFleetVehicle {
+  id: string;
+  ownerName: string;
+  model: 'Cayenne' | 'Macan';
+  variant: string;
+  powertrain: 'ICE' | 'Hybrid' | 'Electric';
+  ageMonths: number;
+  currentMileage: number;
+  mileageThreshold: number;
+  status: 'Not Yet' | 'Approaching' | 'Ready';
+}
+
 export interface Vehicle {
   vin: string;
   model: string;
@@ -166,6 +178,10 @@ export const api = {
         method: 'POST',
         body: JSON.stringify({ vin }),
       });
+    },
+
+    async getTradeInFleet(): Promise<{ fleet: TradeInFleetVehicle[] }> {
+      return apiFetch<{ fleet: TradeInFleetVehicle[] }>('/api/logistics/trade-in-fleet');
     }
   },
 

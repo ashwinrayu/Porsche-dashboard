@@ -10,11 +10,15 @@ const __dirname = path.dirname(__filename);
 const DB_PATH = path.join(__dirname, 'db.json');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const JWT_SECRET = 'porsche-secret-key-12345';
 
 app.use(cors());
 app.use(express.json());
+
+// Serve built frontend in production
+const distPath = path.join(__dirname, '..', 'dist');
+app.use(express.static(distPath));
 
 // Helper to read database
 async function readDB() {
@@ -349,6 +353,11 @@ app.get('/api/exec/radial', authGuard, async (req, res) => {
     queueVolumeHistory,
     radialCategories
   });
+});
+
+// SPA fallback — serve index.html for all non-API, non-static routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
 });
 
 app.listen(PORT, () => {

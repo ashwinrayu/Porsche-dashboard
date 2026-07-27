@@ -1,0 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+    color: #0F172A;
+    @apply min-h-screen font-sans antialiased overflow-x-hidden;
+  }
+
+  ::selection {
+    background-color: rgba(213, 0, 28, 0.1);
+    color: #D5001C;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(213, 0, 28, 0.2);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(213, 0, 28, 0.45);
+}
+
+/* Glowing card class */
+.porsche-card-glow {
+  background: #FFFFFF;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.porsche-card-glow:hover {
+  border-color: rgba(213, 0, 28, 0.22);
+  box-shadow: 0 0 18px rgba(213, 0, 28, 0.04), 0 8px 30px -4px rgba(15, 23, 42, 0.06);
+  background: #FFFFFF;
+}
+
+/* Pulsing Guards Red accent points */
+@keyframes pulse-red {
+  0%, 100% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 2px rgba(213, 0, 28, 0.3));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(213, 0, 28, 0.7));
+  }
+}
+
+.pulse-glow-red {
+  animation: pulse-red 3.5s infinite ease-in-out;
+}
+
+/* Pulsing Acid Green E-Hybrid accent points */
+@keyframes pulse-green {
+  0%, 100% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 2px rgba(162, 230, 0, 0.3));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(162, 230, 0, 0.7));
+  }
+}
+
+.pulse-glow-green {
+  animation: pulse-green 3.5s infinite ease-in-out;
+}
+
+/* Faint grid overlay */
+.bg-grid-overlay {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.015) 1px, transparent 1px);
+}

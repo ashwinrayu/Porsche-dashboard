@@ -1,0 +1,211 @@
+{
+  "users": [
+    {
+      "username": "porsche-admin",
+      "password": "porsche-password",
+      "name": "Eduardo Bisonó",
+      "role": "Senior Sales Advisor",
+      "showroom": "Santo Domingo"
+    }
+  ],
+  "leads": [
+    {
+      "id": "L-1000",
+      "name": "Alejandro Santana",
+      "model": "911 Carrera GTS (992.2)",
+      "source": "Showroom Santo Domingo",
+      "score": 45,
+      "status": "Warm",
+      "assignedAdvisor": "Eduardo Bisonó",
+      "specs": {
+        "interior": "Race-Tex Interior with Red Stitching",
+        "wheels": "20-inch Forged Magnesium Wheels",
+        "paint": "Guards Red",
+        "packages": [
+          "Weissach Package",
+          "Sport Chrono Package"
+        ]
+      }
+    },
+    {
+      "id": "L-1001",
+      "name": "Clarissa Peynado",
+      "model": "Taycan Turbo S",
+      "source": "Web Configurator RD",
+      "score": 42,
+      "status": "Cold",
+      "assignedAdvisor": "Claudia Peynado",
+      "specs": {
+        "paint": "Chalk",
+        "wheels": "21-inch Mission E Wheels",
+        "interior": "Leather Interior in Black",
+        "packages": [
+          "Performance Battery Plus",
+          "Rear Axle Steering"
+        ]
+      }
+    },
+    {
+      "id": "L-1002",
+      "name": "Gustavo Tavárez",
+      "model": "Cayenne Coupe E-Hybrid",
+      "source": "VIP Tournament Casa de Campo",
+      "score": 46,
+      "status": "Warm",
+      "assignedAdvisor": "Rafael Santana",
+      "specs": {
+        "paint": "Jet Black Metallic",
+        "wheels": "22-inch RS Spyder Design Wheels",
+        "interior": "Club Leather Interior in Truffle Brown",
+        "packages": [
+          "Adaptive Air Suspension"
+        ]
+      }
+    },
+    {
+      "id": "L-1003",
+      "name": "María Vásquez",
+      "model": "Macan Electric Turbo",
+      "source": "Instagram Campaign",
+      "score": 57,
+      "status": "Warm",
+      "assignedAdvisor": "María Laura Díaz",
+      "specs": {
+        "paint": "Mamba Green Metallic",
+        "wheels": "21-inch Macan Design Wheels",
+        "interior": "Race-Tex Interior in Black",
+        "packages": [
+          "Sport Chrono Package"
+        ]
+      }
+    },
+    {
+      "id": "L-1004",
+      "name": "Luis Manuel Corripio",
+      "model": "718 Cayman GT4 RS",
+      "source": "Referral",
+      "score": 58,
+      "status": "Warm",
+      "assignedAdvisor": "Unassigned",
+      "specs": {
+        "paint": "Guards Red",
+        "wheels": "20-inch Forged Magnesium Wheels",
+        "interior": "Race-Tex Interior with Red Stitching",
+        "packages": [
+          "Weissach Package",
+          "Front Axle Lift System"
+        ]
+      }
+    }
+  ],
+  "inventory": [
+    {
+      "id": "P-101",
+      "name": "911 Ceramic Brake Disc",
+      "stock": 4,
+      "predictedDemand": 12,
+      "customsEtaDays": 4,
+      "status": "Low"
+    },
+    {
+      "id": "P-102",
+      "name": "Cabin Microfilter",
+      "stock": 18,
+      "predictedDemand": 15,
+      "customsEtaDays": 9,
+      "status": "Normal"
+    },
+    {
+      "id": "P-103",
+      "name": "HV Charging Socket Plugs",
+      "stock": 2,
+      "predictedDemand": 8,
+      "customsEtaDays": 3,
+      "status": "Critical"
+    },
+    {
+      "id": "P-104",
+      "name": "Active Air Suspension Strut",
+      "stock": 6,
+      "predictedDemand": 5,
+      "customsEtaDays": 11,
+      "status": "Normal"
+    },
+    {
+      "id": "P-105",
+      "name": "Macan Turbo Charger Port",
+      "stock": 5,
+      "predictedDemand": 6,
+      "customsEtaDays": 5,
+      "status": "Low"
+    }
+  ],
+  "fleet": [
+    {
+      "vin": "WP0AB2Y15NS25810",
+      "model": "Taycan 4S Cross Turismo",
+      "plate": "G428190",
+      "gaugeLabel": "Suspension Re-calibration",
+      "mileage": 34210,
+      "wearBrakes": 42.1,
+      "wearSuspension": 62.4,
+      "wearFilters": 28.5,
+      "severity": "Attention",
+      "predictedServiceNeeds": "Suspension Re-calibration",
+      "lastSignalTime": "12 mins ago"
+    },
+    {
+      "vin": "WP0AC2Y20NS30281",
+      "model": "911 Carrera GTS",
+      "plate": "A981240",
+      "gaugeLabel": "Brake Replacement",
+      "mileage": 12450,
+      "wearBrakes": 78.4,
+      "wearSuspension": 32.1,
+      "wearFilters": 54.3,
+      "severity": "Urgent",
+      "predictedServiceNeeds": "Brake Replacement",
+      "lastSignalTime": "4 mins ago"
+    },
+    {
+      "vin": "WP0AA2AY4NS40512",
+      "model": "Cayenne E-Hybrid",
+      "plate": "G519812",
+      "gaugeLabel": "Cabin Filter Flush",
+      "mileage": 48120,
+      "wearBrakes": 22.4,
+      "wearSuspension": 41.5,
+      "wearFilters": 84.1,
+      "severity": "Urgent",
+      "predictedServiceNeeds": "Cabin Filter Flush",
+      "lastSignalTime": "29 mins ago"
+    },
+    {
+      "vin": "WP0AB2Y10NS10492",
+      "model": "Macan Electric Turbo",
+      "plate": "G104812",
+      "gaugeLabel": "Routine Inspection",
+      "mileage": 8200,
+      "wearBrakes": 15.2,
+      "wearSuspension": 18.4,
+      "wearFilters": 12.1,
+      "severity": "Normal",
+      "predictedServiceNeeds": "Routine Inspection",
+      "lastSignalTime": "1 hr ago"
+    },
+    {
+      "vin": "WP0AA2A70NS11048",
+      "model": "718 Cayman GT4 RS",
+      "plate": "A104928",
+      "gaugeLabel": "Routine Inspection",
+      "mileage": 5120,
+      "wearBrakes": 44.5,
+      "wearSuspension": 28.1,
+      "wearFilters": 34.5,
+      "severity": "Normal",
+      "predictedServiceNeeds": "Routine Inspection",
+      "lastSignalTime": "3 hrs ago"
+    }
+  ],
+  "scheduledVins": {}
+}

@@ -223,7 +223,7 @@ export default function Sales() {
       <section className="flex justify-between items-start">
         <div>
           <h1 className="text-3xl font-light text-slate-900 tracking-tight">Pillar 1: <span className="font-semibold text-porsche-red">Sales & Conversion</span></h1>
-          <p className="text-sm text-porsche-muted font-light mt-1">Lead intelligence, customer persona configuration, and virtual showroom routing.</p>
+          <p className="text-sm text-porsche-muted font-light mt-2">Lead intelligence, customer persona configuration, and virtual showroom routing.</p>
         </div>
       </section>
 
@@ -263,22 +263,22 @@ export default function Sales() {
       </section>
 
       <section className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-2 porsche-card-glow p-6 rounded-2xl flex flex-col gap-4 overflow-hidden">
+        <div className="xl:col-span-2 porsche-card-glow p-8 rounded-2xl flex flex-col gap-8">
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-lg font-semibold text-slate-900 tracking-wide">Intelligent Lead Scoring</h2>
-              <p className="text-xs text-porsche-muted font-light mt-0.5">Real-time engagement scoring and advisor routing.</p>
+              <p className="text-xs text-porsche-muted font-light mt-2">Real-time engagement scoring and advisor routing.</p>
             </div>
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => setIsDrawerOpen(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold bg-porsche-red text-white hover:bg-red-700 hover:shadow-glow-red rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all uppercase tracking-wider"
+                className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-porsche-red text-white hover:bg-red-700 hover:shadow-glow-red rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all uppercase tracking-wider"
               >
                 Create Lead
               </button>
               <button 
                 onClick={toggleSort}
-                className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium border border-porsche-border rounded-xl text-porsche-red hover:bg-porsche-red/5 transition-colors"
+                className="flex items-center gap-2 px-4 py-2 text-xs font-medium border border-porsche-border rounded-xl text-porsche-red hover:bg-porsche-red/5 transition-colors"
               >
                 <ArrowUpDown size={14} />
                 Sort ({sortAsc ? 'Asc' : 'Desc'})
@@ -286,76 +286,92 @@ export default function Sales() {
             </div>
           </div>
 
-          <div className="overflow-x-auto w-full -mx-6 px-6">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto w-full -mx-2 px-2">
+            <table className="w-full min-w-[860px] text-left border-collapse">
               <thead>
                 <tr className="border-b border-porsche-border text-[11px] uppercase tracking-wider text-porsche-muted font-semibold">
-                  <th className="py-3 pr-4">Lead ID</th>
-                  <th className="py-3 pr-4">Customer</th>
-                  <th className="py-3 pr-4">Model of Interest</th>
-                  <th className="py-3 pr-4">Source</th>
-                  <th className="py-3 pr-4">AI Score</th>
-                  <th className="py-3 pr-4">Status</th>
-                  <th className="py-3 pr-4">Advisor</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">Lead ID</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">Customer</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">Model of Interest</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">Source</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">AI Score</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">Status</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">Advisor</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-porsche-border/40 text-sm">
-                {sortedLeads.map((lead) => (
-                  <tr 
-                    key={lead.id} 
-                    onClick={() => setSelectedLeadId(lead.id)}
-                    onDoubleClick={() => setDetailLead(lead)}
-                    className={`hover:bg-slate-900/5 transition-colors duration-150 group cursor-pointer ${
-                      activeLead?.id === lead.id ? 'bg-slate-100 border-l-[3px] border-l-porsche-red' : ''
-                    }`}
-                  >
-                    <td className="py-3.5 pr-4 font-mono text-xs text-porsche-muted">{lead.id}</td>
-                    <td className="py-3.5 pr-4 font-medium text-slate-900 group-hover:text-porsche-red transition-colors">{lead.name}</td>
-                    <td className="py-3.5 pr-4 text-slate-800">{lead.model}</td>
-                    <td className="py-3.5 pr-4 text-porsche-muted text-xs">{lead.source}</td>
-                    <td className="py-3.5 pr-4 font-semibold text-slate-900">
-                      <div className="flex items-center gap-1.5">
-                        <span className={`w-1.5 h-1.5 rounded-full ${
-                          lead.score >= 80 ? 'bg-porsche-red shadow-glow-red' : 
-                          lead.score >= 50 ? 'bg-porsche-gold' : 'bg-porsche-muted'
-                        }`} />
-                        {lead.score}
-                      </div>
-                    </td>
-                    <td className="py-3.5 pr-4">
-                      <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
-                        lead.status === 'Hot' ? 'bg-porsche-red/10 text-porsche-red border-porsche-red/20' :
-                        lead.status === 'Warm' ? 'bg-porsche-gold/10 text-porsche-gold border-porsche-gold/20' :
-                        'bg-porsche-muted/10 text-porsche-muted border-porsche-border'
-                      }`}>
-                        {lead.status}
-                      </span>
-                    </td>
-                    <td className="py-3.5 pr-4">
-                      <div className="flex items-center gap-2">
-                        <select 
-                          value={lead.assignedAdvisor}
-                          onChange={(e) => handleAssignAdvisor(lead.id, e.target.value)}
-                          onClick={e => e.stopPropagation()}
-                          className="bg-transparent border border-slate-200 hover:border-porsche-red/40 rounded-lg px-2 py-1 text-xs text-slate-800 focus:outline-none focus:border-porsche-red cursor-pointer transition-all"
-                        >
-                          <option value="Unassigned">Unassigned</option>
-                          <option value="Eduardo Bisonó">Eduardo Bisonó</option>
-                          <option value="Claudia Peynado">Claudia Peynado</option>
-                          <option value="Rafael Santana">Rafael Santana</option>
-                          <option value="María Laura Díaz">María Laura Díaz</option>
-                        </select>
-                        <button
-                          onClick={e => { e.stopPropagation(); setDetailLead(lead); }}
-                          className="p-1 rounded-lg border border-porsche-border text-porsche-muted hover:text-porsche-red hover:border-porsche-red/40 transition-all opacity-0 group-hover:opacity-100"
-                          title="View Lead Profile"
-                        >
-                          <ChevronRight size={12} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+              <tbody className="divide-y divide-porsche-border/40">
+                {sortedLeads.map((lead) => {
+                  const isSelected = activeLead?.id === lead.id;
+                  return (
+                    <tr 
+                      key={lead.id} 
+                      onClick={() => setSelectedLeadId(lead.id)}
+                      onDoubleClick={() => setDetailLead(lead)}
+                      className={`hover:bg-slate-900/5 transition-all duration-150 group cursor-pointer ${
+                        isSelected 
+                          ? 'bg-slate-100/90 font-medium text-slate-900 relative shadow-sm' 
+                          : ''
+                      }`}
+                    >
+                      <td className="py-3.5 px-4 whitespace-nowrap font-mono text-xs text-porsche-muted font-semibold">
+                        <div className="flex items-center gap-1.5">
+                          {isSelected && <span className="w-1 h-3.5 bg-porsche-red rounded-full shrink-0" />}
+                          <span className="whitespace-nowrap">{lead.id}</span>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-4 text-xs font-semibold text-slate-900 group-hover:text-porsche-red transition-colors whitespace-nowrap">
+                        {lead.name}
+                      </td>
+                      <td className="py-3.5 px-4 text-xs text-slate-800 whitespace-nowrap" title={lead.model}>
+                        {lead.model}
+                      </td>
+                      <td className="py-3.5 px-4 text-xs text-porsche-muted whitespace-nowrap">
+                        {lead.source}
+                      </td>
+                      <td className="py-3.5 px-4 whitespace-nowrap font-semibold text-slate-900">
+                        <span className="inline-flex items-center gap-2">
+                          <span className={`w-2 h-2 rounded-full shrink-0 ${
+                            lead.score >= 80 ? 'bg-porsche-red shadow-glow-red' : 
+                            lead.score >= 50 ? 'bg-porsche-gold' : 'bg-porsche-muted'
+                          }`} />
+                          <span className="text-xs font-mono font-bold leading-none">{lead.score}</span>
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border leading-none tracking-wider ${
+                          lead.status === 'Hot' ? 'bg-porsche-red/10 text-porsche-red border-porsche-red/20' :
+                          lead.status === 'Warm' ? 'bg-porsche-gold/10 text-porsche-gold border-porsche-gold/20' :
+                          'bg-porsche-muted/10 text-porsche-muted border-porsche-border'
+                        }`}>
+                          {lead.status}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-4 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <select 
+                            value={lead.assignedAdvisor}
+                            onChange={(e) => handleAssignAdvisor(lead.id, e.target.value)}
+                            onClick={e => e.stopPropagation()}
+                            className="bg-transparent border border-slate-200 hover:border-porsche-red/40 rounded-lg px-2.5 py-1 text-xs text-slate-800 focus:outline-none focus:border-porsche-red cursor-pointer transition-all min-w-[140px]"
+                          >
+                            <option value="Unassigned">Unassigned</option>
+                            <option value="Eduardo Bisonó">Eduardo Bisonó</option>
+                            <option value="Claudia Peynado">Claudia Peynado</option>
+                            <option value="Rafael Santana">Rafael Santana</option>
+                            <option value="María Laura Díaz">María Laura Díaz</option>
+                          </select>
+                          <button
+                            onClick={e => { e.stopPropagation(); setDetailLead(lead); }}
+                            className="shrink-0 p-1 rounded-lg border border-porsche-border text-porsche-muted hover:text-porsche-red hover:border-porsche-red/40 transition-all opacity-0 group-hover:opacity-100"
+                            title="View Lead Profile"
+                          >
+                            <ChevronRight size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

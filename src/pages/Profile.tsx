@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Award, 
@@ -35,6 +35,22 @@ export default function Profile() {
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editForm, setEditForm] = useState({ ...profile });
   const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // Profile photo — starts with generated asset, can be replaced from disk
+  const [photoUrl, setPhotoUrl] = useState<string>('/profile-eduardo.png');
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      if (ev.target?.result) setPhotoUrl(ev.target.result as string);
+    };
+    reader.readAsDataURL(file);
+    // reset so same file can be picked again
+    e.target.value = '';
+  };
 
   const openEdit = () => {
     setEditForm({ ...profile });
@@ -83,7 +99,7 @@ export default function Profile() {
               <div className="relative shrink-0">
                 <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-porsche-red shadow-[0_0_20px_rgba(213,0,28,0.5)]">
                   <img
-                    src="/profile-eduardo.png"
+                    src={photoUrl}
                     alt={profile.name}
                     className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
                   />
@@ -278,13 +294,31 @@ export default function Profile() {
               {/* Modal Body */}
               <div className="p-6 flex flex-col gap-5">
 
-                {/* Profile photo preview */}
+                {/* Profile photo picker */}
                 <div className="flex items-center gap-4">
                   <div className="relative">
                     <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-porsche-red shadow-[0_0_16px_rgba(213,0,28,0.4)]">
-                      <img src="/profile-eduardo.png" alt="Profile" className="w-full h-full object-cover object-top" />
+                      <img
+                        src={photoUrl}
+                        alt="Profile"
+                        className="w-full h-full object-cover object-top"
+                      />
                     </div>
-                    <button className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-porsche-red text-white flex items-center justify-center shadow cursor-pointer hover:bg-red-700 transition-colors">
+                    {/* Hidden file input */}
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handlePhotoChange}
+                    />
+                    {/* Camera button — opens file picker */}
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-porsche-red text-white flex items-center justify-center shadow cursor-pointer hover:bg-red-700 transition-colors"
+                      title="Change profile photo"
+                    >
                       <Camera size={11} />
                     </button>
                   </div>

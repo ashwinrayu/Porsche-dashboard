@@ -41,7 +41,36 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps) {
       <div className="flex flex-col gap-6">
         {/* Porsche Command Center Brand Header */}
         <div className="flex items-center gap-3 px-2 pb-4 border-b border-[#ECECEC] dark:border-white/[0.08]">
-          <PorscheLogo size={32} />
+          {/* Glowing animated logo wrapper */}
+          <div className="relative shrink-0 flex items-center justify-center">
+            {/* Outer ping ring 1 */}
+            <span
+              className="absolute w-11 h-11 rounded-full border border-porsche-red/50 animate-ping"
+              style={{ animationDuration: '2s' }}
+            />
+            {/* Outer ping ring 2 — staggered */}
+            <span
+              className="absolute w-9 h-9 rounded-full border border-porsche-red/30 animate-ping"
+              style={{ animationDuration: '2.8s', animationDelay: '0.5s' }}
+            />
+            {/* Ambient red glow behind crest */}
+            <span className="absolute w-8 h-8 rounded-full bg-porsche-red/25 blur-md" />
+            {/* Rotating conic-gradient ring */}
+            <span
+              className="absolute w-10 h-10 rounded-full"
+              style={{
+                background: 'conic-gradient(from 0deg, transparent 60%, #D5001C 80%, transparent 100%)',
+                animation: 'spin 3s linear infinite',
+              }}
+            />
+            {/* Inner solid ring */}
+            <span className="absolute w-9 h-9 rounded-full bg-white dark:bg-[#0B0D11]" />
+            {/* The logo itself */}
+            <div className="relative z-10">
+              <PorscheLogo size={30} />
+            </div>
+          </div>
+
           <div className="flex flex-col">
             <span className="font-bold text-sm tracking-wider text-slate-900 dark:text-white uppercase font-sans">
               PORSCHE

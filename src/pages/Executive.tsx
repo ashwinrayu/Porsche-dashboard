@@ -20,9 +20,14 @@ import {
   ResponsiveContainer, 
   BarChart, 
   Bar, 
+  AreaChart,
+  Area,
+  LineChart,
+  Line,
   XAxis, 
   YAxis, 
-  Tooltip 
+  Tooltip,
+  CartesianGrid
 } from 'recharts';
 import { CountUp } from '../components/CountUp';
 import { useTheme } from '../context/ThemeContext';
@@ -40,6 +45,7 @@ export default function Executive() {
   const [isActionModalOpen, setIsActionModalOpen] = useState(false);
   const [isForecastModalOpen, setIsForecastModalOpen] = useState(false);
   const [selectedSeasonModel, setSelectedSeasonModel] = useState<number>(0);
+  const [predictionGraphMode, setPredictionGraphMode] = useState<'single' | 'compare'>('single');
 
   const barData = [
     { month: 'Jan', actual: 3.2, forecast: 3.0 },
@@ -223,40 +229,116 @@ export default function Executive() {
               </div>
             </div>
 
-            {/* Monthly Seasonal Demand Heatmap Chart */}
-            <div className="flex flex-col gap-1.5">
-              <div className="flex items-center justify-between text-[9px] font-mono text-slate-400 uppercase">
-                <span>Seasonal Demand Curve (Jan → Dec 2026)</span>
-                <span>Peak: {currentActiveModel.peakMonth} ({currentActiveModel.predictedUnits} units)</span>
+            {/* Monthly Seasonal Demand Graph View */}
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 uppercase">
+                <div className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white">
+                  <BarChart3 size={13} className="text-porsche-red" />
+                  <span>Seasonal Demand Curve Graph (Jan → Dec 2026)</span>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setPredictionGraphMode('single')}
+                    className={`px-2.5 py-1 rounded-lg text-[9px] font-bold font-mono transition-all cursor-pointer ${
+                      predictionGraphMode === 'single'
+                        ? 'bg-porsche-red text-white shadow-glow-red-sm'
+                        : 'bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    Single Model Curve
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPredictionGraphMode('compare')}
+                    className={`px-2.5 py-1 rounded-lg text-[9px] font-bold font-mono transition-all cursor-pointer ${
+                      predictionGraphMode === 'compare'
+                        ? 'bg-porsche-red text-white shadow-glow-red-sm'
+                        : 'bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                  >
+                    Compare All 5 Models
+                  </button>
+                </div>
               </div>
-              <div className="flex items-end gap-1.5 h-[65px] pt-2">
-                {currentActiveModel.monthlyForecast.map((val, mIdx) => {
-                  const heightPct = Math.round((val / maxVal) * 100);
-                  const isCurrent = mIdx === currentMonthIdx;
-                  return (
-                    <div key={mIdx} className="flex-1 flex flex-col items-center gap-1 group relative">
-                      {/* Hover Tooltip */}
-                      <div className="absolute -top-7 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] font-mono font-bold bg-slate-900 text-white px-1.5 py-0.5 rounded shadow pointer-events-none whitespace-nowrap z-20">
-                        {months[mIdx]}: {val} pts
-                      </div>
-                      <div
-                        className="w-full rounded-t-md transition-all duration-500"
-                        style={{
-                          height: `${heightPct}%`,
-                          backgroundColor: isCurrent
-                            ? currentActiveModel.color
-                            : mIdx > currentMonthIdx
-                            ? `${currentActiveModel.color}55`
-                            : `${currentActiveModel.color}99`,
-                          boxShadow: isCurrent ? `0 0 10px ${currentActiveModel.color}` : 'none',
+
+              {/* Recharts Container */}
+              <div className="h-[180px] w-full rounded-2xl bg-white dark:bg-black/30 p-3 border border-black/5 dark:border-white/5">
+                <ResponsiveContainer width="100%" height="100%">
+                  {predictionGraphMode === 'single' ? (
+                    <AreaChart
+                      data={months.map((mName, idx) => ({
+                        month: mName,
+                        score: currentActiveModel.monthlyForecast[idx],
+                      }))}
+                      margin={{ top: 10, right: 10, left: -25, bottom: 0 }}
+                    >
+                      <defs>
+                        <linearGradient id="activeModelGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor={currentActiveModel.color} stopOpacity={0.45} />
+                          <stop offset="95%" stopColor={currentActiveModel.color} stopOpacity={0.0} />
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#252830' : '#e2e8f0'} opacity={0.6} />
+                      <XAxis dataKey="month" stroke={theme === 'dark' ? '#666' : '#999'} fontSize={9} tickLine={false} />
+                      <YAxis stroke={theme === 'dark' ? '#666' : '#999'} fontSize={9} tickLine={false} domain={[40, 100]} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: theme === 'dark' ? '#121417' : '#FFFFFF',
+                          borderColor: currentActiveModel.color,
+                          borderRadius: '12px',
+                          fontSize: '11px',
+                          fontWeight: 'bold',
+                        }}
+                        formatter={(val: any) => [`${val} / 100 Demand Score`, currentActiveModel.name]}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="score"
+                        name={currentActiveModel.name}
+                        stroke={currentActiveModel.color}
+                        fill="url(#activeModelGrad)"
+                        strokeWidth={3}
+                        dot={{ fill: currentActiveModel.color, r: 3 }}
+                        activeDot={{ r: 6, stroke: '#FFF', strokeWidth: 2 }}
+                      />
+                    </AreaChart>
+                  ) : (
+                    <LineChart
+                      data={months.map((mName, idx) => {
+                        const row: Record<string, any> = { month: mName };
+                        salesPredictions.forEach((m) => {
+                          row[m.name] = m.monthlyForecast[idx];
+                        });
+                        return row;
+                      })}
+                      margin={{ top: 10, right: 10, left: -25, bottom: 0 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" stroke={theme === 'dark' ? '#252830' : '#e2e8f0'} opacity={0.6} />
+                      <XAxis dataKey="month" stroke={theme === 'dark' ? '#666' : '#999'} fontSize={9} tickLine={false} />
+                      <YAxis stroke={theme === 'dark' ? '#666' : '#999'} fontSize={9} tickLine={false} domain={[40, 100]} />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: theme === 'dark' ? '#121417' : '#FFFFFF',
+                          borderColor: '#D5001C',
+                          borderRadius: '12px',
+                          fontSize: '10px',
                         }}
                       />
-                      <span className={`text-[8px] font-mono ${isCurrent ? 'font-bold text-porsche-red' : 'text-slate-400'}`}>
-                        {months[mIdx]}
-                      </span>
-                    </div>
-                  );
-                })}
+                      {salesPredictions.map((m, idx) => (
+                        <Line
+                          key={idx}
+                          type="monotone"
+                          dataKey={m.name}
+                          stroke={m.color}
+                          strokeWidth={selectedSeasonModel === idx ? 3.5 : 1.5}
+                          dot={false}
+                        />
+                      ))}
+                    </LineChart>
+                  )}
+                </ResponsiveContainer>
               </div>
             </div>
 

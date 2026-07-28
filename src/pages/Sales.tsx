@@ -95,7 +95,7 @@ export default function Sales() {
             </span>
 
             <div className="w-full max-w-md flex flex-col items-center gap-2">
-              {funnelData.map((step) => (
+              {funnelStages.map((step) => (
                 <div
                   key={step.label}
                   className={`p-3 rounded-xl border flex items-center justify-between text-xs font-bold theme-transition ${step.width}`}

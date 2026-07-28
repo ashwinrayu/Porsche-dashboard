@@ -44,7 +44,7 @@ export default function Sales() {
       configuratorName: '911 Carrera GTS (992.2)',
       colorName: 'Guards Red',
       colorHex: '#D5001C',
-      image: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
+      image: '/porsche-911-dark.png',
       specs: ['20-Inch Forged Magnesium Wheels', 'Race-Tex Interior with Red Stitching', 'Sport Chrono Package with Mode Switch'],
       leads: [
         { name: 'María Vásquez', avatar: 'M', model: 'Macan Electric Turbo', score: 85, value: '$125,000', stage: 'Showroom', advisor: 'Eduardo B.', activity: '10m ago' },
@@ -72,7 +72,7 @@ export default function Sales() {
       configuratorName: '911 GT3 RS (Weissach Package)',
       colorName: 'GT Silver Metallic',
       colorHex: '#C0C0C0',
-      image: 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80',
+      image: '/porsche-911-dark.png',
       specs: ['Carbon Fiber Aerodynamic Rear Wing', 'PCCB Carbon Ceramic Brakes', 'Full Bucket Racing Seats with 6-Point Harness'],
       leads: [
         { name: 'Luis Corripio', avatar: 'L', model: '911 Carrera GTS', score: 96, value: '$241,300', stage: 'Finalizing Contract', advisor: 'Eduardo B.', activity: '2m ago' },
@@ -97,7 +97,7 @@ export default function Sales() {
       configuratorName: 'Cayenne Coupé Turbo E-Hybrid',
       colorName: 'Chromite Black Metallic',
       colorHex: '#111111',
-      image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80',
+      image: '/porsche-cayenne.png',
       specs: ['22-Inch RS Spyder Design Wheels', 'Club Leather Interior in Truffle Brown', 'Adaptive 3-Chamber Air Suspension'],
       leads: [
         { name: 'Gustavo Tavares', avatar: 'G', model: 'Cayenne Coupé E-Hybrid', score: 88, value: '$146,000', stage: 'Test Drive Scheduled', advisor: 'Ramón G.', activity: '5m ago' },
@@ -121,7 +121,7 @@ export default function Sales() {
       configuratorName: 'Macan Electric Turbo (800V Architecture)',
       colorName: 'Frozen Blue Metallic',
       colorHex: '#4682B4',
-      image: 'https://images.unsplash.com/photo-1541348263662-e082662d82da?auto=format&fit=crop&w=1200&q=80',
+      image: '/porsche-macan.png',
       specs: ['21-Inch Macan Offroad Design Wheels', 'Porsche Driver Experience Screen', '800V Fast Charging Station Bundle Included'],
       leads: [
         { name: 'María Vásquez', avatar: 'M', model: 'Macan Electric Turbo', score: 92, value: '$105,300', stage: 'Charging Audit Complete', advisor: 'Eduardo B.', activity: ' Just Now' },
@@ -145,7 +145,7 @@ export default function Sales() {
       configuratorName: 'Panamera 4 E-Hybrid Executive',
       colorName: 'Carrara White Metallic',
       colorHex: '#FAFAFA',
-      image: 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1200&q=80',
+      image: '/porsche-panamera.png',
       specs: ['21-Inch Panamera SportDesign Wheels', 'Rear Seat Executive Comfort Package', 'Burmester 3D High-End Surround Sound'],
       leads: [
         { name: 'Fernando Rainieri', avatar: 'F', model: 'Panamera 4 E-Hybrid', score: 87, value: '$135,000', stage: 'Corporate Fleet Order', advisor: 'Eduardo B.', activity: '12m ago' },
@@ -169,7 +169,7 @@ export default function Sales() {
       configuratorName: 'Taycan Turbo GT (800V Performance)',
       colorName: 'Purple Sky Metallic',
       colorHex: '#4B0082',
-      image: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80',
+      image: '/porsche-taycan.png',
       specs: ['1,019 HP Launch Control Boost', 'Porsche Active Ride Hydraulic Suspension', 'Full Carbon Weave Trim & Ceramic PCCB'],
       leads: [
         { name: 'Alejandro Corripio', avatar: 'A', model: 'Taycan Turbo GT', score: 94, value: '$230,000', stage: 'Contract Signed', advisor: 'Eduardo B.', activity: '4m ago' },

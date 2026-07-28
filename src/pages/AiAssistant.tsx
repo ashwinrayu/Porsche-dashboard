@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
-import { 
-  Bot, 
-  Sparkles, 
-  Send, 
-  User, 
-  Car, 
-  TrendingUp, 
-  Zap, 
-  Layers, 
-  ShieldCheck, 
-  Mic, 
-  Search, 
-  Users, 
-  BarChart3, 
-  Check, 
-  Cpu 
+import {
+  Bot,
+  Sparkles,
+  Send,
+  User,
+  Car,
+  TrendingUp,
+  Zap,
+  Layers,
+  ShieldCheck,
+  Mic,
+  Search,
+  Users,
+  BarChart3,
+  Check,
+  Cpu
 } from 'lucide-react';
-import { 
-  ResponsiveContainer, 
-  AreaChart, 
-  Area, 
-  XAxis, 
-  YAxis, 
-  Tooltip 
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip
 } from 'recharts';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -198,22 +198,20 @@ export default function AiAssistant() {
               className={`flex gap-4 max-w-4xl ${msg.sender === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
             >
               <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                  msg.sender === 'user'
+                className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${msg.sender === 'user'
                     ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
                     : 'bg-porsche-red text-white shadow-glow-red'
-                }`}
+                  }`}
               >
                 {msg.sender === 'user' ? <User size={16} /> : <Bot size={16} />}
               </div>
 
               <div className="flex flex-col gap-3 flex-1 min-w-0">
                 <div
-                  className={`p-5 rounded-2xl flex flex-col gap-3 text-body-16 ${
-                    msg.sender === 'user'
+                  className={`p-5 rounded-2xl flex flex-col gap-3 text-body-16 ${msg.sender === 'user'
                       ? 'bg-porsche-red text-white font-semibold'
                       : 'bg-slate-100 dark:bg-white/5 text-slate-900 dark:text-white border border-black/5 dark:border-white/10'
-                  }`}
+                    }`}
                 >
                   <p className="leading-relaxed">{msg.text}</p>
 
@@ -302,11 +300,10 @@ export default function AiAssistant() {
               type="button"
               onClick={toggleVoice}
               title="Voice Input"
-              className={`p-3.5 rounded-2xl border theme-transition cursor-pointer ${
-                isListening
+              className={`p-3.5 rounded-2xl border theme-transition cursor-pointer ${isListening
                   ? 'bg-porsche-red text-white border-porsche-red animate-pulse shadow-glow-red'
                   : 'bg-slate-100 dark:bg-white/5 text-slate-500 border-black/10 dark:border-white/10 hover:text-porsche-red'
-              }`}
+                }`}
             >
               <Mic size={18} />
             </button>

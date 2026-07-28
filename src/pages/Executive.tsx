@@ -27,11 +27,16 @@ import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../i18n/translations';
 import { PorscheLogo } from '../components/PorscheLogo';
+import { TakeActionModal } from '../components/TakeActionModal';
+import { ForecastDetailsModal } from '../components/ForecastDetailsModal';
 
 export default function Executive() {
   const { theme } = useTheme();
   const { language } = useLanguage();
   const t = translations[language];
+
+  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [isForecastModalOpen, setIsForecastModalOpen] = useState(false);
 
   const barData = [
     { month: 'Jan', actual: 3.2, forecast: 3.0 },
@@ -324,7 +329,7 @@ export default function Executive() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Revenue Projection Bar Chart (7 Cols) */}
         <div
-          onClick={() => { window.location.hash = '#/analytics'; }}
+          onClick={() => setIsForecastModalOpen(true)}
           className="lg:col-span-7 porsche-card flex flex-col gap-6 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
         >
           <div className="flex items-center justify-between">
@@ -332,7 +337,12 @@ export default function Executive() {
               <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Revenue Projection</h3>
               <p className="text-small-13 text-slate-500">USD in millions • Actual vs Forecast</p>
             </div>
-            <button className="text-xs font-bold text-porsche-red hover:underline">View Forecast Details</button>
+            <button 
+              onClick={(e) => { e.stopPropagation(); setIsForecastModalOpen(true); }}
+              className="text-xs font-bold text-porsche-red hover:underline cursor-pointer"
+            >
+              View Forecast Details
+            </button>
           </div>
 
           <div className="h-[220px] w-full">
@@ -379,7 +389,7 @@ export default function Executive() {
             </div>
 
             <button
-              onClick={() => { window.location.hash = '#/logistics'; }}
+              onClick={() => setIsActionModalOpen(true)}
               className="w-full py-3 rounded-2xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition cursor-pointer uppercase"
             >
               Take Action
@@ -404,6 +414,17 @@ export default function Executive() {
           </div>
         </div>
       </div>
+
+      <ForecastDetailsModal
+        isOpen={isForecastModalOpen}
+        onClose={() => setIsForecastModalOpen(false)}
+      />
+
+      <TakeActionModal
+        isOpen={isActionModalOpen}
+        onClose={() => setIsActionModalOpen(false)}
+        actionItem={{ title: 'Parts Delay Risk: Macan Electric Brake System', target: 'Potential Revenue Impact: $120,000' }}
+      />
     </div>
   );
 }

@@ -26,12 +26,14 @@ import { CountUp } from '../components/CountUp';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../i18n/translations';
+import { ForecastDetailsModal } from '../components/ForecastDetailsModal';
 
 export default function Analytics() {
   const { theme } = useTheme();
   const { language } = useLanguage();
   const t = translations[language];
   const [exportedFormat, setExportedFormat] = useState<string | null>(null);
+  const [isForecastModalOpen, setIsForecastModalOpen] = useState(false);
 
   const monthlyData = [
     { month: 'Jan', revenue: 3.2, forecast: 3.1, ice: 1.8, ev: 1.4 },
@@ -109,10 +111,16 @@ export default function Analytics() {
           </div>
         </div>
 
-        <div className="porsche-card flex flex-col justify-between gap-4">
-          <span className="text-small-13 text-slate-500 dark:text-slate-400 font-semibold uppercase">
-            Predictive Q3 Revenue Forecast
-          </span>
+        <div 
+          onClick={() => setIsForecastModalOpen(true)}
+          className="porsche-card flex flex-col justify-between gap-4 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-small-13 text-slate-500 dark:text-slate-400 font-semibold uppercase">
+              Predictive Q3 Revenue Forecast
+            </span>
+            <button className="text-xs font-bold text-porsche-red hover:underline">View Forecast Details</button>
+          </div>
           <div className="text-section-30 font-bold text-porsche-red">
             <CountUp prefix="$" end={14800000} decimals={0} />
           </div>
@@ -133,13 +141,16 @@ export default function Analytics() {
       {/* 2. PREDICTIVE REVENUE & REGIONAL DEALER HEATMAP */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Minimal Revenue Area Chart */}
-        <div className="porsche-card flex flex-col gap-6">
+        <div 
+          onClick={() => setIsForecastModalOpen(true)}
+          className="porsche-card flex flex-col gap-6 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
+        >
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Predictive Revenue & Actuals ($M)</h3>
               <p className="text-small-13 text-slate-500">Comparison of actual vs neural forecast curve.</p>
             </div>
-            <span className="text-xs font-mono text-porsche-red font-bold">+18.4% YoY</span>
+            <button className="text-xs font-bold text-porsche-red hover:underline">View Forecast Details</button>
           </div>
 
           <div className="h-[280px] w-full">
@@ -208,6 +219,11 @@ export default function Analytics() {
           "Punta Cana Coastal Hub is experiencing a +28.1% surge in Taycan Turbo GT demand driven by luxury resort fleet additions. Recommending a dedicated 800V mobile charging unit deployment."
         </p>
       </div>
+
+      <ForecastDetailsModal
+        isOpen={isForecastModalOpen}
+        onClose={() => setIsForecastModalOpen(false)}
+      />
     </div>
   );
 }

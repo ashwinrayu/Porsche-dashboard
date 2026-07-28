@@ -34,6 +34,8 @@ export default function Sales() {
   const [activeSpecTab, setActiveSpecTab] = useState<'Exterior' | 'Wheels' | 'Interior' | 'Packages'>('Exterior');
   const [isConfigModalOpen, setIsConfigModalOpen] = useState(false);
   const [proposalSent, setProposalSent] = useState(false);
+  const [isAllLeadsOpen, setIsAllLeadsOpen] = useState(false);
+  const [allLeadsFilter, setAllLeadsFilter] = useState('All');
 
   // Model-specific data dictionary for 100% dynamic filtering & tabbed specs
   const modelData: Record<string, {
@@ -335,7 +337,7 @@ export default function Sales() {
                 TOP ACTIVE LEADS ({selectedFilter})
               </span>
               <button
-                onClick={() => { window.location.hash = '#/customer-360'; }}
+                onClick={() => setIsAllLeadsOpen(true)}
                 className="text-xs font-bold text-porsche-red hover:underline flex items-center gap-1 cursor-pointer"
               >
                 <span>View All Leads</span>
@@ -356,10 +358,17 @@ export default function Sales() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-black/5 dark:divide-white/5">
-                  {currentData.leads.map((lead, idx) => (
+                  {currentData.leads.map((lead, idx) => {
+                    const slug = lead.name
+                      .normalize('NFD')
+                      .replace(/[\u0300-\u036f]/g, '')
+                      .toLowerCase()
+                      .trim()
+                      .replace(/[^a-z0-9]+/g, '-');
+                    return (
                     <tr
                       key={idx}
-                      onClick={() => { window.location.hash = '#/customer-360'; }}
+                      onClick={() => { window.location.hash = `#/customer-360/${slug}`; }}
                       className="hover:bg-black/5 dark:hover:bg-white/5 theme-transition cursor-pointer group"
                     >
                       <td className="py-3 px-2">
@@ -384,7 +393,9 @@ export default function Sales() {
                       </td>
                       <td className="py-3 px-2 text-right text-[10px] text-slate-400 font-mono">{lead.activity}</td>
                     </tr>
-                  ))}
+                    );
+                  })}
+
                 </tbody>
               </table>
             </div>
@@ -612,6 +623,136 @@ export default function Sales() {
                     </>
                   )}
                 </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ── ALL LEADS FULL-PAGE MODAL ── */}
+      <AnimatePresence>
+        {isAllLeadsOpen && (
+          <div className="fixed inset-0 z-50 flex flex-col bg-porsche-bgDark/95 backdrop-blur-lg">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col h-full max-w-[1280px] mx-auto w-full p-6 md:p-10 gap-6"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-[10px] font-mono text-porsche-red uppercase font-bold tracking-widest">
+                    PORSCHE COMMAND CENTER — LIVE PIPELINE
+                  </span>
+                  <h2 className="text-3xl font-bold text-white tracking-tight mt-0.5">
+                    All Active Leads
+                  </h2>
+                </div>
+                <button
+                  onClick={() => setIsAllLeadsOpen(false)}
+                  className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-porsche-red transition-colors cursor-pointer"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Model Filter Pills */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {['All', '911', 'Cayenne', 'Macan', 'Panamera', 'Taycan'].map((f) => (
+                  <button
+                    key={f}
+                    onClick={() => setAllLeadsFilter(f)}
+                    className={`px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer ${
+                      allLeadsFilter === f
+                        ? 'bg-porsche-red text-white shadow-glow-red'
+                        : 'bg-white/10 text-slate-300 hover:bg-white/20'
+                    }`}
+                  >
+                    {f === 'All' ? 'All Models' : f}
+                  </button>
+                ))}
+                <span className="ml-auto text-xs font-mono text-slate-400">
+                  {
+                    (allLeadsFilter === 'All'
+                      ? Object.values(modelData).flatMap((m) => m.leads)
+                      : modelData[allLeadsFilter]?.leads ?? []
+                    ).length
+                  } leads
+                </span>
+              </div>
+
+              {/* Full Leads Table */}
+              <div className="flex-1 overflow-y-auto rounded-2xl border border-white/10 bg-white/5 backdrop-blur">
+                <table className="w-full text-left border-collapse">
+                  <thead className="sticky top-0 bg-[#0B0D11]/90 backdrop-blur z-10">
+                    <tr className="border-b border-white/10 text-[10px] uppercase font-mono text-slate-400">
+                      <th className="py-4 px-4">#</th>
+                      <th className="py-4 px-4">Customer</th>
+                      <th className="py-4 px-4">Model</th>
+                      <th className="py-4 px-4">Score</th>
+                      <th className="py-4 px-4">Value</th>
+                      <th className="py-4 px-4">Stage</th>
+                      <th className="py-4 px-4">Advisor</th>
+                      <th className="py-4 px-4 text-right">Last Activity</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {(
+                      allLeadsFilter === 'All'
+                        ? Object.entries(modelData).flatMap(([modelKey, m]) =>
+                            m.leads.map((lead) => ({ ...lead, modelKey }))
+                          )
+                        : (modelData[allLeadsFilter]?.leads ?? []).map((lead) => ({ ...lead, modelKey: allLeadsFilter }))
+                    ).map((lead, idx) => {
+                      const slug = lead.name
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .toLowerCase()
+                        .trim()
+                        .replace(/[^a-z0-9]+/g, '-');
+                      return (
+                        <tr
+                          key={idx}
+                          onClick={() => { window.location.hash = `#/customer-360/${slug}`; setIsAllLeadsOpen(false); }}
+                          className="hover:bg-white/5 transition-colors cursor-pointer group"
+                        >
+                          <td className="py-3.5 px-4 text-[10px] font-mono text-slate-500">{idx + 1}</td>
+                          <td className="py-3.5 px-4">
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-8 h-8 rounded-full bg-slate-800 text-white font-bold text-xs flex items-center justify-center group-hover:bg-porsche-red transition-colors shrink-0">
+                                {lead.avatar}
+                              </div>
+                              <span className="text-sm font-bold text-white group-hover:text-porsche-red transition-colors">{lead.name}</span>
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full bg-white/10 text-slate-300">
+                                {lead.modelKey}
+                              </span>
+                              <span className="text-xs text-slate-300">{lead.model}</span>
+                            </div>
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <span className="text-sm font-bold text-porsche-red bg-porsche-red/10 px-3 py-1 rounded-full">
+                              {lead.score}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 text-sm font-bold text-white">{lead.value}</td>
+                          <td className="py-3.5 px-4">
+                            <span className="text-[10px] font-bold uppercase font-mono px-2.5 py-1 rounded-full bg-white/10 text-slate-300">
+                              {lead.stage}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-4 text-xs text-slate-400 font-semibold">{lead.advisor}</td>
+                          <td className="py-3.5 px-4 text-right text-[10px] text-slate-400 font-mono">{lead.activity}</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </motion.div>
           </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Wrench, 
   Zap, 
@@ -12,64 +12,395 @@ import {
   Scan, 
   UploadCloud, 
   ArrowRight, 
-  Car 
+  Car,
+  Search,
+  Filter,
+  X,
+  UserCheck,
+  ChevronRight,
+  ExternalLink
 } from 'lucide-react';
 import { VehicleImage } from '../components/VehicleImage';
 import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../i18n/translations';
+import { TakeActionModal, type ActionItem } from '../components/TakeActionModal';
 
 export default function Logistics() {
   const { theme } = useTheme();
   const { language } = useLanguage();
   const t = translations[language];
-  const [uploadedPart, setUploadedPart] = useState(true);
 
-  const fleet = [
+  // Action Modal State
+  const [isActionModalOpen, setIsActionModalOpen] = useState(false);
+  const [selectedActionItem, setSelectedActionItem] = useState<ActionItem | null>(null);
+
+  // Dedicated View All Modals State
+  const [isAllFleetOpen, setIsAllFleetOpen] = useState(false);
+  const [isAllServiceOpen, setIsAllServiceOpen] = useState(false);
+  const [isAllTradeInOpen, setIsAllTradeInOpen] = useState(false);
+
+  // Search & Filter States
+  const [fleetSearch, setFleetSearch] = useState('');
+  const [fleetFilter, setFleetFilter] = useState('all');
+
+  const [serviceSearch, setServiceSearch] = useState('');
+  const [serviceFilter, setServiceFilter] = useState('all');
+
+  const [tradeInSearch, setTradeInSearch] = useState('');
+  const [tradeInFilter, setTradeInFilter] = useState('all');
+
+  // Trigger Action Modal helper
+  const triggerAction = (e: React.MouseEvent, item: ActionItem) => {
+    e.stopPropagation();
+    setSelectedActionItem(item);
+    setIsActionModalOpen(true);
+  };
+
+  // Comprehensive Datasets
+  const fleetData = [
     {
+      id: 'c-101',
       model: '911 Carrera GTS',
       health: '98%',
+      healthVal: 98,
       mileage: '12,450 mi',
+      owner: 'Carlos Llenas',
+      customerId: 'carlos-llenas',
+      location: 'Santo Domingo East',
+      vin: 'WP0ZZZ99ZTS102381',
+      batteryFuel: '92% Fuel',
       lightImg: '/porsche-911-light.png',
       darkImg: '/porsche-911-dark.png',
+      status: 'Optimal',
     },
     {
+      id: 'c-102',
       model: 'Taycan Turbo GT',
       health: '96%',
+      healthVal: 96,
       mileage: '8,210 mi',
+      owner: 'María Vásquez',
+      customerId: 'maria-vasquez',
+      location: 'Santiago Hub',
+      vin: 'WP0ZZZY1ZMSA91823',
+      batteryFuel: '88% Battery (800V)',
       lightImg: '/porsche-taycan.png',
       darkImg: '/porsche-taycan.png',
+      status: 'Optimal',
     },
     {
+      id: 'c-103',
       model: 'Cayenne E-Hybrid',
       health: '92%',
+      healthVal: 92,
       mileage: '18,320 mi',
+      owner: 'Juan Vich',
+      customerId: 'juan-vich',
+      location: 'Punta Cana Depot',
+      vin: 'WP1AA2AY2PDA19231',
+      batteryFuel: '95% Hybrid',
       lightImg: '/porsche-cayenne.png',
       darkImg: '/porsche-cayenne.png',
+      status: 'Service Due',
     },
     {
+      id: 'c-104',
       model: 'Macan Electric',
       health: '95%',
+      healthVal: 95,
       mileage: '5,120 mi',
+      owner: 'Milo Espaillat',
+      customerId: 'milo-espaillat',
+      location: 'Santo Domingo Main',
+      vin: 'WP1AA2A58RDA88219',
+      batteryFuel: '90% EV',
       lightImg: '/porsche-macan.png',
       darkImg: '/porsche-macan.png',
+      status: 'Optimal',
+    },
+    {
+      id: 'c-105',
+      model: 'Panamera 4 E-Hybrid',
+      health: '99%',
+      healthVal: 99,
+      mileage: '3,400 mi',
+      owner: 'Eduardo Najri',
+      customerId: 'eduardo-najri',
+      location: 'Santo Domingo Main',
+      vin: 'WP0AA2A79PSA11204',
+      batteryFuel: '97% Hybrid',
+      lightImg: '/porsche-panamera-wide.png',
+      darkImg: '/porsche-panamera-wide.png',
+      status: 'Optimal',
+    },
+    {
+      id: 'c-106',
+      model: '718 Cayman GT4 RS',
+      health: '88%',
+      healthVal: 88,
+      mileage: '14,800 mi',
+      owner: 'Gustavo Tavares',
+      customerId: 'gustavo-tavares',
+      location: 'Santiago Hub',
+      vin: 'WP0AC2A81RSA99210',
+      batteryFuel: '82% Fuel',
+      lightImg: '/porsche-911-light.png',
+      darkImg: '/porsche-911-dark.png',
+      status: 'Telemetry Alert',
+    },
+    {
+      id: 'c-107',
+      model: '911 GT3 RS Weissach',
+      health: '97%',
+      healthVal: 97,
+      mileage: '4,100 mi',
+      owner: 'Luis Corripio',
+      customerId: 'luis-corripio',
+      location: 'Santo Domingo Main',
+      vin: 'WP0ZZZ99ZPS99102',
+      batteryFuel: '91% High-Octane',
+      lightImg: '/porsche-911-light.png',
+      darkImg: '/porsche-911-dark.png',
+      status: 'Optimal',
+    },
+    {
+      id: 'c-108',
+      model: 'Taycan 4 Cross Turismo',
+      health: '94%',
+      healthVal: 94,
+      mileage: '11,200 mi',
+      owner: 'Ana Vicini',
+      customerId: 'ana-vicini',
+      location: 'Punta Cana Depot',
+      vin: 'WP0ZZZY1ZNSA20194',
+      batteryFuel: '84% Battery',
+      lightImg: '/porsche-taycan-wide.png',
+      darkImg: '/porsche-taycan-wide.png',
+      status: 'Optimal',
+    },
+    {
+      id: 'c-109',
+      model: 'Macan GTS',
+      health: '91%',
+      healthVal: 91,
+      mileage: '22,100 mi',
+      owner: 'Roberto Bonetti',
+      customerId: 'roberto-bonetti',
+      location: 'Santiago Hub',
+      vin: 'WP1AA2A54PDA12903',
+      batteryFuel: '79% Fuel',
+      lightImg: '/porsche-macan-wide.png',
+      darkImg: '/porsche-macan-wide.png',
+      status: 'Service Due',
+    },
+    {
+      id: 'c-110',
+      model: 'Cayenne Turbo GT',
+      health: '95%',
+      healthVal: 95,
+      mileage: '9,800 mi',
+      owner: 'Frank Rainieri',
+      customerId: 'frank-rainieri',
+      location: 'Punta Cana Depot',
+      vin: 'WP1AA2AY5RDA90124',
+      batteryFuel: '89% Fuel',
+      lightImg: '/porsche-cayenne-wide.png',
+      darkImg: '/porsche-cayenne-wide.png',
+      status: 'Optimal',
     },
   ];
 
   const serviceAppointments = [
-    { service: 'Brake Replacement', model: '911 Carrera GTS', status: 'Confirmed', statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' },
-    { service: 'Cabin Filter Flush', model: 'Macan Turbo S', status: 'Scheduled', statusColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
-    { service: 'Suspension Check', model: 'Cayenne E-Hybrid', status: 'Scheduled', statusColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' },
+    { 
+      id: 's-1',
+      service: 'Brake Replacement (PCCB Rotors)', 
+      model: '911 Carrera GTS', 
+      client: 'Carlos Llenas',
+      customerId: 'carlos-llenas',
+      date: 'Today • 2:30 PM',
+      tech: 'Marcus Vance',
+      bay: 'Bay 04',
+      cost: '$2,450',
+      status: 'Confirmed', 
+      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' 
+    },
+    { 
+      id: 's-2',
+      service: 'Cabin Filter & HEPA Air Flush', 
+      model: 'Macan Turbo S', 
+      client: 'Milo Espaillat',
+      customerId: 'milo-espaillat',
+      date: 'Tomorrow • 10:00 AM',
+      tech: 'Alex Ruiz',
+      bay: 'Bay 02',
+      cost: '$480',
+      status: 'Scheduled', 
+      statusColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' 
+    },
+    { 
+      id: 's-3',
+      service: 'PASM Air Suspension Calibration', 
+      model: 'Cayenne E-Hybrid', 
+      client: 'Juan Vich',
+      customerId: 'juan-vich',
+      date: 'July 30 • 11:30 AM',
+      tech: 'David Ortiz',
+      bay: 'Bay 01',
+      cost: '$1,200',
+      status: 'Scheduled', 
+      statusColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' 
+    },
+    { 
+      id: 's-4',
+      service: '800V High-Voltage Battery Diagnostic', 
+      model: 'Taycan Turbo GT', 
+      client: 'María Vásquez',
+      customerId: 'maria-vasquez',
+      date: 'July 30 • 3:00 PM',
+      tech: 'Stefan Weiss',
+      bay: 'Bay 05',
+      cost: '$850',
+      status: 'Confirmed', 
+      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' 
+    },
+    { 
+      id: 's-5',
+      service: 'PDK 8-Speed Gearbox Service', 
+      model: 'Panamera 4 E-Hybrid', 
+      client: 'Eduardo Najri',
+      customerId: 'eduardo-najri',
+      date: 'July 31 • 9:00 AM',
+      tech: 'Marcus Vance',
+      bay: 'Bay 03',
+      cost: '$1,890',
+      status: 'In Progress', 
+      statusColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' 
+    },
+    { 
+      id: 's-6',
+      service: 'Carbon Ceramic Rotor Inspection', 
+      model: '718 Cayman GT4 RS', 
+      client: 'Gustavo Tavares',
+      customerId: 'gustavo-tavares',
+      date: 'Aug 01 • 1:00 PM',
+      tech: 'Stefan Weiss',
+      bay: 'Bay 06',
+      cost: '$3,200',
+      status: 'Urgent', 
+      statusColor: 'bg-porsche-red/10 text-porsche-red border-porsche-red/20' 
+    },
+    { 
+      id: 's-7',
+      service: 'ECU Telemetry Firmware Update', 
+      model: '911 GT3 RS', 
+      client: 'Luis Corripio',
+      customerId: 'luis-corripio',
+      date: 'Aug 02 • 10:30 AM',
+      tech: 'Alex Ruiz',
+      bay: 'Bay 04',
+      cost: '$350',
+      status: 'Confirmed', 
+      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' 
+    },
   ];
 
   const tradeInOpportunities = [
-    { client: 'Carlos Llenas', vehicle: '911 Carrera', tag: 'High Value', tagColor: 'bg-porsche-red text-white' },
-    { client: 'Milo Espaillat', vehicle: 'Macan Turbo', tag: 'Renewal', tagColor: 'bg-blue-600 text-white' },
-    { client: 'Juan Vich', vehicle: '2018 Cayenne E-Hybrid', tag: 'Medium', tagColor: 'bg-amber-500 text-white' },
+    { 
+      id: 't-1',
+      client: 'Carlos Llenas', 
+      customerId: 'carlos-llenas',
+      vehicle: '2021 911 Carrera S', 
+      appraisal: '$118,000',
+      upgradeTarget: '911 Carrera GTS',
+      expiry: '1 month remaining',
+      tag: 'High Value', 
+      tagColor: 'bg-porsche-red text-white' 
+    },
+    { 
+      id: 't-2',
+      client: 'Milo Espaillat', 
+      customerId: 'milo-espaillat',
+      vehicle: '2020 Macan Turbo', 
+      appraisal: '$62,000',
+      upgradeTarget: 'Macan Electric',
+      expiry: '2 weeks remaining',
+      tag: 'Renewal', 
+      tagColor: 'bg-blue-600 text-white' 
+    },
+    { 
+      id: 't-3',
+      client: 'Juan Vich', 
+      customerId: 'juan-vich',
+      vehicle: '2018 Cayenne E-Hybrid', 
+      appraisal: '$54,000',
+      upgradeTarget: 'Cayenne Turbo GT',
+      expiry: '3 months remaining',
+      tag: 'Medium', 
+      tagColor: 'bg-amber-500 text-white' 
+    },
+    { 
+      id: 't-4',
+      client: 'María Vásquez', 
+      customerId: 'maria-vasquez',
+      vehicle: '2022 Taycan 4S', 
+      appraisal: '$85,000',
+      upgradeTarget: 'Taycan Turbo GT',
+      expiry: '1 week remaining',
+      tag: 'High Value', 
+      tagColor: 'bg-porsche-red text-white' 
+    },
+    { 
+      id: 't-5',
+      client: 'Gustavo Tavares', 
+      customerId: 'gustavo-tavares',
+      vehicle: '2019 718 Cayman S', 
+      appraisal: '$48,000',
+      upgradeTarget: '718 Cayman GT4 RS',
+      expiry: 'Immediate',
+      tag: 'Upgrade Eligible', 
+      tagColor: 'bg-emerald-600 text-white' 
+    },
+    { 
+      id: 't-6',
+      client: 'Eduardo Najri', 
+      customerId: 'eduardo-najri',
+      vehicle: '2021 Panamera GTS', 
+      appraisal: '$92,000',
+      upgradeTarget: 'Panamera Turbo E-Hybrid',
+      expiry: '1 month remaining',
+      tag: 'Renewal', 
+      tagColor: 'bg-blue-600 text-white' 
+    },
   ];
 
+  // Filters for Modals
+  const filteredFleet = fleetData.filter((car) => {
+    const matchesSearch = car.model.toLowerCase().includes(fleetSearch.toLowerCase()) || 
+                          car.owner.toLowerCase().includes(fleetSearch.toLowerCase()) ||
+                          car.vin.toLowerCase().includes(fleetSearch.toLowerCase());
+    const matchesFilter = fleetFilter === 'all' || car.status.toLowerCase().includes(fleetFilter.toLowerCase());
+    return matchesSearch && matchesFilter;
+  });
+
+  const filteredService = serviceAppointments.filter((item) => {
+    const matchesSearch = item.service.toLowerCase().includes(serviceSearch.toLowerCase()) ||
+                          item.client.toLowerCase().includes(serviceSearch.toLowerCase()) ||
+                          item.model.toLowerCase().includes(serviceSearch.toLowerCase());
+    const matchesFilter = serviceFilter === 'all' || item.status.toLowerCase().includes(serviceFilter.toLowerCase());
+    return matchesSearch && matchesFilter;
+  });
+
+  const filteredTradeIn = tradeInOpportunities.filter((opp) => {
+    const matchesSearch = opp.client.toLowerCase().includes(tradeInSearch.toLowerCase()) ||
+                          opp.vehicle.toLowerCase().includes(tradeInSearch.toLowerCase()) ||
+                          opp.upgradeTarget.toLowerCase().includes(tradeInSearch.toLowerCase());
+    const matchesFilter = tradeInFilter === 'all' || opp.tag.toLowerCase().includes(tradeInFilter.toLowerCase());
+    return matchesSearch && matchesFilter;
+  });
+
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 pb-12">
       {/* 1. TOP ROW: PARTS INVENTORY HEATMAP & AI PARTS RECOGNITION */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Parts Inventory Heatmap */}
@@ -81,7 +412,7 @@ export default function Logistics() {
             </div>
             <button
               onClick={() => { window.location.hash = '#/reports'; }}
-              className="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:border-porsche-red cursor-pointer flex items-center gap-1.5"
+              className="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:border-porsche-red cursor-pointer flex items-center gap-1.5 transition-colors"
             >
               <span>View Full Inventory Report</span>
               <ArrowRight size={13} />
@@ -149,30 +480,30 @@ export default function Logistics() {
         </div>
       </div>
 
-      {/* 2. MIDDLE ROW: CONNECTED FLEET HEALTH (4 CARDS) */}
+      {/* 2. MIDDLE ROW: CONNECTED FLEET HEALTH */}
       <div className="porsche-card flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">{t.connectedFleet}</h3>
-            <p className="text-small-13 text-slate-500">32 Vehicles Online</p>
+            <p className="text-small-13 text-slate-500">32 Porsche Telemetry Nodes Online</p>
           </div>
           <button
-            onClick={() => { window.location.hash = '#/customer-360'; }}
-            className="text-xs font-bold text-porsche-red hover:underline cursor-pointer flex items-center gap-1"
+            onClick={() => { window.location.hash = '#/fleet'; }}
+            className="px-4 py-2 rounded-xl bg-porsche-red/10 border border-porsche-red/20 text-xs font-bold text-porsche-red hover:bg-porsche-red hover:text-white cursor-pointer flex items-center gap-1.5 transition-all shadow-sm"
           >
             <span>View All Fleet</span>
-            <ArrowRight size={13} />
+            <ArrowRight size={14} />
           </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {fleet.map((car, idx) => (
+          {fleetData.slice(0, 4).map((car) => (
             <div
-              key={idx}
-              onClick={() => { window.location.hash = '#/customer-360'; }}
-              className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-3 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all group"
+              key={car.id}
+              onClick={() => { window.location.hash = `#/customer-360/${car.customerId}`; }}
+              className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-3 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all group relative"
             >
-              <div className="w-full h-[120px] rounded-xl overflow-hidden shadow-md">
+              <div className="w-full h-[120px] rounded-xl overflow-hidden shadow-md relative">
                 <VehicleImage
                   lightSrc={car.lightImg}
                   darkSrc={car.darkImg}
@@ -181,7 +512,18 @@ export default function Logistics() {
                 />
               </div>
 
-              <h4 className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{car.model}</h4>
+              <div className="flex items-center justify-between">
+                <h4 className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">
+                  {car.model}
+                </h4>
+                <button
+                  type="button"
+                  onClick={(e) => triggerAction(e, { title: `Fleet Telemetry Action: ${car.model}`, target: `Owner: ${car.owner} (${car.vin})` })}
+                  className="px-2 py-1 rounded-lg bg-porsche-red text-white text-[10px] font-bold hover:bg-red-700 transition-colors shadow-glow-red"
+                >
+                  Take Action
+                </button>
+              </div>
 
               <div className="flex items-center justify-between text-xs font-mono pt-2 border-t border-black/5 dark:border-white/5">
                 <div>
@@ -205,8 +547,8 @@ export default function Logistics() {
           <div className="flex items-center justify-between">
             <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">{t.scheduledServiceAppointments}</h3>
             <button
-              onClick={() => { window.location.hash = '#/reports'; }}
-              className="text-xs font-bold text-porsche-red hover:underline cursor-pointer flex items-center gap-1"
+              onClick={() => { window.location.hash = '#/service-appointments'; }}
+              className="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-bold text-porsche-red hover:border-porsche-red cursor-pointer flex items-center gap-1 transition-all"
             >
               <span>View All</span>
               <ArrowRight size={13} />
@@ -214,19 +556,28 @@ export default function Logistics() {
           </div>
 
           <div className="flex flex-col gap-3">
-            {serviceAppointments.map((item, idx) => (
+            {serviceAppointments.slice(0, 3).map((item) => (
               <div
-                key={idx}
-                onClick={() => { window.location.hash = '#/reports'; }}
+                key={item.id}
+                onClick={() => { window.location.hash = `#/customer-360/${item.customerId}`; }}
                 className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between cursor-pointer hover:border-porsche-red/50 hover:shadow-sm transition-all group"
               >
                 <div>
                   <p className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{item.service}</p>
-                  <p className="text-small-13 text-slate-500">{item.model}</p>
+                  <p className="text-small-13 text-slate-500">{item.model} • {item.client}</p>
                 </div>
-                <span className={`text-xs font-bold uppercase font-mono px-3 py-1 rounded-full border ${item.statusColor}`}>
-                  {item.status}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className={`text-xs font-bold uppercase font-mono px-3 py-1 rounded-full border ${item.statusColor}`}>
+                    {item.status}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => triggerAction(e, { title: `Service Action: ${item.service}`, target: `${item.client} (${item.model})` })}
+                    className="px-2.5 py-1 rounded-lg bg-porsche-red text-white text-[10px] font-bold hover:bg-red-700 transition-colors shadow-glow-red"
+                  >
+                    Take Action
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -237,8 +588,8 @@ export default function Logistics() {
           <div className="flex items-center justify-between">
             <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Trade-in & Renewal Opportunities</h3>
             <button
-              onClick={() => { window.location.hash = '#/customer-360'; }}
-              className="text-xs font-bold text-porsche-red hover:underline cursor-pointer flex items-center gap-1"
+              onClick={() => { window.location.hash = '#/trade-in-opportunities'; }}
+              className="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-bold text-porsche-red hover:border-porsche-red cursor-pointer flex items-center gap-1 transition-all"
             >
               <span>View All</span>
               <ArrowRight size={13} />
@@ -246,24 +597,382 @@ export default function Logistics() {
           </div>
 
           <div className="flex flex-col gap-3">
-            {tradeInOpportunities.map((opp, idx) => (
+            {tradeInOpportunities.slice(0, 3).map((opp) => (
               <div
-                key={idx}
-                onClick={() => { window.location.hash = '#/customer-360'; }}
+                key={opp.id}
+                onClick={() => { window.location.hash = `#/customer-360/${opp.customerId}`; }}
                 className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between cursor-pointer hover:border-porsche-red/50 hover:shadow-sm transition-all group"
               >
                 <div>
                   <p className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{opp.client}</p>
-                  <p className="text-small-13 text-slate-500">{opp.vehicle}</p>
+                  <p className="text-small-13 text-slate-500">{opp.vehicle} ➔ <strong className="text-slate-700 dark:text-slate-300">{opp.upgradeTarget}</strong></p>
                 </div>
-                <span className={`text-xs font-bold uppercase font-mono px-3 py-1 rounded-full ${opp.tagColor}`}>
-                  {opp.tag}
-                </span>
+                <div className="flex items-center gap-3">
+                  <span className={`text-xs font-bold uppercase font-mono px-3 py-1 rounded-full ${opp.tagColor}`}>
+                    {opp.tag}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={(e) => triggerAction(e, { title: `Trade-in Proposal: ${opp.client}`, target: `Trade ${opp.vehicle} for ${opp.upgradeTarget} (${opp.appraisal})` })}
+                    className="px-2.5 py-1 rounded-lg bg-porsche-red text-white text-[10px] font-bold hover:bg-red-700 transition-colors shadow-glow-red"
+                  >
+                    Take Action
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </div>
+
+      {/* ========================================================================= */}
+      {/* 4. MODAL 1: VIEW ALL FLEET FULL OVERLAY */}
+      {/* ========================================================================= */}
+      <AnimatePresence>
+        {isAllFleetOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              className="relative w-full max-w-5xl bg-white dark:bg-[#121417] rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              {/* Modal Header */}
+              <div className="px-6 py-5 border-b border-black/5 dark:border-white/10 flex items-center justify-between bg-slate-50/50 dark:bg-white/[0.02]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-porsche-red/10 border border-porsche-red/20 flex items-center justify-center text-porsche-red">
+                    <Car size={20} />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">Connected Fleet Management</h2>
+                    <p className="text-xs text-slate-500 font-mono">32 Active Porsche Vehicle Telemetry Streams</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsAllFleetOpen(false)}
+                  className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Filters Bar */}
+              <div className="px-6 py-3 border-b border-black/5 dark:border-white/5 flex flex-wrap items-center justify-between gap-4 bg-slate-100/50 dark:bg-white/[0.01]">
+                <div className="relative flex-1 min-w-[240px]">
+                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    value={fleetSearch}
+                    onChange={(e) => setFleetSearch(e.target.value)}
+                    placeholder="Search by model, owner, or VIN..."
+                    className="w-full pl-9 pr-4 py-2 rounded-xl bg-white dark:bg-[#1A1D24] border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-porsche-red"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Filter size={14} className="text-slate-400" />
+                  {(['all', 'optimal', 'service', 'alert'] as const).map((f) => (
+                    <button
+                      key={f}
+                      onClick={() => setFleetFilter(f)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono capitalize border cursor-pointer transition-all ${
+                        fleetFilter === f
+                          ? 'bg-porsche-red text-white border-porsche-red'
+                          : 'bg-white dark:bg-[#1A1D24] border-black/5 dark:border-white/10 text-slate-600 dark:text-slate-400'
+                      }`}
+                    >
+                      {f}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Vehicle Grid */}
+              <div className="p-6 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredFleet.map((car) => (
+                  <div
+                    key={car.id}
+                    className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-3 hover:border-porsche-red/50 transition-all"
+                  >
+                    <div className="w-full h-[120px] rounded-xl overflow-hidden shadow-sm relative">
+                      <VehicleImage
+                        lightSrc={car.lightImg}
+                        darkSrc={car.darkImg}
+                        alt={car.model}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute top-2 right-2 px-2.5 py-0.5 rounded-full text-[9px] font-bold font-mono bg-black/60 backdrop-blur-md text-white border border-white/20">
+                        {car.location}
+                      </span>
+                    </div>
+
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-body-16 font-bold text-slate-900 dark:text-white">{car.model}</h4>
+                        <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 font-mono">{car.health}</span>
+                      </div>
+                      <p className="text-xs text-slate-500 font-mono mt-0.5">Owner: <strong className="text-slate-700 dark:text-slate-300">{car.owner}</strong></p>
+                      <p className="text-[10px] text-slate-400 font-mono">VIN: {car.vin}</p>
+                    </div>
+
+                    <div className="pt-2 border-t border-black/5 dark:border-white/5 flex items-center justify-between text-xs font-mono">
+                      <span className="text-slate-500">{car.mileage}</span>
+                      <span className="text-slate-500">{car.batteryFuel}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-1">
+                      <button
+                        onClick={() => {
+                          setIsAllFleetOpen(false);
+                          window.location.hash = `#/customer-360/${car.customerId}`;
+                        }}
+                        className="flex-1 py-1.5 rounded-xl bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-300 dark:hover:bg-white/20 cursor-pointer transition-colors text-center"
+                      >
+                        Profile
+                      </button>
+                      <button
+                        onClick={(e) => triggerAction(e, { title: `Fleet Telemetry: ${car.model}`, target: `Owner: ${car.owner} (${car.vin})` })}
+                        className="flex-1 py-1.5 rounded-xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 cursor-pointer transition-colors text-center shadow-glow-red"
+                      >
+                        Take Action
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================================================= */}
+      {/* 5. MODAL 2: VIEW ALL SERVICE APPOINTMENTS OVERLAY */}
+      {/* ========================================================================= */}
+      <AnimatePresence>
+        {isAllServiceOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              className="relative w-full max-w-4xl bg-white dark:bg-[#121417] rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              {/* Header */}
+              <div className="px-6 py-5 border-b border-black/5 dark:border-white/10 flex items-center justify-between bg-slate-50/50 dark:bg-white/[0.02]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-porsche-red/10 border border-porsche-red/20 flex items-center justify-center text-porsche-red">
+                    <Wrench size={20} />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">Scheduled Workshop Appointments</h2>
+                    <p className="text-xs text-slate-500 font-mono">Porsche Authorized Workshop Queue</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsAllServiceOpen(false)}
+                  className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Filters */}
+              <div className="px-6 py-3 border-b border-black/5 dark:border-white/5 flex flex-wrap items-center justify-between gap-4 bg-slate-100/50 dark:bg-white/[0.01]">
+                <div className="relative flex-1 min-w-[240px]">
+                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    value={serviceSearch}
+                    onChange={(e) => setServiceSearch(e.target.value)}
+                    placeholder="Search by service, client, or vehicle..."
+                    className="w-full pl-9 pr-4 py-2 rounded-xl bg-white dark:bg-[#1A1D24] border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-porsche-red"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Filter size={14} className="text-slate-400" />
+                  {(['all', 'confirmed', 'scheduled', 'urgent'] as const).map((f) => (
+                    <button
+                      key={f}
+                      onClick={() => setServiceFilter(f)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono capitalize border cursor-pointer transition-all ${
+                        serviceFilter === f
+                          ? 'bg-porsche-red text-white border-porsche-red'
+                          : 'bg-white dark:bg-[#1A1D24] border-black/5 dark:border-white/10 text-slate-600 dark:text-slate-400'
+                      }`}
+                    >
+                      {f}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Service List */}
+              <div className="p-6 overflow-y-auto flex flex-col gap-3">
+                {filteredService.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-porsche-red/50 transition-all"
+                  >
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-base font-bold text-slate-900 dark:text-white">{item.service}</h4>
+                        <span className={`text-[10px] font-bold uppercase font-mono px-2.5 py-0.5 rounded-full border ${item.statusColor}`}>
+                          {item.status}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 font-mono">
+                        Vehicle: <strong className="text-slate-700 dark:text-slate-300">{item.model}</strong> • Client: <strong className="text-slate-700 dark:text-slate-300">{item.client}</strong>
+                      </p>
+                      <div className="flex items-center gap-4 text-[11px] text-slate-400 font-mono mt-1">
+                        <span>{item.date}</span>
+                        <span>{item.bay}</span>
+                        <span>Tech: {item.tech}</span>
+                        <span className="text-porsche-red font-bold">{item.cost}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={() => {
+                          setIsAllServiceOpen(false);
+                          window.location.hash = `#/customer-360/${item.customerId}`;
+                        }}
+                        className="px-3 py-2 rounded-xl bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-300 dark:hover:bg-white/20 cursor-pointer transition-colors"
+                      >
+                        Client 360
+                      </button>
+                      <button
+                        onClick={(e) => triggerAction(e, { title: `Service Booking: ${item.service}`, target: `${item.client} (${item.model})` })}
+                        className="px-4 py-2 rounded-xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 cursor-pointer transition-colors shadow-glow-red"
+                      >
+                        Take Action
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================================================= */}
+      {/* 6. MODAL 3: VIEW ALL TRADE-IN OPPORTUNITIES OVERLAY */}
+      {/* ========================================================================= */}
+      <AnimatePresence>
+        {isAllTradeInOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.96 }}
+              className="relative w-full max-w-4xl bg-white dark:bg-[#121417] rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              {/* Header */}
+              <div className="px-6 py-5 border-b border-black/5 dark:border-white/10 flex items-center justify-between bg-slate-50/50 dark:bg-white/[0.02]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-porsche-red/10 border border-porsche-red/20 flex items-center justify-center text-porsche-red">
+                    <Zap size={20} />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">Trade-in & Renewal Matrix</h2>
+                    <p className="text-xs text-slate-500 font-mono">High Revenue Upgrade Opportunities</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsAllTradeInOpen(false)}
+                  className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Filters */}
+              <div className="px-6 py-3 border-b border-black/5 dark:border-white/5 flex flex-wrap items-center justify-between gap-4 bg-slate-100/50 dark:bg-white/[0.01]">
+                <div className="relative flex-1 min-w-[240px]">
+                  <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    value={tradeInSearch}
+                    onChange={(e) => setTradeInSearch(e.target.value)}
+                    placeholder="Search by client or vehicle..."
+                    className="w-full pl-9 pr-4 py-2 rounded-xl bg-white dark:bg-[#1A1D24] border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:border-porsche-red"
+                  />
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <Filter size={14} className="text-slate-400" />
+                  {(['all', 'high value', 'renewal', 'upgrade'] as const).map((f) => (
+                    <button
+                      key={f}
+                      onClick={() => setTradeInFilter(f)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono capitalize border cursor-pointer transition-all ${
+                        tradeInFilter === f
+                          ? 'bg-porsche-red text-white border-porsche-red'
+                          : 'bg-white dark:bg-[#1A1D24] border-black/5 dark:border-white/10 text-slate-600 dark:text-slate-400'
+                      }`}
+                    >
+                      {f}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Trade In Opportunities List */}
+              <div className="p-6 overflow-y-auto flex flex-col gap-3">
+                {filteredTradeIn.map((opp) => (
+                  <div
+                    key={opp.id}
+                    className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:border-porsche-red/50 transition-all"
+                  >
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-base font-bold text-slate-900 dark:text-white">{opp.client}</h4>
+                        <span className={`text-[10px] font-bold uppercase font-mono px-2.5 py-0.5 rounded-full ${opp.tagColor}`}>
+                          {opp.tag}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-500 font-mono">
+                        Current: <strong className="text-slate-700 dark:text-slate-300">{opp.vehicle}</strong> ➔ Target: <strong className="text-porsche-red">{opp.upgradeTarget}</strong>
+                      </p>
+                      <div className="flex items-center gap-4 text-[11px] text-slate-400 font-mono mt-1">
+                        <span>Appraisal Value: <strong className="text-emerald-600 dark:text-emerald-400 font-bold">{opp.appraisal}</strong></span>
+                        <span>Timeline: {opp.expiry}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        onClick={() => {
+                          setIsAllTradeInOpen(false);
+                          window.location.hash = `#/customer-360/${opp.customerId}`;
+                        }}
+                        className="px-3 py-2 rounded-xl bg-slate-200 dark:bg-white/10 text-slate-800 dark:text-slate-200 text-xs font-bold hover:bg-slate-300 dark:hover:bg-white/20 cursor-pointer transition-colors"
+                      >
+                        Client Profile
+                      </button>
+                      <button
+                        onClick={(e) => triggerAction(e, { title: `Trade-in Proposal: ${opp.client}`, target: `Trade ${opp.vehicle} for ${opp.upgradeTarget}` })}
+                        className="px-4 py-2 rounded-xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 cursor-pointer transition-colors shadow-glow-red"
+                      >
+                        Take Action
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Universal Action Execution Modal */}
+      <TakeActionModal
+        isOpen={isActionModalOpen}
+        onClose={() => setIsActionModalOpen(false)}
+        actionItem={selectedActionItem}
+      />
     </div>
   );
 }

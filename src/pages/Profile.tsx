@@ -33,6 +33,7 @@ export default function Profile() {
   });
 
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isAllActivityOpen, setIsAllActivityOpen] = useState(false);
   const [editForm, setEditForm] = useState({ ...profile });
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -239,7 +240,7 @@ export default function Profile() {
           <div className="flex items-center justify-between">
             <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">{t.recentActivity}</h3>
             <button
-              onClick={() => { window.location.hash = '#/sales'; }}
+              onClick={() => setIsAllActivityOpen(true)}
               className="text-xs font-bold text-porsche-red hover:underline cursor-pointer"
             >
               View All
@@ -426,6 +427,77 @@ export default function Profile() {
                       <span>Save Changes</span>
                     </>
                   )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* ── ALL ACTIVITY AUDIT LOG MODAL ── */}
+      <AnimatePresence>
+        {isAllActivityOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/75 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative w-full max-w-3xl bg-white dark:bg-[#121417] rounded-3xl border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden flex flex-col max-h-[88vh]"
+            >
+              <div className="px-6 py-5 border-b border-black/5 dark:border-white/10 flex items-center justify-between bg-slate-50/50 dark:bg-white/[0.02]">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-2xl bg-porsche-red/10 border border-porsche-red/20 flex items-center justify-center text-porsche-red">
+                    <User size={20} />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-slate-900 dark:text-white">Advisor Audit & Activity Stream</h2>
+                    <p className="text-xs text-slate-500 font-mono">Eduardo Bisonó • Senior Sales Advisor Log</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setIsAllActivityOpen(false)}
+                  className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <div className="p-6 overflow-y-auto flex flex-col gap-3">
+                {[
+                  { text: 'Closed $341,200 deal for 911 GT3 RS', detail: 'Client: Luis Corripio • Deposit wired', time: '10 mins ago', cat: 'Sale' },
+                  { text: 'Approved $98,500 trade-in evaluation', detail: 'Client: Gustavo Tavares • 718 Cayman GT4 RS', time: '1 hr ago', cat: 'Trade-in' },
+                  { text: 'Scheduled 800V Taycan Turbo GT test drive', detail: 'Client: María Vásquez • Santo Domingo Showroom', time: '3 hrs ago', cat: 'Test Drive' },
+                  { text: 'Generated proposal for Panamera 4 E-Hybrid', detail: 'Client: Fernando Rainieri • Corporate Fleet', time: '5 hrs ago', cat: 'Proposal' },
+                  { text: 'Completed annual telemetry check on Taycan 4S', detail: 'Client: Ana Vicini • Casa de Campo Hub', time: 'Yesterday', cat: 'Service' },
+                  { text: 'Delivered 2023 Cayenne Turbo GT VIP', detail: 'Client: Frank Rainieri • Punta Cana Resort', time: '2 days ago', cat: 'Delivery' },
+                  { text: 'Configured Macan Electric Turbo Frozen Blue', detail: 'Client: Milo Espaillat • Showroom Spec Review', time: '3 days ago', cat: 'Configurator' },
+                  { text: 'Confirmed GT3 RS Weissach allocation slot', detail: 'Client: Carlos Llenas • Q4 2026 delivery', time: '4 days ago', cat: 'Allocation' },
+                ].map((act, i) => (
+                  <div
+                    key={i}
+                    className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between hover:border-porsche-red/50 transition-all"
+                  >
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-body-16 font-bold text-slate-900 dark:text-white">{act.text}</span>
+                        <span className="text-[10px] font-bold uppercase font-mono px-2 py-0.5 rounded-full bg-porsche-red/10 text-porsche-red">
+                          {act.cat}
+                        </span>
+                      </div>
+                      <p className="text-small-13 text-slate-500 mt-0.5">{act.detail}</p>
+                    </div>
+                    <span className="text-xs text-slate-400 font-mono shrink-0">{act.time}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="px-6 py-4 border-t border-black/5 dark:border-white/10 flex items-center justify-between bg-slate-50/50 dark:bg-white/[0.02]">
+                <span className="text-[10px] text-slate-400 font-mono">Real-time Advisor CRM Activity Sync</span>
+                <button
+                  onClick={() => setIsAllActivityOpen(false)}
+                  className="px-5 py-2 rounded-xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 cursor-pointer transition-colors shadow-glow-red"
+                >
+                  Close Activity Log
                 </button>
               </div>
             </motion.div>

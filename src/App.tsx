@@ -16,6 +16,9 @@ import Customer360 from './pages/Customer360';
 import Analytics from './pages/Analytics';
 import Reports from './pages/Reports';
 import Login from './pages/Login';
+import Fleet from './pages/Fleet';
+import ServiceAppointments from './pages/ServiceAppointments';
+import TradeInOpportunities from './pages/TradeInOpportunities';
 
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -91,8 +94,12 @@ function MainLayout() {
               <Route path="/ai-assistant" element={<PageWrapper><AiAssistant /></PageWrapper>} />
               <Route path="/configurator" element={<PageWrapper><Configurator /></PageWrapper>} />
               <Route path="/customer-360" element={<PageWrapper><Customer360 /></PageWrapper>} />
+              <Route path="/customer-360/:customerId" element={<PageWrapper><Customer360 /></PageWrapper>} />
               <Route path="/analytics" element={<PageWrapper><Analytics /></PageWrapper>} />
               <Route path="/reports" element={<PageWrapper><Reports /></PageWrapper>} />
+              <Route path="/fleet" element={<PageWrapper><Fleet /></PageWrapper>} />
+              <Route path="/service-appointments" element={<PageWrapper><ServiceAppointments /></PageWrapper>} />
+              <Route path="/trade-in-opportunities" element={<PageWrapper><TradeInOpportunities /></PageWrapper>} />
             </Routes>
           </AnimatePresence>
         </main>

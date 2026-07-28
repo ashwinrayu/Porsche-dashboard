@@ -496,12 +496,12 @@ export default function Sales() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="w-full max-w-3xl rounded-3xl bg-white dark:bg-[#121417] p-8 border border-black/10 dark:border-white/10 shadow-2xl flex flex-col gap-6 relative overflow-hidden"
+              className="w-full max-w-3xl max-h-[88vh] rounded-3xl bg-white dark:bg-[#121417] p-6 md:p-8 border border-black/10 dark:border-white/10 shadow-2xl flex flex-col gap-6 relative overflow-y-auto"
             >
               {/* Close Icon Button */}
               <button
                 onClick={() => { setIsConfigModalOpen(false); setProposalSent(false); }}
-                className="absolute top-6 right-6 w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors"
+                className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors z-10"
               >
                 <X size={18} />
               </button>
@@ -511,35 +511,35 @@ export default function Sales() {
                 <span className="text-[10px] font-mono text-porsche-red uppercase font-bold tracking-widest">
                   PORSCHE EXCLUSIVE MANUFAKTUR • EXECUTIVE SPEC SHEET
                 </span>
-                <h2 className="text-title-48 font-bold text-slate-900 dark:text-white">
+                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white leading-tight">
                   {currentData.configuratorName}
                 </h2>
               </div>
 
               {/* Large Vehicle Display & Key Metrics */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                <div className="md:col-span-7 h-[240px] rounded-2xl bg-slate-950/40 p-4 border border-black/10 dark:border-white/10 flex items-center justify-center overflow-hidden">
+                <div className="md:col-span-7 h-[180px] md:h-[210px] rounded-2xl bg-black p-3 border border-black/10 dark:border-white/10 flex items-center justify-center overflow-hidden">
                   <img
                     src={currentData.image}
                     alt={currentData.configuratorName}
-                    className="w-full h-full object-contain filter drop-shadow-2xl"
+                    className="w-full h-full object-cover rounded-xl shadow-lg"
                   />
                 </div>
 
                 <div className="md:col-span-5 flex flex-col gap-4">
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-1">
                     <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">MSRP Base Spec</span>
-                    <span className="text-section-30 font-bold text-porsche-red">{currentData.msrp}</span>
+                    <span className="text-2xl font-bold text-porsche-red">{currentData.msrp}</span>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
                     <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
                       <span className="text-[9px] font-mono text-slate-400 uppercase block">Horsepower</span>
-                      <span className="text-body-16 font-bold text-slate-900 dark:text-white">{currentData.hp}</span>
+                      <span className="text-sm font-bold text-slate-900 dark:text-white">{currentData.hp}</span>
                     </div>
                     <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
                       <span className="text-[9px] font-mono text-slate-400 uppercase block">0-60 MPH</span>
-                      <span className="text-body-16 font-bold text-slate-900 dark:text-white">{currentData.zeroToSixty}</span>
+                      <span className="text-sm font-bold text-slate-900 dark:text-white">{currentData.zeroToSixty}</span>
                     </div>
                   </div>
                 </div>
@@ -576,8 +576,8 @@ export default function Sales() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-black/10 dark:border-white/10">
+              {/* Sticky Action Buttons Footer */}
+              <div className="sticky bottom-0 bg-white dark:bg-[#121417] pt-4 pb-2 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 -mx-6 md:-mx-8 px-6 md:px-8 -mb-6 md:-mb-8 mt-2">
                 <button
                   onClick={() => { window.location.hash = '#/configurator'; }}
                   className="w-full sm:w-auto px-6 py-3 rounded-full bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/20 theme-transition cursor-pointer flex items-center justify-center gap-2"

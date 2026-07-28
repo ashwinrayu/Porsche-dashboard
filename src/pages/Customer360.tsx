@@ -781,48 +781,87 @@ export default function Customer360() {
         </button>
       </div>
 
-      {/* Customer Switcher Search & Pills */}
-      <div className="porsche-card flex flex-col gap-4">
-        <div className="flex items-center justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-porsche-red" />
-            <span className="text-xs font-bold font-mono text-slate-900 dark:text-white uppercase">
-              All Clients Directory ({filteredKeys.length} / {CLIENT_KEYS.length})
-            </span>
+      {/* Customer Switcher Search & Executive Directory Bar */}
+      <div className="porsche-card flex flex-col gap-5 bg-gradient-to-r from-slate-900/[0.03] via-transparent to-porsche-red/[0.03] dark:from-white/[0.02] dark:to-porsche-red/[0.04]">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-2.5 h-2.5 rounded-full bg-porsche-red shadow-glow-red-sm" />
+            <div>
+              <h3 className="text-body-16 font-bold text-slate-900 dark:text-white uppercase font-mono">
+                VIP Client Directory ({filteredKeys.length} / {CLIENT_KEYS.length})
+              </h3>
+              <p className="text-[11px] text-slate-500 font-mono">Select client card or search below to inspect 360 telemetry</p>
+            </div>
           </div>
 
-          {/* Search bar */}
-          <div className="relative min-w-[240px] sm:min-w-[320px]">
-            <input
-              type="text"
-              value={customerSearch}
-              onChange={(e) => setCustomerSearch(e.target.value)}
-              placeholder="Search clients by name, model, location..."
-              className="w-full pl-3 pr-4 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-porsche-red"
-            />
+          <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+            {/* Quick Dropdown Select */}
+            <select
+              value={activeKey}
+              onChange={(e) => switchTo(e.target.value)}
+              className="px-3 py-2 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-porsche-red cursor-pointer"
+            >
+              {CLIENT_KEYS.map((k) => (
+                <option key={k} value={k} className="bg-white dark:bg-[#121417] text-slate-900 dark:text-white">
+                  {ALL_CLIENTS[k].name} ({ALL_CLIENTS[k].interestedModel}) — {ALL_CLIENTS[k].aiPurchaseScore} pts
+                </option>
+              ))}
+            </select>
+
+            {/* Instant Search Bar */}
+            <div className="relative min-w-[220px]">
+              <input
+                type="text"
+                value={customerSearch}
+                onChange={(e) => setCustomerSearch(e.target.value)}
+                placeholder="Search name, model, location..."
+                className="w-full pl-3 pr-4 py-2 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-porsche-red"
+              />
+            </div>
           </div>
         </div>
 
-        {/* Pills */}
-        <div className="flex items-center gap-2 flex-wrap max-h-[160px] overflow-y-auto pr-1">
-          {filteredKeys.map((key) => (
-            <button
-              key={key}
-              onClick={() => switchTo(key)}
-              className={`px-3 py-1.5 rounded-full text-[11px] font-bold theme-transition cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
-                activeKey === key
-                  ? 'bg-porsche-red text-white shadow-glow-red'
-                  : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-              }`}
-            >
-              <span>{ALL_CLIENTS[key].name}</span>
-              <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono ${
-                activeKey === key ? 'bg-white/20 text-white' : 'bg-black/10 dark:bg-white/10 text-slate-400'
-              }`}>
-                {ALL_CLIENTS[key].aiPurchaseScore} pts
-              </span>
-            </button>
-          ))}
+        {/* Executive Horizontal Scrollable Client Cards Rail */}
+        <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-porsche-red/30 snap-x">
+          {filteredKeys.map((key) => {
+            const c = ALL_CLIENTS[key];
+            const isSelected = activeKey === key;
+            return (
+              <div
+                key={key}
+                onClick={() => switchTo(key)}
+                className={`snap-start min-w-[200px] max-w-[220px] p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col gap-2 shrink-0 ${
+                  isSelected
+                    ? 'bg-porsche-red text-white border-porsche-red shadow-glow-red'
+                    : 'bg-white dark:bg-white/5 border-black/[0.08] dark:border-white/[0.08] hover:border-porsche-red/40 hover:shadow-md'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <div className={`w-7 h-7 rounded-xl font-bold text-xs flex items-center justify-center ${
+                    isSelected ? 'bg-white text-porsche-red' : 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white'
+                  }`}>
+                    {c.name.charAt(0)}
+                  </div>
+                  <span className={`text-[9px] font-bold font-mono px-2 py-0.5 rounded-full border ${
+                    isSelected
+                      ? 'bg-white/20 text-white border-white/30'
+                      : 'bg-porsche-red/10 text-porsche-red border-porsche-red/20'
+                  }`}>
+                    {c.aiPurchaseScore} pts
+                  </span>
+                </div>
+
+                <div>
+                  <p className={`text-xs font-bold truncate ${isSelected ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
+                    {c.name}
+                  </p>
+                  <p className={`text-[10px] truncate font-mono ${isSelected ? 'text-white/80' : 'text-slate-400'}`}>
+                    {c.interestedModel}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

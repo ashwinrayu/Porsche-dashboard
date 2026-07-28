@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layers, AlertCircle, ArrowRight, Lock, User } from 'lucide-react';
+import { AlertCircle, ArrowRight, Lock, User } from 'lucide-react';
 import { api } from '../services/api';
 
 interface LoginProps {
@@ -44,15 +44,21 @@ export default function Login({ onLoginSuccess }: LoginProps) {
       <div className="relative z-10 w-full max-w-md mx-4 bg-white/95 backdrop-blur-md border border-white/20 rounded-3xl p-8 sm:p-10 shadow-2xl flex flex-col gap-8 transition-all">
         
         {/* Header / Logo */}
-        <div className="flex flex-col items-center gap-3 text-center">
-          <div className="p-3 rounded-2xl bg-porsche-red/10 border border-porsche-red/20 shadow-glow-red">
-            <Layers size={28} className="text-porsche-red" />
+        <div className="flex flex-col items-center gap-4 text-center">
+          {/* Official Porsche Crest */}
+          <div className="relative">
+            <div className="absolute inset-0 rounded-full bg-porsche-red/20 blur-xl scale-150 pointer-events-none" />
+            <img
+              src="/porsche-crest-logo.png"
+              alt="Porsche Crest"
+              className="relative w-20 h-auto object-contain filter drop-shadow-[0_4px_16px_rgba(213,0,28,0.35)]"
+            />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-slate-950 tracking-wider">AutoEuropa</h1>
+            <h1 className="text-2xl font-bold text-slate-950 tracking-[0.25em] uppercase">Porsche</h1>
             <span className="text-[10px] tracking-widest text-porsche-red uppercase font-bold">Command Center</span>
           </div>
-          <p className="text-xs text-slate-500 font-light mt-1.5">
+          <p className="text-xs text-slate-500 font-light -mt-1">
             AI Operations & Dealer Intelligence Platform
           </p>
         </div>

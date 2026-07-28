@@ -83,32 +83,47 @@ export default function Executive() {
               <PorscheLogo size={48} />
             </div>
 
-            {/* 5 Surrounding Radiating Nodes */}
+            {/* 5 Surrounding Radiating Nodes (Clickable Section Jump) */}
             <div className="absolute inset-0 flex items-center justify-between px-2">
               <div className="flex flex-col gap-12">
-                <div className="p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center">
+                <div
+                  onClick={() => { window.location.hash = '#/sales'; }}
+                  className="p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center cursor-pointer hover:scale-110 hover:border-porsche-red transition-all shadow-sm"
+                >
                   <p className="font-bold text-slate-900 dark:text-white">Sales</p>
                   <p className="text-[9px] text-emerald-500 font-mono">Optimizing</p>
                 </div>
-                <div className="p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center">
+                <div
+                  onClick={() => { window.location.hash = '#/sales'; }}
+                  className="p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center cursor-pointer hover:scale-110 hover:border-porsche-red transition-all shadow-sm"
+                >
                   <p className="font-bold text-slate-900 dark:text-white">Marketing</p>
                   <p className="text-[9px] text-blue-500 font-mono">Engaged</p>
                 </div>
               </div>
 
               <div className="flex flex-col gap-12">
-                <div className="p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center">
+                <div
+                  onClick={() => { window.location.hash = '#/logistics'; }}
+                  className="p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center cursor-pointer hover:scale-110 hover:border-porsche-red transition-all shadow-sm"
+                >
                   <p className="font-bold text-slate-900 dark:text-white">Inventory</p>
                   <p className="text-[9px] text-amber-500 font-mono">Balanced</p>
                 </div>
-                <div className="p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center">
+                <div
+                  onClick={() => { window.location.hash = '#/logistics'; }}
+                  className="p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center cursor-pointer hover:scale-110 hover:border-porsche-red transition-all shadow-sm"
+                >
                   <p className="font-bold text-slate-900 dark:text-white">Service</p>
                   <p className="text-[9px] text-emerald-500 font-mono">Optimal</p>
                 </div>
               </div>
             </div>
 
-            <div className="absolute bottom-2 p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center">
+            <div
+              onClick={() => { window.location.hash = '#/analytics'; }}
+              className="absolute bottom-2 p-3 rounded-xl porsche-glass border border-black/10 dark:border-white/10 text-xs text-center cursor-pointer hover:scale-110 hover:border-porsche-red transition-all shadow-sm"
+            >
               <p className="font-bold text-slate-900 dark:text-white">Finance</p>
               <p className="text-[9px] text-porsche-red font-mono">Healthy</p>
             </div>

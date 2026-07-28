@@ -85,7 +85,10 @@ export default function Overview() {
       {/* 3. FIRST KPI ROW */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Card 1: TOTAL REVENUE (YTD) */}
-        <div className="h-[140px] rounded-[24px] bg-white dark:bg-[#121417] p-5 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-black/5 dark:border-white/5 relative overflow-hidden">
+        <div
+          onClick={() => { window.location.hash = '#/analytics'; }}
+          className="h-[140px] rounded-[24px] bg-white dark:bg-[#121417] p-5 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-black/5 dark:border-white/5 relative overflow-hidden cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
+        >
           <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-wider">{t.totalRevenue}</span>
           <span className="text-[38px] font-bold text-slate-900 dark:text-white leading-none">$28.4M</span>
           <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
@@ -102,7 +105,10 @@ export default function Overview() {
         </div>
 
         {/* Card 2: ACTIVE LEADS */}
-        <div className="h-[140px] rounded-[24px] bg-white dark:bg-[#121417] p-5 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-black/5 dark:border-white/5 relative overflow-hidden">
+        <div
+          onClick={() => { window.location.hash = '#/sales'; }}
+          className="h-[140px] rounded-[24px] bg-white dark:bg-[#121417] p-5 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-black/5 dark:border-white/5 relative overflow-hidden cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
+        >
           <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-wider">{t.activeLeads}</span>
           <span className="text-[38px] font-bold text-slate-900 dark:text-white leading-none">328</span>
           <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
@@ -119,7 +125,10 @@ export default function Overview() {
         </div>
 
         {/* Card 3: CONVERSION RATE */}
-        <div className="h-[140px] rounded-[24px] bg-white dark:bg-[#121417] p-5 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-black/5 dark:border-white/5 relative overflow-hidden">
+        <div
+          onClick={() => { window.location.hash = '#/sales'; }}
+          className="h-[140px] rounded-[24px] bg-white dark:bg-[#121417] p-5 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-black/5 dark:border-white/5 relative overflow-hidden cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
+        >
           <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-wider">{t.conversionRate}</span>
           <span className="text-[38px] font-bold text-slate-900 dark:text-white leading-none">68%</span>
           <span className="text-xs text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
@@ -136,7 +145,10 @@ export default function Overview() {
         </div>
 
         {/* Card 4: DEALER HEALTH SCORE */}
-        <div className="h-[140px] rounded-[24px] bg-white dark:bg-[#121417] p-5 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-black/5 dark:border-white/5 relative">
+        <div
+          onClick={() => { window.location.hash = '#/executive'; }}
+          className="h-[140px] rounded-[24px] bg-white dark:bg-[#121417] p-5 flex flex-col justify-between shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-black/5 dark:border-white/5 relative cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
+        >
           <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-wider">{t.dealerHealthScore}</span>
           <div className="flex items-center justify-between">
             <div className="flex items-baseline gap-1">
@@ -221,40 +233,6 @@ export default function Overview() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* 5. THIRD ROW (Implementation Roadmap) */}
-      <div className="rounded-[28px] bg-white dark:bg-[#121417] p-8 flex flex-col gap-6 shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-black/5 dark:border-white/5">
-        <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-widest">
-          {t.implementationRoadmap}
-        </span>
-
-        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="hidden lg:block absolute top-[24px] left-[10%] right-[10%] h-[2px] bg-slate-200 dark:bg-white/10 z-0" />
-
-          {roadmapSteps.map((step) => (
-            <div key={step.num} className="relative z-10 flex flex-col items-center text-center gap-3">
-              <div
-                className={`w-12 h-12 rounded-full flex items-center justify-center text-xs font-bold font-mono transition-all duration-300 ${
-                  step.active
-                    ? 'bg-porsche-red text-white shadow-glow-red scale-110'
-                    : step.completed
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                    : 'bg-slate-100 dark:bg-white/5 border border-slate-300 dark:border-white/20 text-slate-400'
-                }`}
-              >
-                {step.num}
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <p className="text-body-16 font-bold text-slate-900 dark:text-white">{step.title}</p>
-                <span className="text-[10px] font-bold uppercase font-mono text-slate-400">
-                  {step.status}
-                </span>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
     </motion.div>

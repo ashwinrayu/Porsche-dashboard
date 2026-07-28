@@ -518,12 +518,20 @@ export default function Sales() {
 
               {/* Large Vehicle Display & Key Metrics */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                <div className="md:col-span-7 h-[180px] md:h-[210px] rounded-2xl bg-black p-3 border border-black/10 dark:border-white/10 flex items-center justify-center overflow-hidden">
-                  <img
-                    src={currentData.image}
-                    alt={currentData.configuratorName}
-                    className="w-full h-full object-cover rounded-xl shadow-lg"
-                  />
+                <div className="md:col-span-7 h-[190px] md:h-[220px] rounded-2xl bg-gradient-to-b from-slate-900 to-black p-3 border border-black/10 dark:border-white/10 flex items-center justify-center overflow-hidden relative shadow-inner">
+                  {selectedFilter === '911' || selectedFilter === 'All' ? (
+                    <VehicleImage
+                      src={currentData.image}
+                      alt={currentData.configuratorName}
+                      className="w-full h-full object-contain filter drop-shadow-[0_15px_25px_rgba(213,0,28,0.35)]"
+                    />
+                  ) : (
+                    <img
+                      src={currentData.image}
+                      alt={currentData.configuratorName}
+                      className="w-full h-full object-cover rounded-xl shadow-lg"
+                    />
+                  )}
                 </div>
 
                 <div className="md:col-span-5 flex flex-col gap-4">
@@ -546,7 +554,7 @@ export default function Sales() {
               </div>
 
               {/* All Specs Grid Breakdown */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pb-4">
                 <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
                   <span className="font-bold text-slate-900 dark:text-white uppercase font-mono text-[10px] text-porsche-red">Exterior & Paint</span>
                   {currentData.tabSpecs.Exterior.map((s, i) => (
@@ -576,8 +584,8 @@ export default function Sales() {
                 </div>
               </div>
 
-              {/* Sticky Action Buttons Footer */}
-              <div className="sticky bottom-0 bg-white dark:bg-[#121417] pt-4 pb-2 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 -mx-6 md:-mx-8 px-6 md:px-8 -mb-6 md:-mb-8 mt-2">
+              {/* Sticky Action Buttons Footer (Solid Opaque Backdrop & Shadow to prevent text bleed) */}
+              <div className="sticky bottom-0 z-30 bg-white dark:bg-[#121417] pt-4 pb-4 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 -mx-6 md:-mx-8 px-6 md:px-8 -mb-6 md:-mb-8 shadow-[0_-12px_24px_rgba(0,0,0,0.8)]">
                 <button
                   onClick={() => { window.location.hash = '#/configurator'; }}
                   className="w-full sm:w-auto px-6 py-3 rounded-full bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/20 theme-transition cursor-pointer flex items-center justify-center gap-2"

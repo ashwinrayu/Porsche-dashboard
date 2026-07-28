@@ -18,7 +18,15 @@ import {
   X,
   UserCheck,
   ChevronRight,
-  ExternalLink
+  ChevronDown,
+  ExternalLink,
+  Brain,
+  Gauge,
+  Droplets,
+  Wind,
+  Battery,
+  CircleDot,
+  Thermometer
 } from 'lucide-react';
 import { VehicleImage } from '../components/VehicleImage';
 import { useTheme } from '../context/ThemeContext';
@@ -50,11 +58,47 @@ export default function Logistics() {
   const [tradeInSearch, setTradeInSearch] = useState('');
   const [tradeInFilter, setTradeInFilter] = useState('all');
 
+  // AI Dropdown state
+  const [expandedAiCard, setExpandedAiCard] = useState<string | null>(null);
+
   // Trigger Action Modal helper
   const triggerAction = (e: React.MouseEvent, item: ActionItem) => {
     e.stopPropagation();
     setSelectedActionItem(item);
     setIsActionModalOpen(true);
+  };
+
+  const toggleAiCard = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    setExpandedAiCard(prev => prev === id ? null : id);
+  };
+
+  // AI Insights per car
+  const aiInsightsMap: Record<string, { urgency: 'critical' | 'warning' | 'info'; label: string; detail: string; costEst: string; icon: React.ReactNode; dueIn: string }[]> = {
+    'c-101': [
+      { urgency: 'info', label: 'PCCB Brake Pads', detail: 'Front pads at 38% wear — schedule within 3,000 mi. Rear pads nominal at 71%.', costEst: '$1,240', icon: <CircleDot size={13} />, dueIn: '~3,000 mi' },
+      { urgency: 'info', label: 'Engine Air Filter', detail: 'Particulate saturation at 64%. Replacement advised at next service interval.', costEst: '$185', icon: <Wind size={13} />, dueIn: '~2,500 mi' },
+      { urgency: 'info', label: 'Tire Tread Depth', detail: 'All four Pirelli P Zero tires within spec (6.2 mm avg). Monitor rear axle.', costEst: '—', icon: <Gauge size={13} />, dueIn: 'Next check' },
+    ],
+    'c-102': [
+      { urgency: 'warning', label: 'Battery Cooling Pump', detail: 'AI detects elevated coolant pump load (+18% above baseline). Inspect before next long run.', costEst: '$920', icon: <Battery size={13} />, dueIn: 'Within 14 days' },
+      { urgency: 'info', label: 'Brake Fluid Hygroscopicity', detail: 'Moisture content at 1.9% — borderline. Flush recommended at next annual service.', costEst: '$310', icon: <Droplets size={13} />, dueIn: '~1,500 mi' },
+      { urgency: 'info', label: 'Cabin Air Filter', detail: 'HEPA cabin filter at 55% capacity. No immediate action required.', costEst: '$145', icon: <Wind size={13} />, dueIn: '~4,000 mi' },
+    ],
+    'c-103': [
+      { urgency: 'critical', label: 'PASM Air Suspension', detail: 'Rear-right air strut shows 7 PSI pressure loss vs nominal. Immediate inspection required.', costEst: '$2,800', icon: <ShieldAlert size={13} />, dueIn: 'URGENT' },
+      { urgency: 'warning', label: 'Hybrid Battery SOH', detail: 'State-of-health degraded to 91% — below 95% threshold. Schedule battery diagnostic.', costEst: '$1,100', icon: <Battery size={13} />, dueIn: 'Within 7 days' },
+      { urgency: 'info', label: 'Front Brake Discs', detail: 'Rotor thickness at 24.1 mm vs 22 mm min. Serviceable for ~8,000 mi more.', costEst: '$1,950', icon: <CircleDot size={13} />, dueIn: '~8,000 mi' },
+    ],
+    'c-104': [
+      { urgency: 'info', label: 'EV Drive Unit Oil', detail: 'Synthetic drive unit oil due for change at 15,000 mi. Currently 5,120 mi.', costEst: '$480', icon: <Droplets size={13} />, dueIn: '~9,880 mi' },
+      { urgency: 'info', label: 'Regenerative Brake Pads', detail: 'Pads in excellent condition (82% remaining). AI predicts no action needed for 18 months.', costEst: '—', icon: <CircleDot size={13} />, dueIn: '~12,000 mi' },
+      { urgency: 'info', label: 'Thermal Management System', detail: 'All coolant loops nominal. Battery inlet temperature steady at 23°C.', costEst: '—', icon: <Thermometer size={13} />, dueIn: 'Monitoring' },
+    ],
+  };
+
+  const aiConfidenceMap: Record<string, number> = {
+    'c-101': 96, 'c-102': 91, 'c-103': 98, 'c-104': 94,
   };
 
   // Comprehensive Datasets
@@ -130,8 +174,8 @@ export default function Logistics() {
       location: 'Santo Domingo Main',
       vin: 'WP0AA2A79PSA11204',
       batteryFuel: '97% Hybrid',
-      lightImg: '/porsche-panamera-wide.png',
-      darkImg: '/porsche-panamera-wide.png',
+      lightImg: '/porsche-panamera.png',
+      darkImg: '/porsche-panamera.png',
       status: 'Optimal',
     },
     {
@@ -175,8 +219,8 @@ export default function Logistics() {
       location: 'Punta Cana Depot',
       vin: 'WP0ZZZY1ZNSA20194',
       batteryFuel: '84% Battery',
-      lightImg: '/porsche-taycan-wide.png',
-      darkImg: '/porsche-taycan-wide.png',
+      lightImg: '/porsche-taycan.png',
+      darkImg: '/porsche-taycan.png',
       status: 'Optimal',
     },
     {
@@ -190,8 +234,8 @@ export default function Logistics() {
       location: 'Santiago Hub',
       vin: 'WP1AA2A54PDA12903',
       batteryFuel: '79% Fuel',
-      lightImg: '/porsche-macan-wide.png',
-      darkImg: '/porsche-macan-wide.png',
+      lightImg: '/porsche-macan.png',
+      darkImg: '/porsche-macan.png',
       status: 'Service Due',
     },
     {
@@ -205,8 +249,8 @@ export default function Logistics() {
       location: 'Punta Cana Depot',
       vin: 'WP1AA2AY5RDA90124',
       batteryFuel: '89% Fuel',
-      lightImg: '/porsche-cayenne-wide.png',
-      darkImg: '/porsche-cayenne-wide.png',
+      lightImg: '/porsche-cayenne.png',
+      darkImg: '/porsche-cayenne.png',
       status: 'Optimal',
     },
   ];
@@ -497,46 +541,156 @@ export default function Logistics() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {fleetData.slice(0, 4).map((car) => (
-            <div
-              key={car.id}
-              onClick={() => { window.location.hash = `#/customer-360/${car.customerId}`; }}
-              className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-3 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all group relative"
-            >
-              <div className="w-full h-[120px] rounded-xl overflow-hidden shadow-md relative">
-                <VehicleImage
-                  lightSrc={car.lightImg}
-                  darkSrc={car.darkImg}
-                  alt={car.model}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              </div>
+          {fleetData.slice(0, 4).map((car) => {
+            const aiItems = aiInsightsMap[car.id] || [];
+            const aiConfidence = aiConfidenceMap[car.id] || 90;
+            const isExpanded = expandedAiCard === car.id;
+            const hasCritical = aiItems.some(i => i.urgency === 'critical');
+            const hasWarning = aiItems.some(i => i.urgency === 'warning');
 
-              <div className="flex items-center justify-between">
-                <h4 className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">
-                  {car.model}
-                </h4>
+            return (
+              <div
+                key={car.id}
+                className="rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col overflow-hidden hover:border-porsche-red/40 hover:shadow-lg transition-all group"
+              >
+                {/* Card Top — clickable to Customer 360 */}
+                <div
+                  onClick={() => { window.location.hash = `#/customer-360/${car.customerId}`; }}
+                  className="p-4 flex flex-col gap-3 cursor-pointer"
+                >
+                  <div className="w-full h-[120px] rounded-xl overflow-hidden shadow-md relative bg-black/5 dark:bg-white/5">
+                    <VehicleImage
+                      lightSrc={car.lightImg}
+                      darkSrc={car.darkImg}
+                      alt={car.model}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">
+                      {car.model}
+                    </h4>
+                    <button
+                      type="button"
+                      onClick={(e) => triggerAction(e, { title: `Fleet Telemetry Action: ${car.model}`, target: `Owner: ${car.owner} (${car.vin})` })}
+                      className="px-2 py-1 rounded-lg bg-porsche-red text-white text-[10px] font-bold hover:bg-red-700 transition-colors shadow-glow-red"
+                    >
+                      Take Action
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between text-xs font-mono pt-2 border-t border-black/5 dark:border-white/5">
+                    <div>
+                      <span className="text-[9px] text-slate-400 block">Health</span>
+                      <span className="font-bold text-emerald-600 dark:text-emerald-400">{car.health}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-[9px] text-slate-400 block">Mileage</span>
+                      <span className="font-bold text-slate-900 dark:text-white">{car.mileage}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* AI Service Intervention Toggle Button */}
                 <button
                   type="button"
-                  onClick={(e) => triggerAction(e, { title: `Fleet Telemetry Action: ${car.model}`, target: `Owner: ${car.owner} (${car.vin})` })}
-                  className="px-2 py-1 rounded-lg bg-porsche-red text-white text-[10px] font-bold hover:bg-red-700 transition-colors shadow-glow-red"
+                  onClick={(e) => toggleAiCard(e, car.id)}
+                  className={`w-full flex items-center justify-between px-4 py-2.5 border-t text-[11px] font-bold transition-all cursor-pointer ${
+                    isExpanded
+                      ? 'bg-porsche-red/10 border-porsche-red/30 text-porsche-red'
+                      : hasCritical
+                      ? 'bg-red-500/10 border-red-500/20 text-red-500 dark:text-red-400'
+                      : hasWarning
+                      ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400'
+                      : 'bg-emerald-500/5 border-black/5 dark:border-white/5 text-emerald-600 dark:text-emerald-400'
+                  }`}
                 >
-                  Take Action
+                  <span className="flex items-center gap-1.5">
+                    <Brain size={12} />
+                    AI Service Intel
+                    {hasCritical && <span className="ml-1 px-1.5 py-0.5 rounded-full bg-red-500 text-white text-[9px] font-bold">CRITICAL</span>}
+                    {!hasCritical && hasWarning && <span className="ml-1 px-1.5 py-0.5 rounded-full bg-amber-500 text-white text-[9px] font-bold">WARN</span>}
+                  </span>
+                  <ChevronDown
+                    size={13}
+                    className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}
+                  />
                 </button>
-              </div>
 
-              <div className="flex items-center justify-between text-xs font-mono pt-2 border-t border-black/5 dark:border-white/5">
-                <div>
-                  <span className="text-[9px] text-slate-400 block">Health</span>
-                  <span className="font-bold text-emerald-600 dark:text-emerald-400">{car.health}</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-[9px] text-slate-400 block">Mileage</span>
-                  <span className="font-bold text-slate-900 dark:text-white">{car.mileage}</span>
-                </div>
+                {/* AI Expandable Panel */}
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      key={`ai-${car.id}`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.28, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-4 pt-3 pb-4 flex flex-col gap-3 bg-slate-900/[0.03] dark:bg-black/20">
+                        {/* AI Confidence Badge */}
+                        <div className="flex items-center justify-between">
+                          <span className="text-[9px] font-mono uppercase text-slate-400 tracking-widest">Porsche AI · Telemetry Analysis</span>
+                          <span className="text-[10px] font-bold font-mono text-porsche-red">{aiConfidence}% confidence</span>
+                        </div>
+
+                        {/* Service Items */}
+                        <div className="flex flex-col gap-2">
+                          {aiItems.map((item, idx) => (
+                            <div
+                              key={idx}
+                              className={`rounded-xl p-3 border flex flex-col gap-1.5 ${
+                                item.urgency === 'critical'
+                                  ? 'bg-red-500/10 border-red-500/20'
+                                  : item.urgency === 'warning'
+                                  ? 'bg-amber-500/10 border-amber-500/20'
+                                  : 'bg-slate-100 dark:bg-white/5 border-black/5 dark:border-white/5'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between">
+                                <div className={`flex items-center gap-1.5 text-[11px] font-bold ${
+                                  item.urgency === 'critical' ? 'text-red-500' :
+                                  item.urgency === 'warning' ? 'text-amber-600 dark:text-amber-400' :
+                                  'text-slate-900 dark:text-white'
+                                }`}>
+                                  {item.icon}
+                                  {item.label}
+                                </div>
+                                <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full ${
+                                  item.urgency === 'critical' ? 'bg-red-500 text-white' :
+                                  item.urgency === 'warning' ? 'bg-amber-500 text-white' :
+                                  'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                                }`}>
+                                  {item.urgency === 'critical' ? 'URGENT' : item.urgency === 'warning' ? 'SOON' : 'OK'}
+                                </span>
+                              </div>
+                              <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed">{item.detail}</p>
+                              <div className="flex items-center justify-between pt-1 border-t border-black/5 dark:border-white/5">
+                                <span className="text-[9px] font-mono text-slate-400">Due: {item.dueIn}</span>
+                                <span className="text-[10px] font-bold font-mono text-porsche-red">{item.costEst}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Book Service CTA */}
+                        <button
+                          type="button"
+                          onClick={(e) => triggerAction(e, { title: `Schedule AI-Advised Service: ${car.model}`, target: `Owner: ${car.owner} · ${aiItems.length} item(s) flagged` })}
+                          className="w-full mt-1 py-2 rounded-xl bg-porsche-red text-white text-[11px] font-bold flex items-center justify-center gap-1.5 hover:bg-red-700 transition-colors shadow-glow-red cursor-pointer"
+                        >
+                          <Wrench size={11} />
+                          Schedule AI Service
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

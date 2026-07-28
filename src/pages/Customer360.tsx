@@ -6,6 +6,14 @@ import {
   Car, 
   Award,
   ChevronLeft,
+  Sparkles,
+  Star,
+  Package,
+  Zap,
+  Shield,
+  Wrench,
+  Gift,
+  TrendingUp,
 } from 'lucide-react';
 import { CountUp } from '../components/CountUp';
 import { useLanguage } from '../context/LanguageContext';
@@ -28,6 +36,15 @@ type ClientKey =
   | 'ana-vicini'
   | 'frank-rainieri';
 
+interface RecommendedAddon {
+  category: string;
+  name: string;
+  description: string;
+  price: string;
+  badge: 'Popular' | 'AI Pick' | 'Exclusive' | 'New';
+  icon: 'shield' | 'zap' | 'wrench' | 'package' | 'gift' | 'star';
+}
+
 interface ClientData {
   name: string;
   id: string;
@@ -44,6 +61,7 @@ interface ClientData {
   journeyTimeline: { type: string; text: string; time: string }[];
   interestedModel: string;
   stage: string;
+  recommendedAddons: RecommendedAddon[];
 }
 
 const ALL_CLIENTS: Record<ClientKey, ClientData> = {
@@ -84,6 +102,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'Test Drive', text: 'Completed 45-min highway track drive in 911 GTS', time: 'Jul 27, 2026' },
       { type: 'Proposal Sent', text: 'Official contract generated for $341,200 USD', time: 'Jul 27, 2026' },
     ],
+    recommendedAddons: [
+      { category: 'Protection', name: 'Porsche Paint Protection Film (PPF)', description: 'Full-body ceramic-bonded PPF shield. Preserves resale value and guards against road debris on your GTS.', price: '$4,800', badge: 'AI Pick', icon: 'shield' },
+      { category: 'Technology', name: 'Porsche Connect Plus 5-Year Plan', description: 'Extended telemetry, remote start, real-time traffic, and over-the-air PCM updates for 60 months.', price: '$1,950', badge: 'Popular', icon: 'zap' },
+      { category: 'Track Performance', name: 'Weissach Aerodynamic Package Upgrade', description: 'Front splitter, dive planes, and GT3 RS-spec rear wing endplates for increased downforce.', price: '$11,200', badge: 'Exclusive', icon: 'star' },
+      { category: 'Lifestyle', name: "Porsche Driver's Selection Trunk Set", description: 'Exclusive GTS-branded luggage set, carbon fiber key fob, and racing-grade driving gloves.', price: '$2,100', badge: 'Gift', icon: 'gift' },
+    ],
   },
   'maria-vasquez': {
     name: 'María Vásquez',
@@ -117,6 +141,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'WhatsApp', text: 'Inquired about home 11kW Wallbox installation', time: 'Jul 24, 2026' },
       { type: 'Showroom Visit', text: 'Visited and reviewed Macan Electric Turbo in Frozen Blue', time: 'Jul 25, 2026' },
       { type: 'Test Drive Booked', text: 'Scheduled 800V Taycan Turbo GT test drive', time: 'Jul 27, 2026' },
+    ],
+    recommendedAddons: [
+      { category: 'EV Lifestyle', name: 'Porsche Home Wallbox 22kW', description: 'Intelligent home charging solution. Charges Macan Electric to 80% in under 2.5 hours. Includes installation.', price: '$3,200', badge: 'AI Pick', icon: 'zap' },
+      { category: 'Protection', name: 'Porsche All-Season Floor Mat Set', description: 'Precision-fit OEM rubber floor mats with Porsche crest embossing. Protects the cabin from tropical elements.', price: '$380', badge: 'Popular', icon: 'shield' },
+      { category: 'Technology', name: 'Porsche Connect EV Route Planner', description: '3-year subscription for intelligent charging stop planning, remote pre-conditioning, and battery management.', price: '$890', badge: 'New', icon: 'package' },
+      { category: 'Service', name: 'Macan Electric 3-Year Service Contract', description: 'Covers all scheduled EV maintenance, battery health checks, and software calibrations. Peace of mind included.', price: '$2,400', badge: 'Popular', icon: 'wrench' },
     ],
   },
   'gustavo-tavares': {
@@ -155,6 +185,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'Showroom Visit', text: 'Test drove 2026 Cayenne Coupé E-Hybrid with 360° Camera', time: 'Jul 25, 2026' },
       { type: 'Proposal Pending', text: 'Cayenne Coupé E-Hybrid trade-in quote — $98,500 USD', time: 'Jul 27, 2026' },
     ],
+    recommendedAddons: [
+      { category: 'Sport Upgrade', name: 'Porsche Sport Exhaust System', description: 'Titanium-tipped sport exhaust with valve control for your Cayenne Coupé E-Hybrid. +28hp on overboost.', price: '$5,400', badge: 'Exclusive', icon: 'star' },
+      { category: 'Track Safety', name: 'Carbon Composite Brake Upgrade (PCCB)', description: 'Replace your GT4 RS iron rotors with factory ceramic PCCB units. 50% lighter, 60% better fade resistance.', price: '$9,800', badge: 'AI Pick', icon: 'shield' },
+      { category: 'Lifestyle', name: 'Porsche Tequipment Roof Box (Cayenne)', description: 'Aerodynamic 460L carbon-look roof cargo box. Designed for Cayenne roof rails without speed penalties.', price: '$2,900', badge: 'New', icon: 'package' },
+      { category: 'Service', name: 'Carbon Brake Annual Inspection Plan', description: 'Annual check of carbon ceramic rotors, calipers, and pad thickness. Protects your $9,800 investment.', price: '$650/yr', badge: 'Popular', icon: 'wrench' },
+    ],
   },
   'carlos-llenas': {
     name: 'Carlos Llenas',
@@ -190,6 +226,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'Showroom', text: 'Viewed available GT3 RS spec options with Eduardo Bisonó', time: 'Jul 18, 2026' },
       { type: 'Allocation', text: 'GT3 RS Weissach Package slot confirmed — Q4 2026 delivery', time: 'Jul 22, 2026' },
       { type: 'Deposit', text: '$50,000 USD deposit wired — contract in progress', time: 'Jul 26, 2026' },
+    ],
+    recommendedAddons: [
+      { category: 'Track Package', name: 'Porsche Motorsport Harness Bar', description: 'OEM bolt-in rollcage/harness bar for GT3 RS track sessions. Retains rear seat mounting points.', price: '$3,600', badge: 'Exclusive', icon: 'star' },
+      { category: 'Protection', name: 'GT3 RS Full-Body Paint Protection Film', description: 'XPEL Ultimate Plus self-healing PPF over all painted surfaces. Essential for track-day stone chips.', price: '$5,200', badge: 'AI Pick', icon: 'shield' },
+      { category: 'Technology', name: 'Porsche Track Precision App (Pro Subscription)', description: 'Lap timing, telemetry overlay, gear recommendations, and brake trace. 2-year pro license included.', price: '$480', badge: 'New', icon: 'zap' },
+      { category: 'Accessories', name: 'Porsche Motorsport Gear Bag & Helmet', description: 'Hans-compatible SA 2020 helmet with GT3 RS livery and matching fireproof gloves.', price: '$4,100', badge: 'Popular', icon: 'gift' },
     ],
   },
   'jose-vicini': {
@@ -228,6 +270,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'Showroom', text: 'Compared Cayenne Turbo GT vs Turbo S E-Hybrid in showroom', time: 'Jul 24, 2026' },
       { type: 'Proposal', text: 'Awaiting final trade-in equity approval from finance desk', time: 'Jul 27, 2026' },
     ],
+    recommendedAddons: [
+      { category: 'Convenience', name: 'Porsche Approved Used Warranty Extension', description: 'Extend your Cayenne Turbo GT factory warranty by 2 years. Covers powertrain, electronics, and suspension.', price: '$3,800', badge: 'AI Pick', icon: 'shield' },
+      { category: 'Lifestyle', name: 'Porsche Pet Collection & Cargo Liner', description: 'OEM-fit waterproof cargo liner and leash anchor for the Cayenne. Perfect for the Punta Cana lifestyle.', price: '$480', badge: 'Popular', icon: 'gift' },
+      { category: 'Performance', name: 'Turbo GT Suspension Recalibration', description: 'Sport Chrono fine-tuning by Porsche-certified engineers. Optimized spring rate for Caribbean road profiles.', price: '$1,200', badge: 'Exclusive', icon: 'wrench' },
+      { category: 'Technology', name: '4G/WiFi Hotspot Upgrade Module', description: 'Retrofit in-car WiFi hotspot supporting 8 simultaneous devices. Ideal for resort and remote locations.', price: '$950', badge: 'New', icon: 'zap' },
+    ],
   },
   'patricia-bermudez': {
     name: 'Patricia Bermúdez',
@@ -261,6 +309,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'Finance', text: 'Porsche Financial 60-month plan approved at $1,580/month', time: 'Jul 23, 2026' },
       { type: 'Test Drive', text: 'Completed Macan GTS sport drive at Porsche Center', time: 'Jul 25, 2026' },
       { type: 'Contract', text: 'Reviewing delivery timeline — 3 weeks estimated', time: 'Jul 27, 2026' },
+    ],
+    recommendedAddons: [
+      { category: 'Protection', name: 'Macan GTS All-Weather Package', description: 'OEM all-weather mats, cargo liner, and sunroof wind deflector bundle. Keeps resale value high.', price: '$620', badge: 'Popular', icon: 'shield' },
+      { category: 'EV Ready', name: 'Porsche Wallbox Home Charger (11kW)', description: 'Future-proof home charging prep for the new Macan GTS. Includes Level 2 installation at your address.', price: '$2,100', badge: 'AI Pick', icon: 'zap' },
+      { category: 'Lifestyle', name: 'Porsche Tequipment Bike Carrier', description: 'Hitch-mount 2-bike carrier designed for Macan. Easy single-hand folding mechanism, no tools needed.', price: '$890', badge: 'New', icon: 'package' },
+      { category: 'Service', name: 'Porsche Financial Service First Package', description: 'Pre-paid 3-service maintenance pack covering first 30,000 mi of your Macan GTS ownership.', price: '$1,800', badge: 'Popular', icon: 'wrench' },
     ],
   },
   'fernando-rainieri': {
@@ -301,6 +355,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'Approval', text: 'Internal board approval for $540,000 USD fleet budget', time: 'Jul 24, 2026' },
       { type: 'Contract', text: 'Fleet contract under final legal review — sign-off imminent', time: 'Jul 27, 2026' },
     ],
+    recommendedAddons: [
+      { category: 'Fleet Protection', name: 'Corporate Fleet Service Agreement', description: 'Single contract covering all 4 Panamera units — scheduled maintenance, roadside, and loaner fleet access for 3 years.', price: '$12,400', badge: 'AI Pick', icon: 'shield' },
+      { category: 'Corporate Tech', name: 'Porsche Charge Management Fleet Plan', description: 'Centralized EV charging reporting, per-vehicle energy cost tracking, and smart charging scheduling for your fleet.', price: '$3,600/yr', badge: 'Exclusive', icon: 'zap' },
+      { category: 'Lifestyle', name: 'Executive Detailing Annual Contract', description: 'Monthly concierge detailing service for all 3 active vehicles. Paint correction included twice yearly.', price: '$5,800/yr', badge: 'Popular', icon: 'gift' },
+      { category: 'Insurance', name: 'Porsche Comprehensive Fleet Coverage', description: 'All-risk coverage for the full fleet with zero-deductible OEM parts guarantee. Managed by Porsche Financial.', price: '$8,200/yr', badge: 'Popular', icon: 'package' },
+    ],
   },
   'roberto-bonetti': {
     name: 'Roberto Bonetti',
@@ -334,6 +394,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'Showroom', text: 'Reviewed GTS vs 4S comparison at Cap Cana delivery hub', time: 'Jul 22, 2026' },
       { type: 'Approval', text: 'Awaiting executive board signoff for $152,000 purchase', time: 'Jul 25, 2026' },
       { type: 'Test Drive', text: 'GTS highway test drive booked — Aug 2, 2026', time: 'Jul 27, 2026' },
+    ],
+    recommendedAddons: [
+      { category: 'Sound', name: 'Burmester® 3D High-End Surround Sound', description: '21-speaker, 1,455W Burmester audio system tailored for Panamera GTS cabin acoustics. Factory retrofit available.', price: '$6,800', badge: 'AI Pick', icon: 'star' },
+      { category: 'Protection', name: 'Porsche Ceramic Coating (CERAKOTE)', description: '10H ceramic coat over full exterior. Hydrophobic finish, UV protection, and mirror gloss preserved for 5 years.', price: '$3,400', badge: 'Popular', icon: 'shield' },
+      { category: 'Comfort', name: 'Panamera Rear-Seat Entertainment Package', description: '10.1" rear screens with wireless headphones and HDMI for chauffeur-style travel in your Panamera GTS.', price: '$4,200', badge: 'Exclusive', icon: 'package' },
+      { category: 'Service', name: 'Porsche Roadside VIP Concierge (3yr)', description: '24/7 priority roadside with helicopter delivery of parts if needed. Exclusive to Panamera GTS owners.', price: '$1,900', badge: 'New', icon: 'wrench' },
     ],
   },
   'alejandro-corripio': {
@@ -374,6 +440,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'Test Drive', text: 'Verified 0-60 in 2.1s on closed circuit with Eduardo Bisonó', time: 'Jul 25, 2026' },
       { type: 'Contract', text: 'Contract signed — $230,000 USD wired, delivery Aug 10', time: 'Jul 27, 2026' },
     ],
+    recommendedAddons: [
+      { category: 'EV Premium', name: 'Porsche Turbo Charging Hub Annual Pass', description: '12-month unlimited access to all Porsche Turbo Charging hubs globally. Priority stall access for Turbo GT owners.', price: '$2,400/yr', badge: 'Exclusive', icon: 'zap' },
+      { category: 'Lifestyle', name: 'Porsche Travel Club Membership', description: 'Exclusive Porsche Experience Center track days, driving tours, and hospitality events in 10 countries.', price: '$5,800/yr', badge: 'AI Pick', icon: 'gift' },
+      { category: 'Protection', name: 'Taycan Turbo GT Underseal & Cavity Wax', description: 'Tropical climate protection — anti-rust underbody coating and cavity wax applied by Porsche technicians.', price: '$1,200', badge: 'New', icon: 'shield' },
+      { category: 'Tech', name: 'Porsche Augmented Reality HUD Retrofit', description: 'Factory-spec AR heads-up display projected at 70° wide angle. Speed, nav, and driver assistance overlay.', price: '$7,400', badge: 'Exclusive', icon: 'star' },
+    ],
   },
   'isabela-pellerano': {
     name: 'Isabela Pellerano',
@@ -408,6 +480,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
       { type: 'Showroom', text: 'In-person spec review with Ramón García — EV range demo', time: 'Jul 25, 2026' },
       { type: 'Financing', text: 'Porsche Financial 48-month lease structure under review', time: 'Jul 27, 2026' },
     ],
+    recommendedAddons: [
+      { category: 'Charging', name: 'Porsche Home Wallbox 22kW (Smart)', description: 'Smart EV charger with scheduling, solar integration, and real-time usage tracking via the Porsche app.', price: '$3,200', badge: 'AI Pick', icon: 'zap' },
+      { category: 'Outdoor', name: 'Cross Turismo Roof Rack & Surf Carrier', description: 'OEM Tequipment roof rails + adjustable surf/kayak carrier. Designed for Taycan Cross Turismo roof line.', price: '$1,400', badge: 'New', icon: 'package' },
+      { category: 'Protection', name: 'Taycan 4S Lease-End Wheel Guard Plan', description: 'Covers alloy wheel curb damage during the 48-month lease. No deductible on first claim.', price: '$680', badge: 'Popular', icon: 'shield' },
+      { category: 'Lifestyle', name: 'Porsche Design Sunglasses & Watch Bundle', description: 'Limited titanium frame sunglasses and carbon fiber chronograph — gifted with Taycan delivery.', price: '$2,800', badge: 'Exclusive', icon: 'gift' },
+    ],
   },
   'milo-espaillat': {
     name: 'Milo Espaillat',
@@ -439,6 +517,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
     journeyTimeline: [
       { type: 'Trade-in', text: 'Initiated 2020 Macan Turbo renewal appraisal', time: 'Jul 24, 2026' },
     ],
+    recommendedAddons: [
+      { category: 'Renewal Offer', name: 'Loyalty Upgrade: Macan Electric Turbo', description: 'Skip the waitlist — exclusive renewal pricing on the new Macan Electric Turbo with $12,000 loyalty credit.', price: 'Contact Desk', badge: 'AI Pick', icon: 'star' },
+      { category: 'Charging', name: 'Porsche Home Wallbox 11kW Bundle', description: 'Includes home installation at your Santo Domingo residence. Ready for Macan Electric day-one delivery.', price: '$2,100', badge: 'Popular', icon: 'zap' },
+      { category: 'Protection', name: 'Certified Pre-Owned Warranty Transfer', description: 'Transfer your existing CPO warranty to the new owner of your traded-in Macan Turbo. Increases trade value.', price: '$800', badge: 'New', icon: 'shield' },
+      { category: 'Service', name: 'Pre-Paid Macan Electric Service Pack', description: "Lock in today's service rates for 3 years of EV maintenance on your new Macan Electric Turbo.", price: '$2,400', badge: 'Popular', icon: 'wrench' },
+    ],
   },
   'juan-vich': {
     name: 'Juan Vich',
@@ -469,6 +553,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
     ],
     journeyTimeline: [
       { type: 'Service', text: 'Scheduled PASM suspension check at SD Hub', time: 'Jul 26, 2026' },
+    ],
+    recommendedAddons: [
+      { category: 'Comfort', name: 'Cayenne PASM Active Suspension Refresh', description: 'Full PASM air spring and damper recalibration. Recommended after 48,000 mi for optimal ride quality.', price: '$2,800', badge: 'AI Pick', icon: 'wrench' },
+      { category: 'EV Upgrade', name: 'Hybrid Battery SOH Diagnostic Pack', description: 'State-of-health deep diagnostics for your Cayenne E-Hybrid battery. Includes cell balancing and optimization.', price: '$650', badge: 'Popular', icon: 'zap' },
+      { category: 'Trade-Up', name: 'Cayenne Turbo GT Trade-In Valuation', description: 'AI-estimated trade value for your 2018 E-Hybrid: $52,000–$58,000 USD. Lock rate before market shift.', price: 'Free Appraisal', badge: 'New', icon: 'star' },
+      { category: 'Protection', name: 'Punta Cana Corrosion Guard Package', description: 'Salt-air underbody anti-corrosion treatment. Essential for coastal climate vehicle longevity.', price: '$980', badge: 'Exclusive', icon: 'shield' },
     ],
   },
   'eduardo-najri': {
@@ -502,6 +592,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
     journeyTimeline: [
       { type: 'Contract', text: 'Panamera Turbo E-Hybrid deposit received', time: 'Jul 27, 2026' },
     ],
+    recommendedAddons: [
+      { category: 'VIP Sound', name: 'Burmester® 4D Immersive Sound System', description: 'Top-spec 1,750W Burmester with 21 speakers, resonance transducers, and Dolby Atmos spatial audio mode.', price: '$9,200', badge: 'AI Pick', icon: 'star' },
+      { category: 'Executive', name: 'Panamera Rear Business Lounge Package', description: 'Fold-out tables, ambient LED strips, executive headrests, and OLED rear entertainment for VIP travel.', price: '$8,400', badge: 'Exclusive', icon: 'package' },
+      { category: 'Tech', name: 'Porsche Connect Pro (Lifetime License)', description: 'One-time lifetime activation for all Porsche Connect features including real-time traffic and remote controls.', price: '$3,800', badge: 'Popular', icon: 'zap' },
+      { category: 'Protection', name: 'Panamera VIP Concierge Service Plan', description: '3-year all-inclusive service plan covering any factory-approved maintenance with priority scheduling.', price: '$4,600', badge: 'New', icon: 'shield' },
+    ],
   },
   'ana-vicini': {
     name: 'Ana Vicini',
@@ -532,6 +628,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
     ],
     journeyTimeline: [
       { type: 'Website', text: 'Configured Taycan Turbo S Cross Turismo', time: 'Jul 25, 2026' },
+    ],
+    recommendedAddons: [
+      { category: 'Charging', name: 'Porsche 22kW Wallbox at Casa de Campo', description: 'Home installation with dedicated smart charging circuit. Coordinated with resort facilities team.', price: '$3,200', badge: 'AI Pick', icon: 'zap' },
+      { category: 'Adventure', name: 'Cross Turismo Gravel / Off-Road Kit', description: 'OEM gravel guards, raised suspension mode activation, and all-terrain floor protection for tropical trails.', price: '$2,100', badge: 'New', icon: 'package' },
+      { category: 'Luxury', name: 'Taycan Turbo S Bespoke Interior Kit', description: 'Exclusive leather re-trim in two-tone Chalk & Bordeaux Red with Cross Turismo piping. Limited availability.', price: '$11,800', badge: 'Exclusive', icon: 'gift' },
+      { category: 'Protection', name: 'Casa de Campo Corrosion Treatment', description: 'Salt-air and humidity protection for undercarriage, brake calipers, and suspension components.', price: '$980', badge: 'Popular', icon: 'shield' },
     ],
   },
   'frank-rainieri': {
@@ -564,6 +666,12 @@ const ALL_CLIENTS: Record<ClientKey, ClientData> = {
     ],
     journeyTimeline: [
       { type: 'Delivery', text: 'Confirmed VIP Cayenne Turbo GT delivery at Punta Cana Resort', time: 'Jul 27, 2026' },
+    ],
+    recommendedAddons: [
+      { category: 'VIP Experience', name: 'Porsche Driving Experience — 911 Turbo S Track Day', description: 'Exclusive private track experience at Porsche Experience Center Atlanta. Includes flight and accommodation package.', price: '$8,500', badge: 'Exclusive', icon: 'star' },
+      { category: 'Concierge', name: 'Porsche White Glove Delivery & Registration', description: 'Doorstep delivery at Punta Cana Resort with bow ceremony, videography, and full title registration handled.', price: '$1,200', badge: 'AI Pick', icon: 'gift' },
+      { category: 'Fleet Shield', name: 'Multi-Vehicle OEM Paint Protection Bundle', description: 'Full-body PPF on both the Cayenne Turbo GT and 911 Targa 4 GTS. 10-year transferable warranty.', price: '$12,400', badge: 'Popular', icon: 'shield' },
+      { category: 'Tech', name: 'Porsche Home Garage Automation System', description: 'Smart garage with Porsche app integration — auto open on approach, climate pre-condition, security camera.', price: '$4,800', badge: 'New', icon: 'zap' },
     ],
   },
 };
@@ -609,6 +717,12 @@ const getClientData = (key?: string): ClientData => {
     ],
     journeyTimeline: [
       { type: 'CRM Record', text: `Synchronized telemetry profile for ${titleCaseName}`, time: 'Jul 27, 2026' },
+    ],
+    recommendedAddons: [
+      { category: 'Protection', name: 'Porsche Paint Protection Film (PPF)', description: 'Full-body self-healing PPF for your Porsche. Preserves resale value and guards against stone chips.', price: '$4,800', badge: 'AI Pick', icon: 'shield' },
+      { category: 'Technology', name: 'Porsche Connect Plus 3-Year Plan', description: 'Extended telemetry, remote start, and real-time traffic updates for 36 months.', price: '$1,450', badge: 'Popular', icon: 'zap' },
+      { category: 'Service', name: 'Porsche Pre-Paid Service Pack (3 Services)', description: 'Lock in current labor rates for your first 3 scheduled services. Transferable on resale.', price: '$2,200', badge: 'New', icon: 'wrench' },
+      { category: 'Lifestyle', name: "Porsche Driver's Selection Bundle", description: 'Branded luggage set, lifestyle accessories, and exclusive Porsche merchandise curated for new owners.', price: '$1,800', badge: 'Popular', icon: 'gift' },
     ],
   };
 };
@@ -844,6 +958,82 @@ export default function Customer360() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* 5. RECOMMENDED ADD-ONS AFTER PURCHASE */}
+      <div className="porsche-card flex flex-col gap-6 bg-gradient-to-br from-slate-900/[0.03] via-transparent to-porsche-red/[0.03] dark:from-white/[0.02] dark:to-porsche-red/[0.05]">
+        <div className="flex items-center justify-between pb-2 border-b border-black/10 dark:border-white/10">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-mono uppercase text-porsche-red font-bold mb-1">
+              <Sparkles size={13} />
+              AI-Powered Personalization
+            </div>
+            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Recommended Add-ons After Purchase</h3>
+            <p className="text-small-13 text-slate-500 dark:text-slate-400 mt-0.5">Curated for {client.name} based on purchase history, fleet profile &amp; usage telemetry</p>
+          </div>
+          <div className="flex items-center gap-1.5 text-[10px] font-mono text-slate-400">
+            <TrendingUp size={12} className="text-porsche-red" />
+            <span>{client.recommendedAddons.length} recommendations</span>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {client.recommendedAddons.map((addon, idx) => {
+            const IconMap = {
+              shield: <Shield size={18} className="text-porsche-red" />,
+              zap: <Zap size={18} className="text-blue-500" />,
+              wrench: <Wrench size={18} className="text-amber-500" />,
+              package: <Package size={18} className="text-violet-500" />,
+              gift: <Gift size={18} className="text-pink-500" />,
+              star: <Star size={18} className="text-yellow-500" />,
+            };
+            const badgeStyles: Record<string, string> = {
+              'Popular': 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+              'AI Pick': 'bg-porsche-red/10 text-porsche-red border-porsche-red/20',
+              'Exclusive': 'bg-violet-500/10 text-violet-500 border-violet-500/20',
+              'New': 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20',
+              'Gift': 'bg-pink-500/10 text-pink-500 border-pink-500/20',
+            };
+            return (
+              <div
+                key={idx}
+                className="group relative p-4 rounded-2xl bg-white dark:bg-white/5 border border-black/[0.06] dark:border-white/[0.06] flex flex-col gap-3 hover:border-porsche-red/40 hover:shadow-lg transition-all cursor-default"
+              >
+                {/* Badge */}
+                <div className="flex items-center justify-between">
+                  <span className={`text-[9px] font-bold uppercase font-mono px-2 py-0.5 rounded-full border ${badgeStyles[addon.badge] || badgeStyles['Popular']}`}>
+                    {addon.badge}
+                  </span>
+                  <span className="text-[9px] text-slate-400 font-mono uppercase">{addon.category}</span>
+                </div>
+
+                {/* Icon + Title */}
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-slate-100 dark:bg-white/10 flex items-center justify-center shrink-0">
+                    {IconMap[addon.icon]}
+                  </div>
+                  <div>
+                    <p className="text-[13px] font-bold text-slate-900 dark:text-white leading-tight">{addon.name}</p>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed flex-1">{addon.description}</p>
+
+                {/* Price + CTA */}
+                <div className="flex items-center justify-between pt-2 border-t border-black/5 dark:border-white/5">
+                  <span className="text-[13px] font-bold text-porsche-red font-mono">{addon.price}</span>
+                  <button
+                    type="button"
+                    className="px-3 py-1 rounded-lg bg-porsche-red/10 border border-porsche-red/20 text-[10px] font-bold text-porsche-red hover:bg-porsche-red hover:text-white transition-colors cursor-pointer"
+                  >
+                    Add to Quote
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

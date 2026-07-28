@@ -325,95 +325,218 @@ export default function Executive() {
         </div>
       </div>
 
-      {/* 2. BOTTOM ROW: REVENUE PROJECTION & AI INSIGHTS CARD */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        {/* Revenue Projection Bar Chart (7 Cols) */}
-        <div
-          onClick={() => setIsForecastModalOpen(true)}
-          className="lg:col-span-7 porsche-card flex flex-col gap-6 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
-        >
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Revenue Projection</h3>
-              <p className="text-small-13 text-slate-500">USD in millions • Actual vs Forecast</p>
-            </div>
-            <button 
-              onClick={(e) => { e.stopPropagation(); setIsForecastModalOpen(true); }}
-              className="text-xs font-bold text-porsche-red hover:underline cursor-pointer"
-            >
-              View Forecast Details
-            </button>
-          </div>
+      {/* 3. AI SALES PREDICTIONS BY MODEL & SEASON */}
+      {(() => {
+        const models = [
+          {
+            name: '911 Carrera GTS',
+            line: '911',
+            color: '#D5001C',
+            bg: 'bg-red-500/10',
+            border: 'border-red-500/20',
+            trendScore: 94,
+            peakMonth: 'August',
+            peakSeason: 'Summer',
+            predictedUnits: 18,
+            ytdUnits: 12,
+            insight: 'GT allocation demand spikes in Q3 driven by track-day season and year-end incentives. Configure deposit pipeline now.',
+            monthlyForecast: [62, 55, 68, 72, 80, 88, 94, 98, 85, 76, 70, 65],
+            badge: '🔥 Trending',
+            badgeColor: 'bg-red-500/10 text-red-500 border-red-500/20',
+          },
+          {
+            name: 'Taycan Turbo GT',
+            line: 'Taycan',
+            color: '#3b82f6',
+            bg: 'bg-blue-500/10',
+            border: 'border-blue-500/20',
+            trendScore: 91,
+            peakMonth: 'September',
+            peakSeason: 'Q3–Q4',
+            predictedUnits: 14,
+            ytdUnits: 9,
+            insight: 'EV adoption accelerating. Corporate fleet orders and luxury EV incentives drive strong Q3–Q4 sales velocity.',
+            monthlyForecast: [50, 52, 58, 63, 70, 76, 84, 90, 95, 88, 82, 74],
+            badge: '⚡ EV Surge',
+            badgeColor: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
+          },
+          {
+            name: 'Cayenne E-Hybrid',
+            line: 'Cayenne',
+            color: '#f59e0b',
+            bg: 'bg-amber-500/10',
+            border: 'border-amber-500/20',
+            trendScore: 87,
+            peakMonth: 'October',
+            peakSeason: 'Year-end',
+            predictedUnits: 22,
+            ytdUnits: 16,
+            insight: 'Family SUV demand peaks pre-holiday season. Hybrid powertrain positions strongly against luxury competitors in DR market.',
+            monthlyForecast: [70, 72, 75, 78, 80, 82, 85, 87, 90, 95, 92, 88],
+            badge: '📈 Peak Q4',
+            badgeColor: 'bg-amber-500/10 text-amber-600 border-amber-500/20',
+          },
+          {
+            name: 'Macan Electric Turbo',
+            line: 'Macan',
+            color: '#10b981',
+            bg: 'bg-emerald-500/10',
+            border: 'border-emerald-500/20',
+            trendScore: 89,
+            peakMonth: 'July–Aug',
+            peakSeason: 'Summer',
+            predictedUnits: 20,
+            ytdUnits: 11,
+            insight: 'New model momentum strong. Summer launch promotions and Wallbox bundle incentives are accelerating first-time EV buyers.',
+            monthlyForecast: [45, 50, 60, 68, 74, 82, 90, 92, 85, 78, 70, 62],
+            badge: '🌿 New Model',
+            badgeColor: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20',
+          },
+          {
+            name: 'Panamera 4 E-Hybrid',
+            line: 'Panamera',
+            color: '#8b5cf6',
+            bg: 'bg-violet-500/10',
+            border: 'border-violet-500/20',
+            trendScore: 82,
+            peakMonth: 'November',
+            peakSeason: 'Year-end',
+            predictedUnits: 11,
+            ytdUnits: 8,
+            insight: 'Executive fleet and corporate orders dominate. High AOV deals close in Q4 driven by fleet budget cycles and tax optimization.',
+            monthlyForecast: [55, 58, 60, 62, 65, 67, 70, 72, 75, 80, 88, 84],
+            badge: '💼 Corporate',
+            badgeColor: 'bg-violet-500/10 text-violet-500 border-violet-500/20',
+          },
+        ];
 
-          <div className="h-[220px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={barData}>
-                <XAxis dataKey="month" stroke={theme === 'dark' ? '#666' : '#999'} fontSize={10} />
-                <YAxis stroke={theme === 'dark' ? '#666' : '#999'} fontSize={10} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: theme === 'dark' ? '#121417' : '#FFFFFF',
-                    borderColor: '#D5001C',
-                    borderRadius: '8px',
-                  }}
-                />
-                <Bar dataKey="actual" fill="#D5001C" radius={[4, 4, 0, 0]} name="Actual" />
-                <Bar dataKey="forecast" fill={theme === 'dark' ? '#333333' : '#CBD5E1'} radius={[4, 4, 0, 0]} name="Forecast" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
+        const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+        const currentMonth = new Date().getMonth();
 
-        {/* AI Insights Card & Dealership Health Score (5 Cols) */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
-          <div className="porsche-card flex flex-col justify-between gap-4 bg-gradient-to-br from-porsche-red/5 to-transparent border-porsche-red/20">
-            <div>
-              <span className="text-[10px] text-porsche-red font-mono uppercase font-bold">AI INSIGHTS</span>
-              <p className="text-xs font-bold text-slate-900 dark:text-white mt-0.5">Today's Top Recommendation</p>
-            </div>
-
-            <div>
-              <p className="text-body-16 font-bold text-slate-900 dark:text-white">Parts delay risk detected</p>
-              <p className="text-small-13 text-slate-500">For Macan Electric brake system</p>
-            </div>
-
-            <div className="flex items-center justify-between pt-2 border-t border-black/5 dark:border-white/10">
+        return (
+          <div className="porsche-card flex flex-col gap-8">
+            {/* Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
               <div>
-                <span className="text-[9px] text-slate-400 font-mono uppercase block">Potential Revenue Impact</span>
-                <span className="text-card-22 font-bold text-porsche-red">$120,000</span>
+                <div className="flex items-center gap-2 text-xs font-mono uppercase text-porsche-red font-bold mb-1">
+                  <Brain size={13} />
+                  AI Predictive Intelligence
+                </div>
+                <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Car Sales Predictions by Model &amp; Season</h3>
+                <p className="text-small-13 text-slate-500 mt-0.5">AI-driven demand forecasting across 5 model lines — updated in real-time from Santo Domingo market signals</p>
               </div>
-              <div className="text-right">
-                <span className="text-[9px] text-slate-400 font-mono uppercase block">Confidence</span>
-                <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">92% (High)</span>
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-[10px] font-mono text-slate-400 uppercase">Model Year 2026</span>
+                <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 font-mono">96.8% AI Accuracy</span>
               </div>
             </div>
 
-            <button
-              onClick={() => setIsActionModalOpen(true)}
-              className="w-full py-3 rounded-2xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition cursor-pointer uppercase"
-            >
-              Take Action
-            </button>
+            {/* Model Cards */}
+            <div className="flex flex-col gap-5">
+              {models.map((model, idx) => {
+                const maxVal = Math.max(...model.monthlyForecast);
+                return (
+                  <div key={idx} className={`rounded-2xl border p-5 flex flex-col gap-4 ${model.bg} ${model.border}`}>
+                    {/* Top Row */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: model.color, boxShadow: `0 0 8px ${model.color}` }} />
+                        <div>
+                          <p className="text-[14px] font-bold text-slate-900 dark:text-white">{model.name}</p>
+                          <p className="text-[10px] font-mono text-slate-400 uppercase">{model.line} Line</p>
+                        </div>
+                        <span className={`text-[9px] font-bold font-mono px-2 py-0.5 rounded-full border ${model.badgeColor} ml-1`}>
+                          {model.badge}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-6 shrink-0">
+                        <div className="text-center">
+                          <p className="text-[9px] text-slate-400 font-mono uppercase">Trend Score</p>
+                          <p className="text-[16px] font-bold" style={{ color: model.color }}>{model.trendScore}/100</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-[9px] text-slate-400 font-mono uppercase">Peak Month</p>
+                          <p className="text-[13px] font-bold text-slate-900 dark:text-white">{model.peakMonth}</p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-[9px] text-slate-400 font-mono uppercase">Predicted Units</p>
+                          <p className="text-[16px] font-bold text-slate-900 dark:text-white">{model.predictedUnits} <span className="text-[10px] text-slate-400 font-mono">/ mo peak</span></p>
+                        </div>
+                        <div className="text-center">
+                          <p className="text-[9px] text-slate-400 font-mono uppercase">YTD Sold</p>
+                          <p className="text-[16px] font-bold text-emerald-600 dark:text-emerald-400">{model.ytdUnits}</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Seasonal Demand Heatmap Bar */}
+                    <div className="flex flex-col gap-1.5">
+                      <p className="text-[9px] font-mono text-slate-400 uppercase">Monthly Demand Intensity (Jan → Dec)</p>
+                      <div className="flex items-end gap-1 h-[40px]">
+                        {model.monthlyForecast.map((val, mIdx) => {
+                          const height = Math.round((val / maxVal) * 100);
+                          const isPeak = mIdx === currentMonth;
+                          const isFuture = mIdx > currentMonth;
+                          return (
+                            <div key={mIdx} className="flex flex-col items-center gap-0.5 flex-1">
+                              <div
+                                className="w-full rounded-t-sm transition-all"
+                                style={{
+                                  height: `${height}%`,
+                                  backgroundColor: isPeak
+                                    ? model.color
+                                    : isFuture
+                                    ? `${model.color}55`
+                                    : `${model.color}99`,
+                                  boxShadow: isPeak ? `0 0 6px ${model.color}` : 'none',
+                                }}
+                              />
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <div className="flex gap-1">
+                        {months.map((m, mIdx) => (
+                          <div key={mIdx} className={`flex-1 text-center text-[8px] font-mono ${mIdx === currentMonth ? 'font-bold' : 'text-slate-400'}`}
+                            style={{ color: mIdx === currentMonth ? model.color : undefined }}>
+                            {m}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* AI Insight */}
+                    <div className="flex items-start gap-2 pt-1 border-t border-black/5 dark:border-white/5">
+                      <Sparkles size={11} className="mt-0.5 shrink-0" style={{ color: model.color }} />
+                      <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">{model.insight}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Footer Summary */}
+            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-black/[0.06] dark:border-white/[0.06]">
+              <div className="text-center p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                <p className="text-[9px] font-mono text-slate-400 uppercase">Highest Volume Model</p>
+                <p className="text-[13px] font-bold text-slate-900 dark:text-white mt-0.5">Cayenne E-Hybrid</p>
+                <p className="text-[10px] font-mono text-amber-500">22 units / peak month</p>
+              </div>
+              <div className="text-center p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                <p className="text-[9px] font-mono text-slate-400 uppercase">Strongest Trend</p>
+                <p className="text-[13px] font-bold text-slate-900 dark:text-white mt-0.5">911 Carrera GTS</p>
+                <p className="text-[10px] font-mono text-red-500">94 / 100 trend score</p>
+              </div>
+              <div className="text-center p-3 rounded-xl bg-slate-50 dark:bg-white/5">
+                <p className="text-[9px] font-mono text-slate-400 uppercase">Best Season to Stock</p>
+                <p className="text-[13px] font-bold text-slate-900 dark:text-white mt-0.5">August – October</p>
+                <p className="text-[10px] font-mono text-emerald-500">Peak across all 5 lines</p>
+              </div>
+            </div>
           </div>
-
-          {/* Dealership Health Score Bar */}
-          <div className="porsche-card flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">Dealership Health Score</span>
-              <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+5 vs last month</span>
-            </div>
-
-            <div className="flex items-baseline gap-2">
-              <span className="text-section-30 font-bold text-slate-900 dark:text-white">92</span>
-              <span className="text-xs text-slate-400 font-mono">/ 100</span>
-            </div>
-
-            <div className="w-full bg-slate-200 dark:bg-white/10 rounded-full h-2.5 overflow-hidden">
-              <div className="bg-porsche-red h-full w-[92%]" />
-            </div>
-          </div>
-        </div>
-      </div>
+        );
+      })()}
 
       <ForecastDetailsModal
         isOpen={isForecastModalOpen}

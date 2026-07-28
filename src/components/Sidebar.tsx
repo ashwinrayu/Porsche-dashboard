@@ -10,6 +10,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { api } from '../services/api';
+import { PorscheLogo } from './PorscheLogo';
 
 interface SidebarProps {
   mobileOpen?: boolean;
@@ -36,11 +37,7 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps) {
       <div className="flex flex-col gap-6">
         {/* Porsche Command Center Brand Header */}
         <div className="flex items-center gap-3 px-2 pb-4 border-b border-[#ECECEC] dark:border-white/[0.08]">
-          <img 
-            src="https://upload.wikimedia.org/wikipedia/de/2/2d/Porsche_Logo.svg" 
-            alt="Porsche Crest Logo" 
-            className="w-8 h-10 object-contain shrink-0 filter drop-shadow-md"
-          />
+          <PorscheLogo size={28} />
           <div className="flex flex-col">
             <span className="font-bold text-sm tracking-wider text-slate-900 dark:text-white uppercase font-sans">
               PORSCHE

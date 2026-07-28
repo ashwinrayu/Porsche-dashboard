@@ -34,10 +34,10 @@ export const translations = {
 
     // Operational Impact
     operationalImpact: 'OPERATIONAL IMPACT (AI OPTIMIZED)',
-    leadConversion: 'Lead Conversion',
+    workshopUtilization: 'Workshop Utilization',
     afterSalesRetention: 'After-Sales Retention',
     partsTurnover: 'Parts Turnover',
-    adminAutomation: 'Admin Automation',
+    digitalOrderVelocity: 'Digital Order Velocity',
 
     // Roadmap
     implementationRoadmap: 'IMPLEMENTATION ROADMAP',
@@ -165,10 +165,10 @@ export const translations = {
 
     // Operational Impact
     operationalImpact: 'IMPACTO OPERATIVO (OPTIMIZADO POR IA)',
-    leadConversion: 'Conversión de Prospectos',
+    workshopUtilization: 'Utilización de Taller',
     afterSalesRetention: 'Retención Posventa',
     partsTurnover: 'Rotación de Repuestos',
-    adminAutomation: 'Automatización Admin',
+    digitalOrderVelocity: 'Velocidad de Pedidos Digitales',
 
     // Roadmap
     implementationRoadmap: 'HOJA DE RUTA DE IMPLEMENTACIÓN',

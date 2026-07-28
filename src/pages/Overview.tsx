@@ -159,7 +159,7 @@ export default function Overview() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col justify-between gap-3">
-            <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.leadConversion}</span>
+            <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.workshopUtilization}</span>
             <div className="text-[32px] font-bold text-slate-900 dark:text-white leading-none">+28%</div>
             <div className="flex items-center justify-between text-xs text-slate-500">
               <span>{t.vsLastMonth}</span>
@@ -204,7 +204,7 @@ export default function Overview() {
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col justify-between gap-3">
-            <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.adminAutomation}</span>
+            <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">{t.digitalOrderVelocity}</span>
             <div className="text-[32px] font-bold text-slate-900 dark:text-white leading-none">+65%</div>
             <div className="flex items-center justify-between text-xs text-slate-500">
               <span>{t.vsLastMonth}</span>

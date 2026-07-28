@@ -16,6 +16,8 @@ import {
   Sparkles 
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 
 interface ExecutiveNotification {
   id: string;

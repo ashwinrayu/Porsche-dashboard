@@ -25,6 +25,8 @@ import {
   Tooltip 
 } from 'recharts';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 
 interface ChatMessage {
   id: string;

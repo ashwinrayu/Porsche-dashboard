@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { 
-  ArrowUpDown, 
-  Sparkles, 
+import {
+  ArrowUpDown,
+  Sparkles,
   Send,
   X,
   Clock,
@@ -110,7 +110,7 @@ export default function Sales() {
   };
 
   const handleAssignAdvisor = (leadId: string, advisorName: string) => {
-    setLeads(prevLeads => 
+    setLeads(prevLeads =>
       prevLeads.map(lead => lead.id === leadId ? { ...lead, assignedAdvisor: advisorName } : lead)
     );
     api.sales.assignLeadAdvisor(leadId, advisorName)
@@ -153,7 +153,7 @@ export default function Sales() {
 
     try {
       await api.sales.updateConfig(activeLead.id, specs);
-      setLeads(prevLeads => 
+      setLeads(prevLeads =>
         prevLeads.map(lead => lead.id === activeLead.id ? { ...lead, specs } : lead)
       );
       setMessages(prev => [
@@ -178,10 +178,10 @@ export default function Sales() {
   useEffect(() => {
     if (activeLead) {
       setMessages([
-        { 
-          sender: 'ai', 
-          text: `Analyzing active lead: ${activeLead.name}. Order profile is a ${activeLead.model} in ${activeLead.specs?.paint || 'GT Silver Metallic'} with ${activeLead.specs?.wheels || 'Carrera S Wheels'}. Ask me about logistics status or parts availability.`, 
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+        {
+          sender: 'ai',
+          text: `Analyzing active lead: ${activeLead.name}. Order profile is a ${activeLead.model} in ${activeLead.specs?.paint || 'GT Silver Metallic'} with ${activeLead.specs?.wheels || 'Carrera S Wheels'}. Ask me about logistics status or parts availability.`,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ]);
     }
@@ -194,7 +194,7 @@ export default function Sales() {
 
     const userMsg = inputVal;
     const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
+
     setMessages(prev => [...prev, { sender: 'user', text: userMsg, time: now }]);
     setInputVal('');
 
@@ -270,13 +270,13 @@ export default function Sales() {
               <p className="text-xs text-porsche-muted font-light mt-2">Real-time engagement scoring and advisor routing.</p>
             </div>
             <div className="flex items-center gap-3">
-              <button 
+              <button
                 onClick={() => setIsDrawerOpen(true)}
                 className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-porsche-red text-white hover:bg-red-700 hover:shadow-glow-red rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all uppercase tracking-wider"
               >
                 Create Lead
               </button>
-              <button 
+              <button
                 onClick={toggleSort}
                 className="flex items-center gap-2 px-4 py-2 text-xs font-medium border border-porsche-border rounded-xl text-porsche-red hover:bg-porsche-red/5 transition-colors"
               >
@@ -303,15 +303,14 @@ export default function Sales() {
                 {sortedLeads.map((lead) => {
                   const isSelected = activeLead?.id === lead.id;
                   return (
-                    <tr 
-                      key={lead.id} 
+                    <tr
+                      key={lead.id}
                       onClick={() => setSelectedLeadId(lead.id)}
                       onDoubleClick={() => setDetailLead(lead)}
-                      className={`hover:bg-slate-900/5 transition-all duration-150 group cursor-pointer ${
-                        isSelected 
-                          ? 'bg-slate-100/90 font-medium text-slate-900 relative shadow-sm' 
-                          : ''
-                      }`}
+                      className={`hover:bg-slate-900/5 transition-all duration-150 group cursor-pointer ${isSelected
+                        ? 'bg-slate-100/90 font-medium text-slate-900 relative shadow-sm'
+                        : ''
+                        }`}
                     >
                       <td className="py-3.5 px-4 whitespace-nowrap font-mono text-xs text-porsche-muted font-semibold">
                         <div className="flex items-center gap-1.5">
@@ -330,25 +329,23 @@ export default function Sales() {
                       </td>
                       <td className="py-3.5 px-4 whitespace-nowrap font-semibold text-slate-900">
                         <span className="inline-flex items-center gap-2">
-                          <span className={`w-2 h-2 rounded-full shrink-0 ${
-                            lead.score >= 80 ? 'bg-porsche-red shadow-glow-red' : 
+                          <span className={`w-2 h-2 rounded-full shrink-0 ${lead.score >= 80 ? 'bg-porsche-red shadow-glow-red' :
                             lead.score >= 50 ? 'bg-porsche-gold' : 'bg-porsche-muted'
-                          }`} />
+                            }`} />
                           <span className="text-xs font-mono font-bold leading-none">{lead.score}</span>
                         </span>
                       </td>
                       <td className="py-3.5 px-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border leading-none tracking-wider ${
-                          lead.status === 'Hot' ? 'bg-porsche-red/10 text-porsche-red border-porsche-red/20' :
+                        <span className={`inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border leading-none tracking-wider ${lead.status === 'Hot' ? 'bg-porsche-red/10 text-porsche-red border-porsche-red/20' :
                           lead.status === 'Warm' ? 'bg-porsche-gold/10 text-porsche-gold border-porsche-gold/20' :
-                          'bg-porsche-muted/10 text-porsche-muted border-porsche-border'
-                        }`}>
+                            'bg-porsche-muted/10 text-porsche-muted border-porsche-border'
+                          }`}>
                           {lead.status}
                         </span>
                       </td>
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <div className="flex items-center gap-2">
-                          <select 
+                          <select
                             value={lead.assignedAdvisor}
                             onChange={(e) => handleAssignAdvisor(lead.id, e.target.value)}
                             onClick={e => e.stopPropagation()}
@@ -426,7 +423,7 @@ export default function Sales() {
                   </ul>
                 </div>
 
-                <button 
+                <button
                   onClick={() => openConfigurator(activeLead)}
                   className="w-full mt-2 py-2.5 bg-porsche-red text-white text-xs font-semibold rounded-xl hover:bg-red-700 hover:shadow-glow-red hover:scale-[1.01] active:scale-[0.99] transition-all uppercase tracking-wider"
                 >
@@ -451,15 +448,14 @@ export default function Sales() {
 
             <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-3 scrollbar-thin">
               {messages.map((msg, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className={`flex flex-col max-w-[85%] ${msg.sender === 'user' ? 'self-end items-end' : 'self-start items-start'}`}
                 >
-                  <div className={`p-3 rounded-2xl text-xs leading-relaxed ${
-                    msg.sender === 'user' 
-                      ? 'bg-porsche-red/5 text-slate-800 rounded-br-none border border-porsche-red/20' 
-                      : 'bg-slate-100 text-slate-800 rounded-bl-none border border-slate-200'
-                  }`}>
+                  <div className={`p-3 rounded-2xl text-xs leading-relaxed ${msg.sender === 'user'
+                    ? 'bg-porsche-red/5 text-slate-800 rounded-br-none border border-porsche-red/20'
+                    : 'bg-slate-100 text-slate-800 rounded-bl-none border border-slate-200'
+                    }`}>
                     {msg.text}
                   </div>
                   <span className="text-[9px] text-porsche-muted/70 mt-1 font-mono">{msg.time}</span>
@@ -468,14 +464,14 @@ export default function Sales() {
             </div>
 
             <form onSubmit={handleSendMessage} className="flex gap-2 pt-3 border-t border-porsche-border/40 shrink-0">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="Ask about test drive, financing..."
                 value={inputVal}
                 onChange={(e) => setInputVal(e.target.value)}
                 className="flex-1 bg-white border border-porsche-border text-xs rounded-xl px-3 py-2 text-slate-800 placeholder-porsche-muted/50 focus:outline-none focus:border-porsche-red"
               />
-              <button 
+              <button
                 type="submit"
                 className="p-2 rounded-xl bg-porsche-red/10 border border-porsche-red/20 text-porsche-red hover:bg-porsche-red/20 hover:scale-105 active:scale-95 transition-all"
               >
@@ -490,14 +486,14 @@ export default function Sales() {
       <AnimatePresence>
         {isDrawerOpen && (
           <>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsDrawerOpen(false)}
               className="fixed inset-0 bg-slate-950/40 backdrop-blur-[2px] z-50 pointer-events-auto"
             />
-            <motion.div 
+            <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -509,7 +505,7 @@ export default function Sales() {
                   <h3 className="text-lg font-bold text-slate-950">Create New CRM Lead</h3>
                   <p className="text-xs text-porsche-muted font-light mt-0.5">Add a prospective buyer for Santo Domingo Center.</p>
                 </div>
-                <button 
+                <button
                   type="button"
                   onClick={() => setIsDrawerOpen(false)}
                   className="p-1.5 rounded-lg border border-porsche-border text-porsche-muted hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer"
@@ -521,8 +517,8 @@ export default function Sales() {
               <form onSubmit={handleCreateLead} className="flex flex-col gap-5 flex-1 overflow-y-auto">
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Customer Name</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     placeholder="e.g. Jean-Pierre Bellerose"
                     required
                     value={newLeadName}
@@ -533,7 +529,7 @@ export default function Sales() {
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Model of Interest</label>
-                  <select 
+                  <select
                     value={newLeadModel}
                     onChange={(e) => setNewLeadModel(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-porsche-red focus:bg-white transition-all cursor-pointer"
@@ -548,7 +544,7 @@ export default function Sales() {
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Lead Source</label>
-                  <select 
+                  <select
                     value={newLeadSource}
                     onChange={(e) => setNewLeadSource(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-porsche-red focus:bg-white transition-all cursor-pointer"
@@ -566,9 +562,9 @@ export default function Sales() {
                     <span>Initial Engagement Score</span>
                     <span className="font-mono text-xs text-porsche-red font-semibold">{newLeadScore}</span>
                   </div>
-                  <input 
-                    type="range" 
-                    min="10" 
+                  <input
+                    type="range"
+                    min="10"
                     max="99"
                     value={newLeadScore}
                     onChange={(e) => setNewLeadScore(Number(e.target.value))}
@@ -577,14 +573,14 @@ export default function Sales() {
                 </div>
 
                 <div className="mt-auto pt-6 border-t border-slate-100 flex gap-3">
-                  <button 
+                  <button
                     type="button"
                     onClick={() => setIsDrawerOpen(false)}
                     className="flex-1 py-3 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-50 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer"
                   >
                     Cancel
                   </button>
-                  <button 
+                  <button
                     type="submit"
                     disabled={isSubmitting}
                     className="flex-1 py-3 bg-porsche-red text-white text-xs font-semibold rounded-xl hover:bg-red-700 hover:shadow-glow-red hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer"
@@ -602,14 +598,14 @@ export default function Sales() {
       <AnimatePresence>
         {isConfiguratorOpen && activeLead && (
           <>
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsConfiguratorOpen(false)}
               className="fixed inset-0 bg-slate-950/40 backdrop-blur-[2px] z-50 pointer-events-auto"
             />
-            <motion.div 
+            <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -621,7 +617,7 @@ export default function Sales() {
                   <h3 className="text-lg font-bold text-slate-950">Porsche Build Configurator</h3>
                   <p className="text-xs text-porsche-muted font-light mt-0.5">Customize order specification for {activeLead.name}.</p>
                 </div>
-                <button 
+                <button
                   type="button"
                   onClick={() => setIsConfiguratorOpen(false)}
                   className="p-1.5 rounded-lg border border-porsche-border text-porsche-muted hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer"
@@ -631,18 +627,17 @@ export default function Sales() {
               </div>
 
               <div className="rounded-2xl border border-porsche-border overflow-hidden relative p-4 flex flex-col gap-2 shadow-sm shrink-0 bg-slate-50">
-                <div 
+                <div
                   className="absolute inset-0 opacity-20 pointer-events-none transition-all duration-300"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${
-                      configPaint === 'Guards Red' ? '#D5001C' :
+                  style={{
+                    background: `linear-gradient(135deg, ${configPaint === 'Guards Red' ? '#D5001C' :
                       configPaint === 'Racing Yellow' ? '#F59E0B' :
-                      configPaint === 'Gentian Blue Metallic' ? '#1E3A8A' :
-                      configPaint === 'Mamba Green Metallic' ? '#10B981' :
-                      configPaint === 'Chalk' ? '#E2E8F0' :
-                      configPaint === 'Jet Black Metallic' ? '#0F172A' : '#94A3B8'
-                    } 0%, transparent 100%)` 
-                  }} 
+                        configPaint === 'Gentian Blue Metallic' ? '#1E3A8A' :
+                          configPaint === 'Mamba Green Metallic' ? '#10B981' :
+                            configPaint === 'Chalk' ? '#E2E8F0' :
+                              configPaint === 'Jet Black Metallic' ? '#0F172A' : '#94A3B8'
+                      } 0%, transparent 100%)`
+                  }}
                 />
                 <div className="flex justify-between items-start z-10">
                   <span className="text-[9px] uppercase tracking-wider font-bold bg-slate-200/60 text-slate-800 px-2 py-0.5 rounded border border-slate-300">Active Spec Review</span>
@@ -675,11 +670,10 @@ export default function Sales() {
                         type="button"
                         onClick={() => setConfigPaint(swatch.name)}
                         title={swatch.name}
-                        className={`w-10 h-10 rounded-full border relative transition-all hover:scale-105 active:scale-95 ${
-                          configPaint === swatch.name 
-                            ? 'border-porsche-red ring-2 ring-porsche-red/20 scale-105' 
-                            : 'border-slate-200 hover:border-slate-400'
-                        }`}
+                        className={`w-10 h-10 rounded-full border relative transition-all hover:scale-105 active:scale-95 ${configPaint === swatch.name
+                          ? 'border-porsche-red ring-2 ring-porsche-red/20 scale-105'
+                          : 'border-slate-200 hover:border-slate-400'
+                          }`}
                         style={{ backgroundColor: swatch.color }}
                       >
                         {configPaint === swatch.name && (
@@ -693,7 +687,7 @@ export default function Sales() {
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Wheel Selection</label>
-                  <select 
+                  <select
                     value={configWheels}
                     onChange={(e) => setConfigWheels(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-porsche-red focus:bg-white transition-all cursor-pointer"
@@ -708,7 +702,7 @@ export default function Sales() {
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Cabin Trim Interior</label>
-                  <select 
+                  <select
                     value={configInterior}
                     onChange={(e) => setConfigInterior(e.target.value)}
                     className="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-porsche-red focus:bg-white transition-all cursor-pointer"
@@ -734,19 +728,18 @@ export default function Sales() {
                     ].map((pkg) => {
                       const isChecked = configPackages.includes(pkg);
                       return (
-                        <label 
-                          key={pkg} 
-                          className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all ${
-                            isChecked 
-                              ? 'border-porsche-red/35 bg-porsche-red/5 text-slate-900' 
-                              : 'border-slate-200 hover:border-slate-300 text-slate-700'
-                          }`}
+                        <label
+                          key={pkg}
+                          className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all ${isChecked
+                            ? 'border-porsche-red/35 bg-porsche-red/5 text-slate-900'
+                            : 'border-slate-200 hover:border-slate-300 text-slate-700'
+                            }`}
                         >
-                          <input 
-                            type="checkbox" 
+                          <input
+                            type="checkbox"
                             checked={isChecked}
                             onChange={() => {
-                              setConfigPackages(prev => 
+                              setConfigPackages(prev =>
                                 prev.includes(pkg) ? prev.filter(p => p !== pkg) : [...prev, pkg]
                               );
                             }}
@@ -760,14 +753,14 @@ export default function Sales() {
                 </div>
 
                 <div className="mt-auto pt-6 border-t border-slate-100 flex gap-3">
-                  <button 
+                  <button
                     type="button"
                     onClick={() => setIsConfiguratorOpen(false)}
                     className="flex-1 py-3 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-50 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer"
                   >
                     Cancel
                   </button>
-                  <button 
+                  <button
                     type="submit"
                     disabled={isSavingConfig}
                     className="flex-1 py-3 bg-porsche-red text-white text-xs font-semibold rounded-xl hover:bg-red-700 hover:shadow-glow-red hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer"
@@ -822,10 +815,9 @@ export default function Sales() {
                   </div>
                   <div className="p-3 bg-slate-50 rounded-xl border border-porsche-border text-center">
                     <p className="text-[9px] text-porsche-muted uppercase tracking-wider font-semibold">Status</p>
-                    <p className={`text-sm font-bold mt-0.5 ${
-                      detailLead.status === 'Hot' ? 'text-porsche-red' :
+                    <p className={`text-sm font-bold mt-0.5 ${detailLead.status === 'Hot' ? 'text-porsche-red' :
                       detailLead.status === 'Warm' ? 'text-porsche-gold' : 'text-slate-400'
-                    }`}>{detailLead.status}</p>
+                      }`}>{detailLead.status}</p>
                   </div>
                   <div className="p-3 bg-slate-50 rounded-xl border border-porsche-border text-center">
                     <p className="text-[9px] text-porsche-muted uppercase tracking-wider font-semibold">Advisor</p>
@@ -865,11 +857,10 @@ export default function Sales() {
                           <button
                             key={slot}
                             onClick={() => setSelectedDriveSlot(slot)}
-                            className={`py-2 px-3 rounded-xl border text-[10px] font-semibold text-left transition-all ${
-                              selectedDriveSlot === slot
-                                ? 'border-porsche-red bg-porsche-red/5 text-porsche-red'
-                                : 'border-slate-200 text-slate-700 hover:border-porsche-red/40 hover:text-porsche-red'
-                            }`}
+                            className={`py-2 px-3 rounded-xl border text-[10px] font-semibold text-left transition-all ${selectedDriveSlot === slot
+                              ? 'border-porsche-red bg-porsche-red/5 text-porsche-red'
+                              : 'border-slate-200 text-slate-700 hover:border-porsche-red/40 hover:text-porsche-red'
+                              }`}
                           >
                             <Clock size={9} className="inline mr-1" />
                             {slot}
@@ -902,11 +893,10 @@ export default function Sales() {
                         transition={{ delay: idx * 0.06 }}
                         className="relative"
                       >
-                        <span className={`absolute -left-[21px] w-3 h-3 rounded-full border-2 border-white ${
-                          event.type === 'config' ? 'bg-porsche-red' :
+                        <span className={`absolute -left-[21px] w-3 h-3 rounded-full border-2 border-white ${event.type === 'config' ? 'bg-porsche-red' :
                           event.type === 'visit' ? 'bg-porsche-green' :
-                          event.type === 'contact' ? 'bg-porsche-gold' : 'bg-slate-300'
-                        }`} />
+                            event.type === 'contact' ? 'bg-porsche-gold' : 'bg-slate-300'
+                          }`} />
                         <p className="text-xs font-semibold text-slate-900">{event.event}</p>
                         <p className="text-[10px] text-porsche-muted">{event.detail}</p>
                         <p className="text-[9px] text-porsche-muted/60 font-mono mt-0.5">{event.time}</p>

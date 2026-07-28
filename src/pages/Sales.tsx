@@ -26,6 +26,21 @@ import { useTheme } from '../context/ThemeContext';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../i18n/translations';
 
+export interface LeadProspect {
+  name: string;
+  avatar: string;
+  model: string;
+  score: number;
+  value: string;
+  stage: string;
+  advisor: string;
+  activity: string;
+  phone?: string;
+  email?: string;
+  source?: string;
+  tradeIn?: string;
+}
+
 export default function Sales() {
   const { theme } = useTheme();
   const { language } = useLanguage();
@@ -36,6 +51,8 @@ export default function Sales() {
   const [proposalSent, setProposalSent] = useState(false);
   const [isAllLeadsOpen, setIsAllLeadsOpen] = useState(false);
   const [allLeadsFilter, setAllLeadsFilter] = useState('All');
+  const [selectedLead, setSelectedLead] = useState<LeadProspect | null>(null);
+  const [leadActionConfirmed, setLeadActionConfirmed] = useState<string | null>(null);
 
   // Model-specific data dictionary for 100% dynamic filtering & tabbed specs
   const modelData: Record<string, {
@@ -368,7 +385,7 @@ export default function Sales() {
                     return (
                     <tr
                       key={idx}
-                      onClick={() => { window.location.hash = `#/customer-360/${slug}`; }}
+                      onClick={() => setSelectedLead(lead)}
                       className="hover:bg-black/5 dark:hover:bg-white/5 theme-transition cursor-pointer group"
                     >
                       <td className="py-3.5 px-3 whitespace-nowrap">
@@ -718,7 +735,7 @@ export default function Sales() {
                       return (
                         <tr
                           key={idx}
-                          onClick={() => { window.location.hash = `#/customer-360/${slug}`; setIsAllLeadsOpen(false); }}
+                          onClick={() => { setSelectedLead(lead); setIsAllLeadsOpen(false); }}
                           className="hover:bg-white/5 transition-colors cursor-pointer group"
                         >
                           <td className="py-3.5 px-4 text-[10px] font-mono text-slate-500">{idx + 1}</td>
@@ -756,6 +773,130 @@ export default function Sales() {
                     })}
                   </tbody>
                 </table>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* 4. DEDICATED LEAD PROSPECT DOSSIER MODAL */}
+      <AnimatePresence>
+        {selectedLead && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="w-full max-w-2xl max-h-[90vh] rounded-3xl bg-white dark:bg-[#121417] border border-black/10 dark:border-white/10 shadow-2xl flex flex-col relative overflow-hidden p-6 gap-6"
+            >
+              {/* Modal Close Button */}
+              <button
+                onClick={() => { setSelectedLead(null); setLeadActionConfirmed(null); }}
+                className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors z-20"
+              >
+                <X size={18} />
+              </button>
+
+              {/* Prospect Header */}
+              <div className="flex items-start gap-4 pr-10 border-b border-black/10 dark:border-white/10 pb-4">
+                <div className="w-14 h-14 rounded-2xl bg-porsche-red text-white font-bold text-xl flex items-center justify-center shrink-0 shadow-glow-red">
+                  {selectedLead.avatar}
+                </div>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[10px] font-bold uppercase font-mono px-2.5 py-0.5 rounded-full bg-porsche-red/10 text-porsche-red border border-porsche-red/20">
+                      Sales Lead Prospect (Not Yet Owner)
+                    </span>
+                    <span className="text-[10px] font-bold font-mono text-emerald-600 dark:text-emerald-400 px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+                      {selectedLead.score}/100 Intent Score
+                    </span>
+                  </div>
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-white leading-tight">{selectedLead.name}</h2>
+                  <p className="text-xs text-slate-500 font-mono">
+                    {selectedLead.email || `${selectedLead.name.toLowerCase().replace(' ', '.')}@prospect-mail.do`} • {selectedLead.phone || '+1 (809) 555-0182'} • Santo Domingo Hub
+                  </p>
+                </div>
+              </div>
+
+              {/* Lead Details Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-1">
+                  <span className="text-[10px] text-slate-400 font-mono uppercase">Target Porsche Model</span>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">{selectedLead.model}</p>
+                  <p className="text-xs font-mono text-porsche-red font-bold">{selectedLead.value} Est. Budget</p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-1">
+                  <span className="text-[10px] text-slate-400 font-mono uppercase">Conversion Stage &amp; Advisor</span>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">{selectedLead.stage}</p>
+                  <p className="text-xs text-slate-500">Assigned Advisor: <span className="font-bold text-slate-900 dark:text-white">{selectedLead.advisor}</span></p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-1">
+                  <span className="text-[10px] text-slate-400 font-mono uppercase">Acquisition Channel / Source</span>
+                  <p className="text-xs font-bold text-slate-900 dark:text-white">{selectedLead.source || 'porsche.com.do Web Configurator'}</p>
+                  <p className="text-[10px] text-slate-400 font-mono">Last Touchpoint: {selectedLead.activity}</p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-1">
+                  <span className="text-[10px] text-slate-400 font-mono uppercase">Trade-In Vehicle Appraisal</span>
+                  <p className="text-xs font-bold text-amber-500">{selectedLead.tradeIn || '2021 BMW X5 M ($45,000 Equity)'}</p>
+                  <p className="text-[10px] text-slate-400 font-mono">Appraisal Status: Pre-Evaluated</p>
+                </div>
+              </div>
+
+              {/* Prospect Engagement & Intent Log */}
+              <div className="p-4 rounded-2xl bg-slate-900/5 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
+                <span className="text-[10px] font-mono uppercase text-porsche-red font-bold">Prospect AI Intent Signals</span>
+                <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 font-medium">
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-porsche-red" />
+                    Configured {selectedLead.model} in Guards Red with Sport Chrono package on web portal.
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    Requested 11kW Wallbox home installation feasibility audit for Santo Domingo residence.
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                    Direct inquiry logged by sales advisor {selectedLead.advisor} — high purchase readiness.
+                  </li>
+                </ul>
+              </div>
+
+              {/* Lead Action CTAs */}
+              <div className="flex flex-col gap-2 pt-2 border-t border-black/10 dark:border-white/10">
+                {leadActionConfirmed && (
+                  <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-600 dark:text-emerald-400 text-center font-mono">
+                    ✓ {leadActionConfirmed}
+                  </div>
+                )}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <button
+                    onClick={() => setLeadActionConfirmed(`Test Drive Scheduled for ${selectedLead.name}`)}
+                    className="py-2.5 px-3 rounded-xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 transition-colors shadow-glow-red cursor-pointer text-center"
+                  >
+                    Schedule Test Drive
+                  </button>
+                  <button
+                    onClick={() => setLeadActionConfirmed(`Formal Quote Sent to ${selectedLead.email || 'prospect'}`)}
+                    className="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/20 transition-colors cursor-pointer text-center"
+                  >
+                    Send Proposal
+                  </button>
+                  <button
+                    onClick={() => setLeadActionConfirmed(`WhatsApp Spec Link Sent to ${selectedLead.phone || 'phone'}`)}
+                    className="py-2.5 px-3 rounded-xl bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/20 transition-colors cursor-pointer text-center"
+                  >
+                    WhatsApp Spec
+                  </button>
+                  <button
+                    onClick={() => setLeadActionConfirmed(`${selectedLead.name} Converted & Escrow Contract Initiated!`)}
+                    className="py-2.5 px-3 rounded-xl bg-emerald-600 text-white text-xs font-bold hover:bg-emerald-700 transition-colors cursor-pointer text-center"
+                  >
+                    Convert Lead
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>

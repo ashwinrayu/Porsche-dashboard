@@ -35,15 +35,15 @@ export default function Customer360() {
         approvedEquity: '$450,000 USD',
       },
       currentFleet: [
-        { model: '2023 Porsche 911 Turbo S', mileage: '12,400 km', status: 'Active Garage' },
-        { model: '2021 Porsche Cayenne GTS', mileage: '34,100 km', status: 'Active Garage' },
+        { model: '2023 Porsche 911 Turbo S', mileage: '12,400 mi', status: 'Active Garage' },
+        { model: '2021 Porsche Cayenne GTS', mileage: '34,100 mi', status: 'Active Garage' },
       ],
       purchaseHistory: [
         { vehicle: '2023 Porsche 911 Turbo S', price: '$275,000 USD', date: 'Mar 2023' },
         { vehicle: '2021 Porsche Cayenne GTS', price: '$142,000 USD', date: 'Nov 2021' },
       ],
       serviceHistory: [
-        { date: 'Jul 20, 2026', service: '10,000 km Inspection & Oil Service', cost: '$1,200', status: 'Completed' },
+        { date: 'Jul 20, 2026', service: '10,000 mi Inspection & Oil Service', cost: '$1,200', status: 'Completed' },
         { date: 'Jan 14, 2026', service: 'PCCB Brake Fluid Flush', cost: '$850', status: 'Completed' },
       ],
       tradeInHistory: [
@@ -71,13 +71,13 @@ export default function Customer360() {
         approvedEquity: '$210,000 USD',
       },
       currentFleet: [
-        { model: '2022 Porsche Macan S', mileage: '28,900 km', status: 'Active Garage' },
+        { model: '2022 Porsche Macan S', mileage: '28,900 mi', status: 'Active Garage' },
       ],
       purchaseHistory: [
         { vehicle: '2022 Porsche Macan S', price: '$89,000 USD', date: 'Jun 2022' },
       ],
       serviceHistory: [
-        { date: 'May 12, 2026', service: '20,000 km Annual Inspection', cost: '$950', status: 'Completed' },
+        { date: 'May 12, 2026', service: '20,000 mi Annual Inspection', cost: '$950', status: 'Completed' },
       ],
       tradeInHistory: [
         { vehicle: '2018 Macan Base', tradeVal: '$42,000 USD', appliedTo: '2022 Macan S' },

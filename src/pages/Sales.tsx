@@ -68,12 +68,12 @@ export default function Sales() {
         Packages: ['Sport Chrono Package with Mode Switch', 'PASM Sport Suspension (-10mm)', 'Porsche Torque Vectoring Plus (PTV Plus)'],
       },
       leads: [
-        { name: 'María Vásquez', avatar: 'M', model: 'Macan Electric Turbo', score: 85, value: '$125,000', stage: 'Showroom', advisor: 'Eduardo B.', activity: '10m ago' },
-        { name: 'Luis Corripio', avatar: 'L', model: '911 Carrera GTS', score: 78, value: '$185,000', stage: 'Configuration', advisor: 'Eduardo B.', activity: '25m ago' },
-        { name: 'Gustavo Tavares', avatar: 'G', model: 'Cayenne Coupé E-Hybrid', score: 72, value: '$98,500', stage: 'Test Drive', advisor: 'Ramón G.', activity: '1h ago' },
+        { name: 'Gabriel Sterling', avatar: 'G', model: 'Macan Electric Turbo', score: 85, value: '$125,000', stage: 'Showroom', advisor: 'Eduardo B.', activity: '10m ago' },
+        { name: 'Diego Mendoza', avatar: 'D', model: '911 Carrera GTS', score: 78, value: '$185,000', stage: 'Configuration', advisor: 'Eduardo B.', activity: '25m ago' },
+        { name: 'Camila Bonilla', avatar: 'C', model: 'Cayenne Coupé E-Hybrid', score: 72, value: '$98,500', stage: 'Test Drive', advisor: 'Ramón G.', activity: '1h ago' },
       ],
       timeline: [
-        { time: '09:15', label: 'Lead Created', detail: 'María Vásquez • Macan Electric' },
+        { time: '09:15', label: 'Lead Created', detail: 'Gabriel Sterling • Macan Electric' },
         { time: '09:40', label: 'WhatsApp', detail: 'Spec Inquiry Sent' },
         { time: '10:12', label: 'Configurator', detail: '911 Carrera GTS' },
         { time: '11:05', label: 'Dealer Visit', detail: 'Showroom Review' },
@@ -104,11 +104,11 @@ export default function Sales() {
         Packages: ['Weissach Performance Package', 'Front Axle Lift System', 'Porsche Ceramic Composite Brakes (PCCB)'],
       },
       leads: [
-        { name: 'Luis Corripio', avatar: 'L', model: '911 Carrera GTS', score: 96, value: '$241,300', stage: 'Finalizing Contract', advisor: 'Eduardo B.', activity: '2m ago' },
-        { name: 'Carlos Llenas', avatar: 'C', model: '911 GT3 RS', score: 91, value: '$315,000', stage: 'Allocation Approved', advisor: 'Eduardo B.', activity: '15m ago' },
+        { name: 'Diego Mendoza', avatar: 'D', model: '911 Carrera GTS', score: 96, value: '$241,300', stage: 'Finalizing Contract', advisor: 'Eduardo B.', activity: '2m ago' },
+        { name: 'Sebastian Almonte', avatar: 'S', model: '911 GT3 RS', score: 91, value: '$315,000', stage: 'Allocation Approved', advisor: 'Eduardo B.', activity: '15m ago' },
       ],
       timeline: [
-        { time: '08:30', label: 'Allocation Assigned', detail: 'Luis Corripio • 911 GT3 RS Slot' },
+        { time: '08:30', label: 'Allocation Assigned', detail: 'Diego Mendoza • 911 GT3 RS Slot' },
         { time: '09:12', label: 'Track Telemetry', detail: 'Spec Review for Santo Domingo Hub' },
         { time: '11:45', label: 'Escrow Confirmed', detail: '$50,000 USD Deposit Received' },
       ],
@@ -137,8 +137,8 @@ export default function Sales() {
         Packages: ['Adaptive 3-Chamber Air Suspension', 'Rear Axle Steering', 'Porsche Dynamic Chassis Control (PDCC)'],
       },
       leads: [
-        { name: 'Gustavo Tavares', avatar: 'G', model: 'Cayenne Coupé E-Hybrid', score: 88, value: '$146,000', stage: 'Test Drive Scheduled', advisor: 'Ramón G.', activity: '5m ago' },
-        { name: 'José Vicini', avatar: 'J', model: 'Cayenne Turbo GT', score: 84, value: '$198,000', stage: 'Trade-in Evaluation', advisor: 'Eduardo B.', activity: '40m ago' },
+        { name: 'Camila Bonilla', avatar: 'C', model: 'Cayenne Coupé E-Hybrid', score: 88, value: '$146,000', stage: 'Test Drive Scheduled', advisor: 'Ramón G.', activity: '5m ago' },
+        { name: 'Lucas Bermúdez', avatar: 'L', model: 'Cayenne Turbo GT', score: 84, value: '$198,000', stage: 'Trade-in Evaluation', advisor: 'Eduardo B.', activity: '40m ago' },
       ],
       timeline: [
         { time: '10:00', label: 'Showroom Visit', detail: 'Gustavo Tavares • Cayenne Review' },
@@ -169,8 +169,8 @@ export default function Sales() {
         Packages: ['800V Ultra-Fast Charging Hardware', 'Porsche Active Suspension Management (PASM)', 'Burmester 3D Surround Sound System'],
       },
       leads: [
-        { name: 'María Vásquez', avatar: 'M', model: 'Macan Electric Turbo', score: 92, value: '$105,300', stage: 'Charging Audit Complete', advisor: 'Eduardo B.', activity: ' Just Now' },
-        { name: 'Patricia Bermúdez', avatar: 'P', model: 'Macan GTS', score: 79, value: '$92,000', stage: 'Financing Approved', advisor: 'Ramón G.', activity: '2h ago' },
+        { name: 'Gabriel Sterling', avatar: 'G', model: 'Macan Electric Turbo', score: 92, value: '$105,300', stage: 'Charging Audit Complete', advisor: 'Eduardo B.', activity: ' Just Now' },
+        { name: 'Valentina Gómez', avatar: 'V', model: 'Macan GTS', score: 79, value: '$92,000', stage: 'Financing Approved', advisor: 'Ramón G.', activity: '2h ago' },
       ],
       timeline: [
         { time: '09:00', label: 'Wallbox Audit', detail: 'Home 11kW Charging Certified' },
@@ -201,8 +201,8 @@ export default function Sales() {
         Packages: ['Porsche Active Ride Suspension', 'Burmester High-End 3D Surround System', 'Night Vision Assist'],
       },
       leads: [
-        { name: 'Fernando Rainieri', avatar: 'F', model: 'Panamera 4 E-Hybrid', score: 87, value: '$135,000', stage: 'Corporate Fleet Order', advisor: 'Eduardo B.', activity: '12m ago' },
-        { name: 'Roberto Bonetti', avatar: 'R', model: 'Panamera GTS', score: 81, value: '$152,000', stage: 'Executive Approval', advisor: 'Ramón G.', activity: '1h ago' },
+        { name: 'Mateo Castellanos', avatar: 'M', model: 'Panamera 4 E-Hybrid', score: 87, value: '$135,000', stage: 'Corporate Fleet Order', advisor: 'Eduardo B.', activity: '12m ago' },
+        { name: 'Adrian Pou', avatar: 'A', model: 'Panamera GTS', score: 81, value: '$152,000', stage: 'Executive Approval', advisor: 'Ramón G.', activity: '1h ago' },
       ],
       timeline: [
         { time: '08:45', label: 'Fleet Order Request', detail: '4 Units Panamera E-Hybrid' },
@@ -233,8 +233,8 @@ export default function Sales() {
         Packages: ['Porsche Active Ride Hydraulic Suspension', 'Attack Mode Push-to-Pass Power Boost', '800V High-Speed DC Charging'],
       },
       leads: [
-        { name: 'Alejandro Corripio', avatar: 'A', model: 'Taycan Turbo GT', score: 94, value: '$230,000', stage: 'Contract Signed', advisor: 'Eduardo B.', activity: '4m ago' },
-        { name: 'Isabela Pellerano', avatar: 'I', model: 'Taycan 4S Cross Turismo', score: 86, value: '$128,000', stage: 'Spec Review', advisor: 'Ramón G.', activity: '30m ago' },
+        { name: 'Isabella Cury', avatar: 'I', model: 'Taycan Turbo GT', score: 94, value: '$230,000', stage: 'Contract Signed', advisor: 'Eduardo B.', activity: '4m ago' },
+        { name: 'Sofía Peynado', avatar: 'S', model: 'Taycan 4S Cross Turismo', score: 86, value: '$128,000', stage: 'Spec Review', advisor: 'Ramón G.', activity: '30m ago' },
       ],
       timeline: [
         { time: '09:30', label: '800V Launch Drive', detail: '0-60 mph in 2.1s Verified' },

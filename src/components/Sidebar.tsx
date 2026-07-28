@@ -37,7 +37,7 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps) {
       <div className="flex flex-col gap-6">
         {/* Porsche Command Center Brand Header */}
         <div className="flex items-center gap-3 px-2 pb-4 border-b border-[#ECECEC] dark:border-white/[0.08]">
-          <PorscheLogo size={28} />
+          <PorscheLogo size={32} />
           <div className="flex flex-col">
             <span className="font-bold text-sm tracking-wider text-slate-900 dark:text-white uppercase font-sans">
               PORSCHE

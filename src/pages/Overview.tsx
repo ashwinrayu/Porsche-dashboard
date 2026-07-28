@@ -10,6 +10,7 @@ import {
   Area 
 } from 'recharts';
 import { CountUp } from '../components/CountUp';
+import { VehicleImage } from '../components/VehicleImage';
 
 export default function Overview() {
   // Red sparkline datasets matching reference image
@@ -48,7 +49,7 @@ export default function Overview() {
         </div>
       </div>
 
-      {/* 2. MAIN HERO SECTION (Headline & Floating Transparent Porsche 911 Cutout) */}
+      {/* 2. MAIN HERO SECTION (Headline & Dual White/Black Porsche 911 Cutouts) */}
       <div className="relative min-h-[280px] flex items-center justify-between gap-6 py-2 overflow-visible">
         {/* Ambient Red Studio Lighting Glow behind the car */}
         <div className="absolute right-[-20px] top-1/2 -translate-y-1/2 w-[550px] h-[220px] bg-porsche-red/15 rounded-full blur-[100px] pointer-events-none" />
@@ -65,12 +66,13 @@ export default function Overview() {
           </p>
         </div>
 
-        {/* Right Side Transparent Vehicle Cutout (Floating naturally, NO box container) */}
+        {/* Right Side Vehicle Dual Cutouts (White in Light mode, Black in Dark mode) */}
         <div className="hidden lg:block w-[600px] h-[280px] relative shrink-0 z-10">
-          <img
-            src="/porsche-911-hero.png"
+          <VehicleImage
+            lightSrc="/porsche-911-light.png"
+            darkSrc="/porsche-911-dark.png"
             alt="Porsche 911 Operations Vehicle"
-            className="w-full h-full object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)] transform hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)] transform hover:scale-105 transition-transform duration-500"
           />
         </div>
       </div>

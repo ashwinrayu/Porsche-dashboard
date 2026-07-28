@@ -42,6 +42,8 @@ interface ChatMessage {
 
 export default function AiAssistant() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   const [inputQuery, setInputQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -168,10 +170,10 @@ export default function AiAssistant() {
           <div>
             <div className="flex items-center gap-2 text-xs font-bold text-porsche-red font-mono uppercase">
               <Cpu size={14} className="animate-pulse" />
-              Porsche Enterprise AI Copilot
+              {t.aiAssistantTitle}
             </div>
             <h1 className="text-card-22 font-bold text-slate-900 dark:text-white">
-              Porsche Digital Intelligence v4.2
+              {t.aiAssistantSubtitle}
             </h1>
           </div>
         </div>

@@ -16,9 +16,13 @@ import {
 } from 'lucide-react';
 import { VehicleImage } from '../components/VehicleImage';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 
 export default function Logistics() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   const [uploadedPart, setUploadedPart] = useState(true);
 
   const fleet = [
@@ -72,8 +76,8 @@ export default function Logistics() {
         <div className="porsche-card flex flex-col justify-between gap-4">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Parts Inventory Heatmap</h3>
-              <p className="text-small-13 text-slate-500">Live warehouse inventory across locations</p>
+              <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">{t.partsHeatmap}</h3>
+              <p className="text-small-13 text-slate-500">{t.logisticsSubtitle}</p>
             </div>
             <MapPin size={18} className="text-porsche-red" />
           </div>

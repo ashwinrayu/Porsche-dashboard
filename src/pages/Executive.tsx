@@ -24,10 +24,14 @@ import {
 } from 'recharts';
 import { CountUp } from '../components/CountUp';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 import { PorscheLogo } from '../components/PorscheLogo';
 
 export default function Executive() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const barData = [
     { month: 'Jan', actual: 3.2, forecast: 3.0 },
@@ -42,10 +46,10 @@ export default function Executive() {
   ];
 
   const executiveKPIs = [
-    { label: 'Revenue (YTD)', val: '$28.4M', change: '+12.4%', color: 'text-emerald-600 dark:text-emerald-400' },
+    { label: t.totalRevenue, val: '$28.4M', change: '+12.4%', color: 'text-emerald-600 dark:text-emerald-400' },
     { label: 'Forecast (Q3)', val: '$17.7M', change: '+18.4%', color: 'text-emerald-600 dark:text-emerald-400' },
-    { label: 'Conversion Rate', val: '68%', change: '+8.2%', color: 'text-emerald-600 dark:text-emerald-400' },
-    { label: 'Parts Turnover', val: '94.2%', change: '+15.1%', color: 'text-emerald-600 dark:text-emerald-400' },
+    { label: t.conversionRate, val: '68%', change: '+8.2%', color: 'text-emerald-600 dark:text-emerald-400' },
+    { label: t.partsTurnover, val: '94.2%', change: '+15.1%', color: 'text-emerald-600 dark:text-emerald-400' },
     { label: 'AI Accuracy', val: '96.8%', change: '+2.4%', color: 'text-emerald-600 dark:text-emerald-400' },
   ];
 
@@ -55,10 +59,10 @@ export default function Executive() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
         <div>
           <span className="text-[10px] text-porsche-red font-mono uppercase font-bold tracking-widest">
-            AI DRIVEN INSIGHTS, PREDICTIVE ANALYTICS AND OPERATIONAL INTELLIGENCE
+            {t.executiveSubtitle}
           </span>
           <h1 className="text-title-48 font-bold text-slate-900 dark:text-white tracking-tight">
-            Executive Intelligence
+            {t.executiveTitle}
           </h1>
         </div>
       </div>
@@ -68,8 +72,8 @@ export default function Executive() {
         {/* AI Operational Brain (7 Cols) */}
         <div className="lg:col-span-7 porsche-card flex flex-col items-center justify-between gap-6 relative overflow-hidden py-10 bg-gradient-to-b from-porsche-red/5 via-transparent to-transparent">
           <div className="flex flex-col gap-1 text-center">
-            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">AI Operational Brain</h3>
-            <p className="text-small-13 text-slate-500">Real-time operational intelligence network</p>
+            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">{t.aiBrain}</h3>
+            <p className="text-small-13 text-slate-500">{t.networkSubtitle}</p>
           </div>
 
           {/* Central Radial Neural Hub */}

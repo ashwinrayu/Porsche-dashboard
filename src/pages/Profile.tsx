@@ -17,9 +17,13 @@ import {
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 
 export default function Profile() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const activities = [
     { text: 'Configured 911 Carrera GTS', detail: 'For Luis Corripio', time: '2m ago' },
@@ -35,10 +39,10 @@ export default function Profile() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
         <div>
           <span className="text-[10px] text-porsche-red font-mono uppercase font-bold tracking-widest">
-            PERSONAL PERFORMANCE, ACHIEVEMENTS AND AI ASSISTANT
+            {t.profileSubtitle}
           </span>
           <h1 className="text-title-48 font-bold text-slate-900 dark:text-white tracking-tight">
-            Advisor Profile & Settings
+            {t.profileTitle}
           </h1>
         </div>
       </div>

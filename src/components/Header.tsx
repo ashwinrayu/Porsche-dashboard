@@ -3,6 +3,8 @@ import { Search, Bell, Sparkles, Clock, Globe } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageToggle } from './LanguageToggle';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 
 interface HeaderProps {
   unreadNotifCount: number;
@@ -12,6 +14,8 @@ interface HeaderProps {
 
 export function Header({ unreadNotifCount, onOpenNotifications, onOpenAiAssistant }: HeaderProps) {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   const [timeString, setTimeString] = useState('');
 
   useEffect(() => {
@@ -39,7 +43,7 @@ export function Header({ unreadNotifCount, onOpenNotifications, onOpenAiAssistan
         <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
         <input
           type="text"
-          placeholder="Search Santo Domingo fleet, leads, inventory, telemetry... (⌘K)"
+          placeholder={t.searchPlaceholder}
           className="w-full pl-11 pr-12 py-2.5 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-porsche-red focus:ring-1 focus:ring-porsche-red theme-transition"
         />
         <kbd className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-slate-200 dark:bg-white/10 text-slate-500 dark:text-slate-400">

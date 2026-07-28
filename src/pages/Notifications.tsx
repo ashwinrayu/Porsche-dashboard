@@ -97,6 +97,8 @@ const INITIAL_NOTIFICATIONS: ExecutiveNotification[] = [
 
 export default function Notifications() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   const [notifications, setNotifications] = useState<ExecutiveNotification[]>(INITIAL_NOTIFICATIONS);
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
@@ -121,10 +123,10 @@ export default function Notifications() {
         <div>
           <div className="text-xs font-mono uppercase tracking-widest text-porsche-red font-bold mb-1 flex items-center gap-1.5">
             <Bell size={14} className="animate-pulse" />
-            Live Priority Stream
+            {t.notificationsSubtitle}
           </div>
           <h1 className="text-title-48 font-bold text-slate-900 dark:text-white tracking-tight">
-            Notification Center
+            {t.notificationsTitle}
           </h1>
         </div>
 

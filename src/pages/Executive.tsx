@@ -271,31 +271,52 @@ export default function Executive() {
         </div>
 
         {/* Executive KPIs Column (5 Cols) */}
-        <div className="lg:col-span-5 porsche-card flex flex-col justify-between gap-4">
-          <div className="flex items-center justify-between">
-            <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">Executive KPIs</span>
-            <button
-              onClick={() => { window.location.hash = '#/analytics'; }}
-              className="text-xs font-bold text-porsche-red hover:underline cursor-pointer"
-            >
-              View Analytics
-            </button>
+        <div className="lg:col-span-5 porsche-card flex flex-col justify-between gap-5 border-l-2 border-l-porsche-red/60">
+          <div>
+            {/* Header */}
+            <div className="flex items-center justify-between pb-3 border-b border-black/5 dark:border-white/5">
+              <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-wider">Executive KPIs</span>
+              <button
+                onClick={() => { window.location.hash = '#/analytics'; }}
+                className="text-xs font-bold text-porsche-red hover:underline cursor-pointer flex items-center gap-1"
+              >
+                <span>View Analytics</span>
+                <ArrowUpRight size={13} />
+              </button>
+            </div>
+
+            {/* KPI Items list */}
+            <div className="flex flex-col divide-y divide-black/5 dark:divide-white/5 mt-2">
+              {executiveKPIs.map((kpi, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => { window.location.hash = '#/analytics'; }}
+                  className="py-3.5 px-2 flex items-center justify-between cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 rounded-xl transition-colors group"
+                >
+                  <span className="text-small-13 text-slate-600 dark:text-slate-300 font-semibold group-hover:text-porsche-red transition-colors">{kpi.label}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-body-16 font-bold text-slate-900 dark:text-white">{kpi.val}</span>
+                    <span className={`text-xs font-bold font-mono ${kpi.color}`}>{kpi.change}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="flex flex-col divide-y divide-black/5 dark:divide-white/5">
-            {executiveKPIs.map((kpi, idx) => (
-              <div
-                key={idx}
-                onClick={() => { window.location.hash = '#/analytics'; }}
-                className="py-3 px-2 flex items-center justify-between cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 rounded-xl transition-colors group"
-              >
-                <span className="text-small-13 text-slate-600 dark:text-slate-300 font-semibold group-hover:text-porsche-red transition-colors">{kpi.label}</span>
-                <div className="flex items-center gap-3">
-                  <span className="text-body-16 font-bold text-slate-900 dark:text-white">{kpi.val}</span>
-                  <span className={`text-xs font-bold font-mono ${kpi.color}`}>{kpi.change}</span>
-                </div>
+          {/* AI Operational Intelligence Quick Summary Widget to balance height cleanly */}
+          <div className="p-3.5 rounded-2xl bg-gradient-to-r from-porsche-red/10 via-transparent to-transparent border border-porsche-red/20 flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-porsche-red text-white flex items-center justify-center shrink-0 shadow-glow-red-sm">
+                <Brain size={16} />
               </div>
-            ))}
+              <div>
+                <p className="text-[11px] font-bold text-slate-900 dark:text-white">AI Network Operational</p>
+                <p className="text-[9px] font-mono text-slate-400">All 5 dealership nodes synced</p>
+              </div>
+            </div>
+            <span className="text-[10px] font-bold font-mono text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+              Optimal
+            </span>
           </div>
         </div>
       </div>

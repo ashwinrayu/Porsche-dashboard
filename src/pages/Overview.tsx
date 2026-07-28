@@ -2,8 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowUpRight, 
-  Check, 
-  ArrowRight 
+  Check 
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -11,10 +10,9 @@ import {
   Area 
 } from 'recharts';
 import { CountUp } from '../components/CountUp';
-import { VehicleImage } from '../components/VehicleImage';
 
 export default function Overview() {
-  // Red sparkline datasets matching the reference image
+  // Red sparkline datasets matching reference image
   const sparklineData1 = [{ v: 12 }, { v: 15 }, { v: 14 }, { v: 18 }, { v: 22 }, { v: 28 }, { v: 34 }];
   const sparklineData2 = [{ v: 10 }, { v: 14 }, { v: 12 }, { v: 19 }, { v: 24 }, { v: 29 }, { v: 38 }];
   const sparklineData3 = [{ v: 15 }, { v: 18 }, { v: 16 }, { v: 22 }, { v: 28 }, { v: 32 }, { v: 40 }];
@@ -50,14 +48,14 @@ export default function Overview() {
         </div>
       </div>
 
-      {/* 2. MAIN HERO SECTION (Headline & Porsche 911 Vehicle) */}
-      <div className="relative flex items-center justify-between gap-6 py-2">
-        {/* Ambient Red Glow behind vehicle */}
-        <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[500px] h-[220px] bg-porsche-red/10 rounded-full blur-[100px] pointer-events-none" />
+      {/* 2. MAIN HERO SECTION (Headline & Floating Transparent Porsche 911 Cutout) */}
+      <div className="relative min-h-[280px] flex items-center justify-between gap-6 py-2 overflow-visible">
+        {/* Ambient Red Studio Lighting Glow behind the car */}
+        <div className="absolute right-[-20px] top-1/2 -translate-y-1/2 w-[550px] h-[220px] bg-porsche-red/15 rounded-full blur-[100px] pointer-events-none" />
 
         {/* Left Side Headline & Subtitle */}
-        <div className="flex flex-col gap-3 max-w-[700px] z-10">
-          <h1 className="text-[52px] leading-[1.05] font-bold text-slate-900 dark:text-white tracking-tight">
+        <div className="flex flex-col gap-3 max-w-[680px] z-10">
+          <h1 className="text-[54px] leading-[1.04] font-bold text-slate-900 dark:text-white tracking-tight">
             Driving Porsche <br />
             <span className="text-porsche-red">Operations</span>
           </h1>
@@ -67,13 +65,12 @@ export default function Overview() {
           </p>
         </div>
 
-        {/* Right Side Vehicle Container */}
-        <div className="hidden lg:block w-[520px] h-[240px] relative shrink-0 z-10 rounded-2xl overflow-hidden border border-black/10 dark:border-white/10 shadow-luxury-dark">
-          <VehicleImage
-            lightSrc="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80"
-            darkSrc="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
-            alt="Porsche Operations Vehicle"
-            className="w-full h-full object-cover"
+        {/* Right Side Transparent Vehicle Cutout (Floating naturally, NO box container) */}
+        <div className="hidden lg:block w-[600px] h-[280px] relative shrink-0 z-10">
+          <img
+            src="/porsche-911-hero.png"
+            alt="Porsche 911 Operations Vehicle"
+            className="w-full h-full object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)] transform hover:scale-105 transition-transform duration-500"
           />
         </div>
       </div>

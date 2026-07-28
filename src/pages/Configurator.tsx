@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { VehicleImage } from '../components/VehicleImage';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 
 interface PorscheModel {
   id: string;

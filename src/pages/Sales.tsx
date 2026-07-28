@@ -496,99 +496,95 @@ export default function Sales() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="w-full max-w-3xl max-h-[88vh] rounded-3xl bg-white dark:bg-[#121417] p-6 md:p-8 border border-black/10 dark:border-white/10 shadow-2xl flex flex-col gap-6 relative overflow-y-auto"
+              className="w-full max-w-3xl max-h-[88vh] rounded-3xl bg-white dark:bg-[#121417] border border-black/10 dark:border-white/10 shadow-2xl flex flex-col relative overflow-hidden"
             >
               {/* Close Icon Button */}
               <button
                 onClick={() => { setIsConfigModalOpen(false); setProposalSent(false); }}
-                className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors z-10"
+                className="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center cursor-pointer transition-colors z-20"
               >
                 <X size={18} />
               </button>
 
-              {/* Modal Header */}
-              <div className="flex flex-col gap-1 pr-12">
-                <span className="text-[10px] font-mono text-porsche-red uppercase font-bold tracking-widest">
-                  PORSCHE EXCLUSIVE MANUFAKTUR • EXECUTIVE SPEC SHEET
-                </span>
-                <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white leading-tight">
-                  {currentData.configuratorName}
-                </h2>
-              </div>
+              {/* Scrollable Body Content Area */}
+              <div className="flex-1 overflow-y-auto p-6 md:p-8 flex flex-col gap-6">
+                {/* Modal Header */}
+                <div className="flex flex-col gap-1 pr-12">
+                  <span className="text-[10px] font-mono text-porsche-red uppercase font-bold tracking-widest">
+                    PORSCHE EXCLUSIVE MANUFAKTUR • EXECUTIVE SPEC SHEET
+                  </span>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white leading-tight">
+                    {currentData.configuratorName}
+                  </h2>
+                </div>
 
-              {/* Large Vehicle Display & Key Metrics */}
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                <div className="md:col-span-7 h-[190px] md:h-[220px] rounded-2xl bg-gradient-to-b from-slate-900 to-black p-3 border border-black/10 dark:border-white/10 flex items-center justify-center overflow-hidden relative shadow-inner">
-                  {selectedFilter === '911' || selectedFilter === 'All' ? (
-                    <VehicleImage
-                      src={currentData.image}
-                      alt={currentData.configuratorName}
-                      className="w-full h-full object-contain filter drop-shadow-[0_15px_25px_rgba(213,0,28,0.35)]"
-                    />
-                  ) : (
+                {/* Large Vehicle Display & Key Metrics */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                  <div className="md:col-span-7 h-[190px] md:h-[260px] rounded-2xl bg-gradient-to-b from-slate-900 to-black border border-black/10 dark:border-white/10 flex items-center justify-center overflow-hidden relative shadow-inner">
                     <img
                       src={currentData.image}
                       alt={currentData.configuratorName}
-                      className="w-full h-full object-cover rounded-xl shadow-lg"
+                      className="w-full h-full object-cover rounded-2xl shadow-lg"
                     />
-                  )}
-                </div>
-
-                <div className="md:col-span-5 flex flex-col gap-4">
-                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-1">
-                    <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">MSRP Base Spec</span>
-                    <span className="text-2xl font-bold text-porsche-red">{currentData.msrp}</span>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-2xl pointer-events-none" />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
-                      <span className="text-[9px] font-mono text-slate-400 uppercase block">Horsepower</span>
-                      <span className="text-sm font-bold text-slate-900 dark:text-white">{currentData.hp}</span>
+                  <div className="md:col-span-5 flex flex-col gap-4">
+                    <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-1">
+                      <span className="text-[10px] font-mono text-slate-400 uppercase font-bold">MSRP Base Spec</span>
+                      <span className="text-2xl font-bold text-porsche-red">{currentData.msrp}</span>
                     </div>
-                    <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
-                      <span className="text-[9px] font-mono text-slate-400 uppercase block">0-60 MPH</span>
-                      <span className="text-sm font-bold text-slate-900 dark:text-white">{currentData.zeroToSixty}</span>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+                        <span className="text-[9px] font-mono text-slate-400 uppercase block">Horsepower</span>
+                        <span className="text-sm font-bold text-slate-900 dark:text-white">{currentData.hp}</span>
+                      </div>
+                      <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+                        <span className="text-[9px] font-mono text-slate-400 uppercase block">0-60 MPH</span>
+                        <span className="text-sm font-bold text-slate-900 dark:text-white">{currentData.zeroToSixty}</span>
+                      </div>
                     </div>
+                  </div>
+                </div>
+
+                {/* All Specs Grid Breakdown */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
+                    <span className="font-bold text-slate-900 dark:text-white uppercase font-mono text-[10px] text-porsche-red">Exterior & Paint</span>
+                    {currentData.tabSpecs.Exterior.map((s, i) => (
+                      <p key={i} className="text-slate-600 dark:text-slate-300">• {s}</p>
+                    ))}
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
+                    <span className="font-bold text-slate-900 dark:text-white uppercase font-mono text-[10px] text-porsche-red">Wheels & Aerodynamics</span>
+                    {currentData.tabSpecs.Wheels.map((s, i) => (
+                      <p key={i} className="text-slate-600 dark:text-slate-300">• {s}</p>
+                    ))}
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
+                    <span className="font-bold text-slate-900 dark:text-white uppercase font-mono text-[10px] text-porsche-red">Interior & Comfort</span>
+                    {currentData.tabSpecs.Interior.map((s, i) => (
+                      <p key={i} className="text-slate-600 dark:text-slate-300">• {s}</p>
+                    ))}
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
+                    <span className="font-bold text-slate-900 dark:text-white uppercase font-mono text-[10px] text-porsche-red">Performance Packages</span>
+                    {currentData.tabSpecs.Packages.map((s, i) => (
+                      <p key={i} className="text-slate-600 dark:text-slate-300">• {s}</p>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              {/* All Specs Grid Breakdown */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pb-4">
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
-                  <span className="font-bold text-slate-900 dark:text-white uppercase font-mono text-[10px] text-porsche-red">Exterior & Paint</span>
-                  {currentData.tabSpecs.Exterior.map((s, i) => (
-                    <p key={i} className="text-slate-600 dark:text-slate-300">• {s}</p>
-                  ))}
-                </div>
-
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
-                  <span className="font-bold text-slate-900 dark:text-white uppercase font-mono text-[10px] text-porsche-red">Wheels & Aerodynamics</span>
-                  {currentData.tabSpecs.Wheels.map((s, i) => (
-                    <p key={i} className="text-slate-600 dark:text-slate-300">• {s}</p>
-                  ))}
-                </div>
-
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
-                  <span className="font-bold text-slate-900 dark:text-white uppercase font-mono text-[10px] text-porsche-red">Interior & Comfort</span>
-                  {currentData.tabSpecs.Interior.map((s, i) => (
-                    <p key={i} className="text-slate-600 dark:text-slate-300">• {s}</p>
-                  ))}
-                </div>
-
-                <div className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
-                  <span className="font-bold text-slate-900 dark:text-white uppercase font-mono text-[10px] text-porsche-red">Performance Packages</span>
-                  {currentData.tabSpecs.Packages.map((s, i) => (
-                    <p key={i} className="text-slate-600 dark:text-slate-300">• {s}</p>
-                  ))}
-                </div>
-              </div>
-
-              {/* Sticky Action Buttons Footer (Solid Opaque Backdrop & Shadow to prevent text bleed) */}
-              <div className="sticky bottom-0 z-30 bg-white dark:bg-[#121417] pt-4 pb-4 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 -mx-6 md:-mx-8 px-6 md:px-8 -mb-6 md:-mb-8 shadow-[0_-12px_24px_rgba(0,0,0,0.8)]">
+              {/* Pinned Fixed Footer Bar (Outside body scroll container - guaranteed 0% overlap/bleed) */}
+              <div className="bg-slate-50 dark:bg-[#0E1013] p-4 md:px-8 border-t border-black/10 dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0 shadow-xl rounded-b-3xl">
                 <button
                   onClick={() => { window.location.hash = '#/configurator'; }}
-                  className="w-full sm:w-auto px-6 py-3 rounded-full bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/20 theme-transition cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-3 rounded-full bg-slate-200 dark:bg-white/10 text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-300 dark:hover:bg-white/20 theme-transition cursor-pointer flex items-center justify-center gap-2"
                 >
                   <Sliders size={14} />
                   <span>Launch 3D Studio Configurator</span>

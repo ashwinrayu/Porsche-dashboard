@@ -60,11 +60,11 @@ function MainLayout() {
         </button>
       </div>
 
-      {/* Fixed 320px Executive Sidebar */}
+      {/* Fixed 260px Executive Sidebar */}
       <Sidebar mobileOpen={mobileMenuOpen} onCloseMobile={() => setMobileMenuOpen(false)} />
 
-      {/* Main Content Area (Sidebar width offset 320px) */}
-      <div className="flex-1 md:ml-[320px] flex flex-col min-w-0 min-h-screen">
+      {/* Main Content Area (Sidebar width offset 260px) */}
+      <div className="flex-1 md:ml-[260px] flex flex-col min-w-0 min-h-screen">
         {/* Sticky Header Top Navigation Bar */}
         <Header
           unreadNotifCount={3}
@@ -76,8 +76,8 @@ function MainLayout() {
           }}
         />
 
-        {/* 1680px Max Width Content Container with 40px Spacing */}
-        <main className="flex-1 w-full p-6 md:p-10 max-w-[1680px] mx-auto flex flex-col gap-10">
+        {/* 1728px Max Width Content Container */}
+        <main className="flex-1 w-full p-6 md:p-8 max-w-[1728px] mx-auto flex flex-col gap-8">
           <AnimatePresence mode="wait">
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<PageWrapper><Overview /></PageWrapper>} />

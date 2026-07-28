@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { api } from '../services/api';
 import { PorscheLogo } from './PorscheLogo';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 
 interface SidebarProps {
   mobileOpen?: boolean;
@@ -19,13 +21,15 @@ interface SidebarProps {
 
 export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps) {
   const location = useLocation();
+  const { language } = useLanguage();
+  const t = translations[language];
 
   const navItems = [
-    { to: '/', label: 'Overview', icon: <LayoutDashboard size={18} /> },
-    { to: '/sales', label: 'Sales & Conversion', icon: <TrendingUp size={18} /> },
-    { to: '/logistics', label: 'Logistics & After-Sales', icon: <Wrench size={18} /> },
-    { to: '/executive', label: 'Executive Intelligence', icon: <Brain size={18} /> },
-    { to: '/profile', label: 'Profile & Settings', icon: <UserCircle size={18} /> },
+    { to: '/', label: t.overview, icon: <LayoutDashboard size={18} /> },
+    { to: '/sales', label: t.sales, icon: <TrendingUp size={18} /> },
+    { to: '/logistics', label: t.logistics, icon: <Wrench size={18} /> },
+    { to: '/executive', label: t.executive, icon: <Brain size={18} /> },
+    { to: '/profile', label: t.profile, icon: <UserCircle size={18} /> },
   ];
 
   return (

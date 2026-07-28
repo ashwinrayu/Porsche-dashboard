@@ -18,6 +18,7 @@ import Reports from './pages/Reports';
 import Login from './pages/Login';
 
 import { ThemeProvider } from './context/ThemeContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { api } from './services/api';
@@ -113,9 +114,11 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <HashRouter>
-        <MainLayout />
-      </HashRouter>
+      <LanguageProvider>
+        <HashRouter>
+          <MainLayout />
+        </HashRouter>
+      </LanguageProvider>
     </ThemeProvider>
   );
 }

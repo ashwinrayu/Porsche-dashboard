@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Bell, Sparkles, Clock, Globe } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
+import { LanguageToggle } from './LanguageToggle';
 import { useTheme } from '../context/ThemeContext';
 
 interface HeaderProps {
@@ -68,6 +69,9 @@ export function Header({ unreadNotifCount, onOpenNotifications, onOpenAiAssistan
 
         {/* Theme Switching Toggle (Executive Studio Light vs Mission Control Dark) */}
         <ThemeToggle />
+
+        {/* English / Español Language Switcher Toggle */}
+        <LanguageToggle />
 
         {/* Notification Launcher */}
         <button

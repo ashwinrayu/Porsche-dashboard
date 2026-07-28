@@ -85,9 +85,33 @@ export default function Sales() {
         Packages: ['Sport Chrono Package with Mode Switch', 'PASM Sport Suspension (-10mm)', 'Porsche Torque Vectoring Plus (PTV Plus)'],
       },
       leads: [
-        { name: 'Gabriel Sterling', avatar: 'G', model: 'Macan Electric Turbo', score: 85, value: '$125,000', stage: 'Showroom', advisor: 'Eduardo B.', activity: '10m ago' },
-        { name: 'Diego Mendoza', avatar: 'D', model: '911 Carrera GTS', score: 78, value: '$185,000', stage: 'Configuration', advisor: 'Eduardo B.', activity: '25m ago' },
-        { name: 'Camila Bonilla', avatar: 'C', model: 'Cayenne Coupé E-Hybrid', score: 72, value: '$98,500', stage: 'Test Drive', advisor: 'Ramón G.', activity: '1h ago' },
+        { 
+          name: 'Gabriel Sterling', avatar: 'G', model: 'Macan Electric Turbo', score: 85, value: '$125,000', stage: 'Showroom', advisor: 'Eduardo B.', activity: '10m ago',
+          phone: '+1 (809) 555-0891', email: 'g.sterling@sterling-holdings.do', source: 'porsche.com.do Web Configurator', tradeIn: '2021 BMW X5 M ($45,000 Equity)',
+          intentSignals: [
+            'Configured Macan Electric Turbo in Frozen Blue Metallic with 21" Offroad Wheels.',
+            'Requested 11kW Wallbox home installation feasibility audit for Santo Domingo residence.',
+            'Direct inquiry logged by sales advisor Eduardo B. — high purchase readiness.'
+          ]
+        },
+        { 
+          name: 'Diego Mendoza', avatar: 'D', model: '911 Carrera GTS', score: 78, value: '$185,000', stage: 'Configuration', advisor: 'Eduardo B.', activity: '25m ago',
+          phone: '+1 (809) 555-0412', email: 'd.mendoza@mendoza-law.do', source: 'VIP Track Day Event at Cap Cana', tradeIn: '2020 Porsche 911 Carrera S ($115,000 Equity)',
+          intentSignals: [
+            'Built 911 Carrera GTS spec in Guards Red with Sport Chrono and Weissach aero kit.',
+            'Submitted $50,000 USD wire deposit receipt for allocation slot.',
+            'Completed 45-min highway track test drive with Eduardo B.'
+          ]
+        },
+        { 
+          name: 'Camila Bonilla', avatar: 'C', model: 'Cayenne Coupé E-Hybrid', score: 72, value: '$98,500', stage: 'Test Drive', advisor: 'Ramón G.', activity: '1h ago',
+          phone: '+1 (809) 555-0723', email: 'c.bonilla@bonillagroup.com.do', source: 'Social Media Luxury EV Campaign', tradeIn: '2021 Audi Q8 Sportback ($52,000 Equity)',
+          intentSignals: [
+            'Inquired about Cayenne Coupé E-Hybrid 30-mile electric-only range for daily commute.',
+            'Scheduled Cap Cana showroom test drive with Ramón G.',
+            'Requested family car-seat compatibility and roof rack accessories.'
+          ]
+        },
       ],
       timeline: [
         { time: '09:15', label: 'Lead Created', detail: 'Gabriel Sterling • Macan Electric' },
@@ -121,8 +145,24 @@ export default function Sales() {
         Packages: ['Weissach Performance Package', 'Front Axle Lift System', 'Porsche Ceramic Composite Brakes (PCCB)'],
       },
       leads: [
-        { name: 'Diego Mendoza', avatar: 'D', model: '911 Carrera GTS', score: 96, value: '$241,300', stage: 'Finalizing Contract', advisor: 'Eduardo B.', activity: '2m ago' },
-        { name: 'Sebastian Almonte', avatar: 'S', model: '911 GT3 RS', score: 91, value: '$315,000', stage: 'Allocation Approved', advisor: 'Eduardo B.', activity: '15m ago' },
+        { 
+          name: 'Diego Mendoza', avatar: 'D', model: '911 Carrera GTS', score: 96, value: '$241,300', stage: 'Finalizing Contract', advisor: 'Eduardo B.', activity: '2m ago',
+          phone: '+1 (809) 555-0412', email: 'd.mendoza@mendoza-law.do', source: 'VIP Track Day Event at Cap Cana', tradeIn: '2020 Porsche 911 Carrera S ($115,000 Equity)',
+          intentSignals: [
+            'Built 911 Carrera GTS spec in Guards Red with Sport Chrono and Weissach aero kit.',
+            'Submitted $50,000 USD wire deposit receipt for allocation slot.',
+            'Completed 45-min highway track test drive with Eduardo B.'
+          ]
+        },
+        { 
+          name: 'Sebastian Almonte', avatar: 'S', model: '911 GT3 RS', score: 91, value: '$315,000', stage: 'Allocation Approved', advisor: 'Eduardo B.', activity: '15m ago',
+          phone: '+1 (809) 555-0391', email: 's.almonte@almonte-motors.do', source: 'Direct Showroom Visit (Piantini)', tradeIn: 'None — Cash Purchase',
+          intentSignals: [
+            'Configured 911 GT3 RS in GT Silver Metallic with Weissach carbon package.',
+            'Confirmed SA2020 track helmet & 6-point racing harness sizing with advisor.',
+            'Pre-approved for allocation slot — awaiting final contract signoff.'
+          ]
+        },
       ],
       timeline: [
         { time: '08:30', label: 'Allocation Assigned', detail: 'Diego Mendoza • 911 GT3 RS Slot' },
@@ -154,8 +194,24 @@ export default function Sales() {
         Packages: ['Adaptive 3-Chamber Air Suspension', 'Rear Axle Steering', 'Porsche Dynamic Chassis Control (PDCC)'],
       },
       leads: [
-        { name: 'Camila Bonilla', avatar: 'C', model: 'Cayenne Coupé E-Hybrid', score: 88, value: '$146,000', stage: 'Test Drive Scheduled', advisor: 'Ramón G.', activity: '5m ago' },
-        { name: 'Lucas Bermúdez', avatar: 'L', model: 'Cayenne Turbo GT', score: 84, value: '$198,000', stage: 'Trade-in Evaluation', advisor: 'Eduardo B.', activity: '40m ago' },
+        { 
+          name: 'Camila Bonilla', avatar: 'C', model: 'Cayenne Coupé E-Hybrid', score: 88, value: '$146,000', stage: 'Test Drive Scheduled', advisor: 'Ramón G.', activity: '5m ago',
+          phone: '+1 (809) 555-0723', email: 'c.bonilla@bonillagroup.com.do', source: 'Social Media Luxury EV Campaign', tradeIn: '2021 Audi Q8 Sportback ($52,000 Equity)',
+          intentSignals: [
+            'Inquired about Cayenne Coupé E-Hybrid 30-mile electric-only range for daily commute.',
+            'Scheduled Cap Cana showroom test drive with Ramón G.',
+            'Requested family car-seat compatibility and roof rack accessories.'
+          ]
+        },
+        { 
+          name: 'Lucas Bermúdez', avatar: 'L', model: 'Cayenne Turbo GT', score: 84, value: '$198,000', stage: 'Trade-in Evaluation', advisor: 'Eduardo B.', activity: '40m ago',
+          phone: '+1 (809) 555-0231', email: 'l.bermudez@bermudez-rum.com.do', source: 'Puntacana Polo Club VIP Lounge', tradeIn: '2022 Porsche Cayenne GTS ($92,000 Equity)',
+          intentSignals: [
+            'Inquired about Cayenne Turbo GT 650hp V8 performance & titanium exhaust sound.',
+            'Submitted 2022 Cayenne GTS for trade-in valuation appraisal.',
+            'Requested white-glove delivery at Punta Cana Resort residence.'
+          ]
+        },
       ],
       timeline: [
         { time: '10:00', label: 'Showroom Visit', detail: 'Gustavo Tavares • Cayenne Review' },
@@ -186,8 +242,24 @@ export default function Sales() {
         Packages: ['800V Ultra-Fast Charging Hardware', 'Porsche Active Suspension Management (PASM)', 'Burmester 3D Surround Sound System'],
       },
       leads: [
-        { name: 'Gabriel Sterling', avatar: 'G', model: 'Macan Electric Turbo', score: 92, value: '$105,300', stage: 'Charging Audit Complete', advisor: 'Eduardo B.', activity: ' Just Now' },
-        { name: 'Valentina Gómez', avatar: 'V', model: 'Macan GTS', score: 79, value: '$92,000', stage: 'Financing Approved', advisor: 'Ramón G.', activity: '2h ago' },
+        { 
+          name: 'Gabriel Sterling', avatar: 'G', model: 'Macan Electric Turbo', score: 92, value: '$105,300', stage: 'Charging Audit Complete', advisor: 'Eduardo B.', activity: ' Just Now',
+          phone: '+1 (809) 555-0891', email: 'g.sterling@sterling-holdings.do', source: 'porsche.com.do Web Configurator', tradeIn: '2021 BMW X5 M ($45,000 Equity)',
+          intentSignals: [
+            'Configured Macan Electric Turbo in Frozen Blue Metallic with 21" Offroad Wheels.',
+            'Requested 11kW Wallbox home installation feasibility audit for Santo Domingo residence.',
+            'Direct inquiry logged by sales advisor Eduardo B. — high purchase readiness.'
+          ]
+        },
+        { 
+          name: 'Valentina Gómez', avatar: 'V', model: 'Macan GTS', score: 79, value: '$92,000', stage: 'Financing Approved', advisor: 'Ramón G.', activity: '2h ago',
+          phone: '+1 (809) 555-0518', email: 'v.gomez@gomez-architects.do', source: 'Referral by Existing Porsche Owner', tradeIn: '2022 Porsche Macan Base ($48,000 Equity)',
+          intentSignals: [
+            'Configured Macan GTS in Carmine Red with panoramic sunroof & BOSE sound.',
+            'Porsche Financial 60-month lease pre-approved at $1,580/month.',
+            'Scheduled color sample review at Santo Domingo Center.'
+          ]
+        },
       ],
       timeline: [
         { time: '09:00', label: 'Wallbox Audit', detail: 'Home 11kW Charging Certified' },
@@ -218,8 +290,24 @@ export default function Sales() {
         Packages: ['Porsche Active Ride Suspension', 'Burmester High-End 3D Surround System', 'Night Vision Assist'],
       },
       leads: [
-        { name: 'Mateo Castellanos', avatar: 'M', model: 'Panamera 4 E-Hybrid', score: 87, value: '$135,000', stage: 'Corporate Fleet Order', advisor: 'Eduardo B.', activity: '12m ago' },
-        { name: 'Adrian Pou', avatar: 'A', model: 'Panamera GTS', score: 81, value: '$152,000', stage: 'Executive Approval', advisor: 'Ramón G.', activity: '1h ago' },
+        { 
+          name: 'Mateo Castellanos', avatar: 'M', model: 'Panamera 4 E-Hybrid', score: 87, value: '$135,000', stage: 'Corporate Fleet Order', advisor: 'Eduardo B.', activity: '12m ago',
+          phone: '+1 (809) 555-0982', email: 'm.castellanos@castellanos-corp.do', source: 'Corporate Fleet RFQ Request', tradeIn: '2020 Porsche Panamera 4S ($68,000 Equity)',
+          intentSignals: [
+            'Submitted RFQ for 4-unit Panamera 4 E-Hybrid executive fleet order.',
+            'Executive board approved $540,000 USD corporate fleet budget.',
+            'Requested corporate charging management fleet software demo.'
+          ]
+        },
+        { 
+          name: 'Adrian Pou', avatar: 'A', model: 'Panamera GTS', score: 81, value: '$152,000', stage: 'Executive Approval', advisor: 'Ramón G.', activity: '1h ago',
+          phone: '+1 (809) 555-0590', email: 'a.pou@pou-capital.com.do', source: 'Executive Concierge Lead', tradeIn: '2021 Mercedes-AMG GT 4-Door ($95,000 Equity)',
+          intentSignals: [
+            'Inquired about Panamera GTS rear business lounge package and active ride suspension.',
+            'Scheduled executive weekend test drive at Cap Cana hub.',
+            'Reviewing trade-in valuation quote for Mercedes-AMG GT.'
+          ]
+        },
       ],
       timeline: [
         { time: '08:45', label: 'Fleet Order Request', detail: '4 Units Panamera E-Hybrid' },
@@ -250,8 +338,24 @@ export default function Sales() {
         Packages: ['Porsche Active Ride Hydraulic Suspension', 'Attack Mode Push-to-Pass Power Boost', '800V High-Speed DC Charging'],
       },
       leads: [
-        { name: 'Isabella Cury', avatar: 'I', model: 'Taycan Turbo GT', score: 94, value: '$230,000', stage: 'Contract Signed', advisor: 'Eduardo B.', activity: '4m ago' },
-        { name: 'Sofía Peynado', avatar: 'S', model: 'Taycan 4S Cross Turismo', score: 86, value: '$128,000', stage: 'Spec Review', advisor: 'Ramón G.', activity: '30m ago' },
+        { 
+          name: 'Isabella Cury', avatar: 'I', model: 'Taycan Turbo GT', score: 94, value: '$230,000', stage: 'Contract Signed', advisor: 'Eduardo B.', activity: '4m ago',
+          phone: '+1 (809) 555-0612', email: 'i.cury@cury-estates.do', source: 'Private Unveil Event (Santo Domingo)', tradeIn: '2022 Porsche Taycan Turbo ($140,000 Equity)',
+          intentSignals: [
+            'Reserved Taycan Turbo GT in Purple Sky Metallic — 1 of 2 allocations.',
+            'Verified 0-60 in 2.1s track performance during private track session.',
+            'Wired $230,000 USD full contract payment — delivery scheduled for Aug 10.'
+          ]
+        },
+        { 
+          name: 'Sofía Peynado', avatar: 'S', model: 'Taycan 4S Cross Turismo', score: 86, value: '$128,000', stage: 'Spec Review', advisor: 'Ramón G.', activity: '30m ago',
+          phone: '+1 (809) 555-0744', email: 's.peynado@peynado-media.do', source: 'porsche.com.do Web Configurator', tradeIn: '2021 Range Rover Velar ($42,000 Equity)',
+          intentSignals: [
+            'Configured Taycan 4S Cross Turismo in Gentian Blue with off-road gravel package.',
+            'Requested home Wallbox 22kW charging feasibility assessment.',
+            'Reviewing Porsche Financial 48-month lease proposal with Ramón G.'
+          ]
+        },
       ],
       timeline: [
         { time: '09:30', label: '800V Launch Drive', detail: '0-60 mph in 2.1s Verified' },
@@ -848,27 +952,46 @@ export default function Sales() {
               {/* Prospect Engagement & Intent Log */}
               <div className="p-4 rounded-2xl bg-slate-900/5 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-2">
                 <span className="text-[10px] font-mono uppercase text-porsche-red font-bold">Prospect AI Intent Signals</span>
-                <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 font-medium">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-porsche-red" />
-                    Configured {selectedLead.model} in Guards Red with Sport Chrono package on web portal.
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                    Requested 11kW Wallbox home installation feasibility audit for Santo Domingo residence.
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                    Direct inquiry logged by sales advisor {selectedLead.advisor} — high purchase readiness.
-                  </li>
+                <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-2 font-medium">
+                  {(selectedLead.intentSignals || [
+                    `Configured ${selectedLead.model} on porsche.com.do web portal.`,
+                    `Requested financial quotation & trade-in valuation appraisal.`,
+                    `Direct inquiry logged by sales advisor ${selectedLead.advisor} — high purchase readiness.`
+                  ]).map((signal, sIdx) => (
+                    <li key={sIdx} className="flex items-start gap-2">
+                      <span className={`w-1.5 h-1.5 rounded-full mt-1.5 shrink-0 ${sIdx === 0 ? 'bg-porsche-red' : sIdx === 1 ? 'bg-emerald-500' : 'bg-blue-500'}`} />
+                      <span className="leading-normal">{signal}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
 
               {/* Lead Action CTAs */}
               <div className="flex flex-col gap-2 pt-2 border-t border-black/10 dark:border-white/10">
                 {leadActionConfirmed && (
-                  <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-600 dark:text-emerald-400 text-center font-mono">
-                    ✓ {leadActionConfirmed}
+                  <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-bold text-emerald-600 dark:text-emerald-400 font-mono flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 size={16} className="shrink-0 text-emerald-500" />
+                      <span>{leadActionConfirmed}</span>
+                    </div>
+                    {leadActionConfirmed.includes('Converted') && (
+                      <button
+                        onClick={() => {
+                          const slug = selectedLead.name
+                            .normalize('NFD')
+                            .replace(/[\u0300-\u036f]/g, '')
+                            .toLowerCase()
+                            .trim()
+                            .replace(/[^a-z0-9]+/g, '-');
+                          window.location.hash = `#/customer-360/${slug}`;
+                          setSelectedLead(null);
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-emerald-600 text-white text-[11px] font-bold font-sans hover:bg-emerald-700 transition-colors shrink-0 shadow-sm flex items-center gap-1 cursor-pointer"
+                      >
+                        <span>Open Customer 360 Hub</span>
+                        <ChevronRight size={13} />
+                      </button>
+                    )}
                   </div>
                 )}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">

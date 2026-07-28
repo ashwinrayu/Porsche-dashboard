@@ -153,25 +153,35 @@ export default function Logistics() {
       <div className="porsche-card flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Connected Fleet Health</h3>
+            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">{t.connectedFleet}</h3>
             <p className="text-small-13 text-slate-500">32 Vehicles Online</p>
           </div>
-          <button className="text-xs font-bold text-porsche-red hover:underline">View All</button>
+          <button
+            onClick={() => { window.location.hash = '#/customer-360'; }}
+            className="text-xs font-bold text-porsche-red hover:underline cursor-pointer flex items-center gap-1"
+          >
+            <span>View All Fleet</span>
+            <ArrowRight size={13} />
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {fleet.map((car, idx) => (
-            <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-3">
+            <div
+              key={idx}
+              onClick={() => { window.location.hash = '#/customer-360'; }}
+              className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-3 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all group"
+            >
               <div className="w-full h-[120px] rounded-xl overflow-hidden shadow-md">
                 <VehicleImage
                   lightSrc={car.lightImg}
                   darkSrc={car.darkImg}
                   alt={car.model}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
 
-              <h4 className="text-body-16 font-bold text-slate-900 dark:text-white">{car.model}</h4>
+              <h4 className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{car.model}</h4>
 
               <div className="flex items-center justify-between text-xs font-mono pt-2 border-t border-black/5 dark:border-white/5">
                 <div>
@@ -192,13 +202,26 @@ export default function Logistics() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Service Appointments */}
         <div className="porsche-card flex flex-col gap-6">
-          <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Service Appointments</h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">{t.scheduledServiceAppointments}</h3>
+            <button
+              onClick={() => { window.location.hash = '#/reports'; }}
+              className="text-xs font-bold text-porsche-red hover:underline cursor-pointer flex items-center gap-1"
+            >
+              <span>View All</span>
+              <ArrowRight size={13} />
+            </button>
+          </div>
 
           <div className="flex flex-col gap-3">
             {serviceAppointments.map((item, idx) => (
-              <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between">
+              <div
+                key={idx}
+                onClick={() => { window.location.hash = '#/reports'; }}
+                className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between cursor-pointer hover:border-porsche-red/50 hover:shadow-sm transition-all group"
+              >
                 <div>
-                  <p className="text-body-16 font-bold text-slate-900 dark:text-white">{item.service}</p>
+                  <p className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{item.service}</p>
                   <p className="text-small-13 text-slate-500">{item.model}</p>
                 </div>
                 <span className={`text-xs font-bold uppercase font-mono px-3 py-1 rounded-full border ${item.statusColor}`}>
@@ -213,14 +236,24 @@ export default function Logistics() {
         <div className="porsche-card flex flex-col gap-6">
           <div className="flex items-center justify-between">
             <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Trade-in & Renewal Opportunities</h3>
-            <button className="text-xs font-bold text-porsche-red hover:underline">View All</button>
+            <button
+              onClick={() => { window.location.hash = '#/customer-360'; }}
+              className="text-xs font-bold text-porsche-red hover:underline cursor-pointer flex items-center gap-1"
+            >
+              <span>View All</span>
+              <ArrowRight size={13} />
+            </button>
           </div>
 
           <div className="flex flex-col gap-3">
             {tradeInOpportunities.map((opp, idx) => (
-              <div key={idx} className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between">
+              <div
+                key={idx}
+                onClick={() => { window.location.hash = '#/customer-360'; }}
+                className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between cursor-pointer hover:border-porsche-red/50 hover:shadow-sm transition-all group"
+              >
                 <div>
-                  <p className="text-body-16 font-bold text-slate-900 dark:text-white">{opp.client}</p>
+                  <p className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{opp.client}</p>
                   <p className="text-small-13 text-slate-500">{opp.vehicle}</p>
                 </div>
                 <span className={`text-xs font-bold uppercase font-mono px-3 py-1 rounded-full ${opp.tagColor}`}>

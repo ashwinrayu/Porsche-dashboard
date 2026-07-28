@@ -108,19 +108,31 @@ export default function Profile() {
           </div>
 
           <div className="grid grid-cols-2 gap-3 text-xs font-mono">
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+            <div
+              onClick={() => { window.location.hash = '#/sales'; }}
+              className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-porsche-red/50 hover:shadow-sm transition-all"
+            >
               <span className="text-card-22 font-bold text-porsche-red block">7</span>
               <span className="text-[10px] text-slate-400 uppercase font-mono">Hot Leads</span>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+            <div
+              onClick={() => { window.location.hash = '#/sales'; }}
+              className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-amber-500/50 hover:shadow-sm transition-all"
+            >
               <span className="text-card-22 font-bold text-amber-500 block">2</span>
               <span className="text-[10px] text-slate-400 uppercase font-mono">Deals Expiring</span>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+            <div
+              onClick={() => { window.location.hash = '#/logistics'; }}
+              className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-blue-500/50 hover:shadow-sm transition-all"
+            >
               <span className="text-card-22 font-bold text-blue-500 block">3</span>
               <span className="text-[10px] text-slate-400 uppercase font-mono">Service Alerts</span>
             </div>
-            <div className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+            <div
+              onClick={() => { window.location.hash = '#/notifications'; }}
+              className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-emerald-500/50 hover:shadow-sm transition-all"
+            >
               <span className="text-card-22 font-bold text-emerald-500 block">1</span>
               <span className="text-[10px] text-slate-400 uppercase font-mono">Executive Request</span>
             </div>
@@ -139,28 +151,40 @@ export default function Profile() {
 
           {/* 4 Metric Radial Circles */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+            <div
+              onClick={() => { window.location.hash = '#/sales'; }}
+              className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-porsche-red/50 transition-all"
+            >
               <div className="w-16 h-16 rounded-full border-4 border-porsche-red flex items-center justify-center text-body-16 font-bold text-slate-900 dark:text-white font-mono">
                 73
               </div>
               <span className="text-[10px] text-slate-400 font-mono uppercase">Lead Score</span>
             </div>
 
-            <div className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+            <div
+              onClick={() => { window.location.hash = '#/sales'; }}
+              className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-amber-500/50 transition-all"
+            >
               <div className="w-16 h-16 rounded-full border-4 border-amber-500 flex items-center justify-center text-body-16 font-bold text-slate-900 dark:text-white font-mono">
                 11.4
               </div>
               <span className="text-[10px] text-slate-400 font-mono uppercase">Avg. Days to Close</span>
             </div>
 
-            <div className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+            <div
+              onClick={() => { window.location.hash = '#/sales'; }}
+              className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-emerald-500/50 transition-all"
+            >
               <div className="w-16 h-16 rounded-full border-4 border-emerald-500 flex items-center justify-center text-body-16 font-bold text-slate-900 dark:text-white font-mono">
                 312
               </div>
               <span className="text-[10px] text-slate-400 font-mono uppercase">Closed Deals</span>
             </div>
 
-            <div className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+            <div
+              onClick={() => { window.location.hash = '#/profile'; }}
+              className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-blue-500/50 transition-all"
+            >
               <div className="w-16 h-16 rounded-full border-4 border-blue-500 flex items-center justify-center text-body-16 font-bold text-slate-900 dark:text-white font-mono">
                 4.9★
               </div>
@@ -171,7 +195,7 @@ export default function Profile() {
           {/* Porsche Crest Badges Row */}
           <div className="flex items-center justify-around pt-4 border-t border-black/5 dark:border-white/5">
             {[1, 2, 3, 4].map((badge) => (
-              <div key={badge} className="w-10 h-10 rounded-xl bg-porsche-red/10 text-porsche-red flex items-center justify-center border border-porsche-red/20 shadow-glow-red">
+              <div key={badge} className="w-10 h-10 rounded-xl bg-porsche-red/10 text-porsche-red flex items-center justify-center border border-porsche-red/20 shadow-glow-red hover:scale-110 transition-transform cursor-pointer">
                 <Award size={20} />
               </div>
             ))}
@@ -181,15 +205,24 @@ export default function Profile() {
         {/* Recent Activity List (5 Cols) */}
         <div className="lg:col-span-5 porsche-card flex flex-col gap-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Recent Activity</h3>
-            <button className="text-xs font-bold text-porsche-red hover:underline">View All</button>
+            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">{t.recentActivity}</h3>
+            <button
+              onClick={() => { window.location.hash = '#/sales'; }}
+              className="text-xs font-bold text-porsche-red hover:underline cursor-pointer"
+            >
+              View All
+            </button>
           </div>
 
           <div className="flex flex-col gap-3">
             {activities.map((act, idx) => (
-              <div key={idx} className="p-3.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between">
+              <div
+                key={idx}
+                onClick={() => { window.location.hash = '#/sales'; }}
+                className="p-3.5 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between cursor-pointer hover:border-porsche-red/50 hover:shadow-sm transition-all group"
+              >
                 <div>
-                  <p className="text-body-16 font-bold text-slate-900 dark:text-white">{act.text}</p>
+                  <p className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{act.text}</p>
                   <p className="text-small-13 text-slate-500">{act.detail}</p>
                 </div>
                 <span className="text-[10px] text-slate-400 font-mono">{act.time}</span>

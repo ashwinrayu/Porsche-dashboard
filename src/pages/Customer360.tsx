@@ -17,7 +17,12 @@ import {
 } from 'lucide-react';
 import { CountUp } from '../components/CountUp';
 
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
+
 export default function Customer360() {
+  const { language } = useLanguage();
+  const t = translations[language];
   const [activeClientKey, setActiveClientKey] = useState<'luis' | 'maria'>('luis');
 
   const clients = {
@@ -98,10 +103,10 @@ export default function Customer360() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
         <div>
           <div className="text-xs font-mono uppercase tracking-widest text-porsche-red font-bold mb-1">
-            Complete Executive CRM Suite
+            {t.customer360Subtitle}
           </div>
           <h1 className="text-title-48 font-bold text-slate-900 dark:text-white tracking-tight">
-            Customer 360 Profile
+            {t.customer360Title}
           </h1>
         </div>
 

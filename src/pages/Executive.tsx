@@ -132,12 +132,24 @@ export default function Executive() {
 
         {/* Executive KPIs Column (5 Cols) */}
         <div className="lg:col-span-5 porsche-card flex flex-col justify-between gap-4">
-          <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">Executive KPIs</span>
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">Executive KPIs</span>
+            <button
+              onClick={() => { window.location.hash = '#/analytics'; }}
+              className="text-xs font-bold text-porsche-red hover:underline cursor-pointer"
+            >
+              View Analytics
+            </button>
+          </div>
 
           <div className="flex flex-col divide-y divide-black/5 dark:divide-white/5">
             {executiveKPIs.map((kpi, idx) => (
-              <div key={idx} className="py-3 flex items-center justify-between">
-                <span className="text-small-13 text-slate-600 dark:text-slate-300 font-semibold">{kpi.label}</span>
+              <div
+                key={idx}
+                onClick={() => { window.location.hash = '#/analytics'; }}
+                className="py-3 px-2 flex items-center justify-between cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 rounded-xl transition-colors group"
+              >
+                <span className="text-small-13 text-slate-600 dark:text-slate-300 font-semibold group-hover:text-porsche-red transition-colors">{kpi.label}</span>
                 <div className="flex items-center gap-3">
                   <span className="text-body-16 font-bold text-slate-900 dark:text-white">{kpi.val}</span>
                   <span className={`text-xs font-bold font-mono ${kpi.color}`}>{kpi.change}</span>
@@ -151,10 +163,16 @@ export default function Executive() {
       {/* 2. BOTTOM ROW: REVENUE PROJECTION & AI INSIGHTS CARD */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Revenue Projection Bar Chart (7 Cols) */}
-        <div className="lg:col-span-7 porsche-card flex flex-col gap-6">
-          <div>
-            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Revenue Projection</h3>
-            <p className="text-small-13 text-slate-500">USD in millions • Actual vs Forecast</p>
+        <div
+          onClick={() => { window.location.hash = '#/analytics'; }}
+          className="lg:col-span-7 porsche-card flex flex-col gap-6 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Revenue Projection</h3>
+              <p className="text-small-13 text-slate-500">USD in millions • Actual vs Forecast</p>
+            </div>
+            <button className="text-xs font-bold text-porsche-red hover:underline">View Forecast Details</button>
           </div>
 
           <div className="h-[220px] w-full">
@@ -200,7 +218,10 @@ export default function Executive() {
               </div>
             </div>
 
-            <button className="w-full py-3 rounded-2xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition cursor-pointer uppercase">
+            <button
+              onClick={() => { window.location.hash = '#/logistics'; }}
+              className="w-full py-3 rounded-2xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition cursor-pointer uppercase"
+            >
               Take Action
             </button>
           </div>

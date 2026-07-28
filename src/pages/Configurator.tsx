@@ -69,6 +69,8 @@ const PACKAGES = [
 
 export default function Configurator() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   const [selectedModel, setSelectedModel] = useState<PorscheModel>(PORSCHE_MODELS[0]);
   const [selectedPaint, setSelectedPaint] = useState(PAINTS[0]);
   const [selectedPackages, setSelectedPackages] = useState<string[]>(['weissach', 'pccb']);
@@ -93,10 +95,10 @@ export default function Configurator() {
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
         <div>
           <div className="text-xs font-mono uppercase tracking-widest text-porsche-red font-bold mb-1">
-            Porsche Exclusive Manufaktur
+            {t.configuratorSubtitle}
           </div>
           <h1 className="text-title-48 font-bold text-slate-900 dark:text-white tracking-tight">
-            Vehicle Configurator Studio
+            {t.configuratorTitle}
           </h1>
         </div>
 

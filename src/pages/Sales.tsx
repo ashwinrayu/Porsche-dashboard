@@ -346,15 +346,15 @@ export default function Sales() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse min-w-[620px]">
                 <thead>
                   <tr className="border-b border-black/10 dark:border-white/10 text-[10px] uppercase font-mono text-slate-400">
-                    <th className="pb-3 px-2">Lead Prospect</th>
-                    <th className="pb-3 px-2">Target Model</th>
-                    <th className="pb-3 px-2">Lead Score</th>
-                    <th className="pb-3 px-2">Est. Value</th>
-                    <th className="pb-3 px-2">Conversion Stage</th>
-                    <th className="pb-3 px-2 text-right">Last Activity</th>
+                    <th className="pb-3 px-3">Lead Prospect</th>
+                    <th className="pb-3 px-3">Target Model</th>
+                    <th className="pb-3 px-3">Lead Score</th>
+                    <th className="pb-3 px-3">Est. Value</th>
+                    <th className="pb-3 px-3">Conversion Stage</th>
+                    <th className="pb-3 px-3 text-right">Last Activity</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-black/5 dark:divide-white/5">
@@ -371,23 +371,23 @@ export default function Sales() {
                       onClick={() => { window.location.hash = `#/customer-360/${slug}`; }}
                       className="hover:bg-black/5 dark:hover:bg-white/5 theme-transition cursor-pointer group"
                     >
-                      <td className="py-3 px-2">
-                        <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs flex items-center justify-center group-hover:bg-porsche-red group-hover:text-white transition-colors">
+                      <td className="py-3.5 px-3 whitespace-nowrap">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-7 h-7 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs flex items-center justify-center group-hover:bg-porsche-red group-hover:text-white transition-colors shrink-0">
                             {lead.avatar}
                           </div>
                           <span className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{lead.name}</span>
                         </div>
                       </td>
-                      <td className="py-3 px-2 text-xs text-slate-600 dark:text-slate-300 font-semibold">{lead.model}</td>
-                      <td className="py-3 px-2">
-                        <span className="text-[11px] font-bold text-porsche-red bg-porsche-red/10 px-2 py-0.5 rounded-full border border-porsche-red/20">
+                      <td className="py-3.5 px-3 text-xs text-slate-600 dark:text-slate-300 font-semibold whitespace-nowrap">{lead.model}</td>
+                      <td className="py-3.5 px-3 whitespace-nowrap">
+                        <span className="text-[11px] font-bold font-mono text-porsche-red bg-porsche-red/10 px-2.5 py-0.5 rounded-full border border-porsche-red/20 inline-block">
                           {lead.score} / 100
                         </span>
                       </td>
-                      <td className="py-3 px-2 text-xs font-bold text-slate-900 dark:text-white">{lead.value}</td>
-                      <td className="py-3 px-2">
-                        <span className={`text-[10px] font-bold uppercase font-mono px-2.5 py-0.5 rounded-full border ${
+                      <td className="py-3.5 px-3 text-xs font-bold font-mono text-slate-900 dark:text-white whitespace-nowrap">{lead.value}</td>
+                      <td className="py-3.5 px-3 whitespace-nowrap">
+                        <span className={`text-[10px] font-bold uppercase font-mono px-3 py-1 rounded-full border whitespace-nowrap inline-block ${
                           lead.score >= 80 
                             ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' 
                             : 'bg-porsche-red/10 text-porsche-red border-porsche-red/20'
@@ -395,11 +395,10 @@ export default function Sales() {
                           {lead.stage} ({lead.score}%)
                         </span>
                       </td>
-                      <td className="py-3 px-2 text-right text-[10px] text-slate-400 font-mono">{lead.activity}</td>
+                      <td className="py-3.5 px-3 text-right text-[10px] text-slate-400 font-mono whitespace-nowrap">{lead.activity}</td>
                     </tr>
                     );
                   })}
-
                 </tbody>
               </table>
             </div>

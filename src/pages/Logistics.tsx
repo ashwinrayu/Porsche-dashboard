@@ -558,12 +558,12 @@ export default function Logistics() {
                   onClick={() => { window.location.hash = `#/customer-360/${car.customerId}`; }}
                   className="p-4 flex flex-col gap-3 cursor-pointer"
                 >
-                  <div className="w-full h-[120px] rounded-xl overflow-hidden shadow-md relative bg-black/5 dark:bg-white/5">
+                  <div className="w-full h-[140px] rounded-xl overflow-hidden shadow-md relative bg-slate-900/10 dark:bg-white/5 flex items-center justify-center">
                     <VehicleImage
                       lightSrc={car.lightImg}
                       darkSrc={car.darkImg}
                       alt={car.model}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
 
@@ -848,12 +848,12 @@ export default function Logistics() {
                     key={car.id}
                     className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex flex-col gap-3 hover:border-porsche-red/50 transition-all"
                   >
-                    <div className="w-full h-[120px] rounded-xl overflow-hidden shadow-sm relative">
+                    <div className="w-full h-[140px] rounded-xl overflow-hidden shadow-sm relative bg-slate-900/10 dark:bg-white/5 flex items-center justify-center">
                       <VehicleImage
                         lightSrc={car.lightImg}
                         darkSrc={car.darkImg}
                         alt={car.model}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain p-2"
                       />
                       <span className="absolute top-2 right-2 px-2.5 py-0.5 rounded-full text-[9px] font-bold font-mono bg-black/60 backdrop-blur-md text-white border border-white/20">
                         {car.location}

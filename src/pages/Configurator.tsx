@@ -169,12 +169,12 @@ export default function Configurator() {
           </div>
 
           {/* Dual Vehicle Asset Display (Swaps White <-> Black based on theme) */}
-          <div className="w-full h-[360px] rounded-2xl overflow-hidden shadow-2xl border border-black/10 dark:border-white/10">
+          <div className="w-full h-[360px] rounded-2xl overflow-hidden shadow-2xl border border-black/10 dark:border-white/10 flex items-center justify-center bg-slate-950/20">
             <VehicleImage
               lightSrc={selectedModel.lightImg}
               darkSrc={selectedModel.darkImg}
               alt={selectedModel.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain p-4"
             />
           </div>
 

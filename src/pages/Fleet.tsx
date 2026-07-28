@@ -362,12 +362,12 @@ export default function Fleet() {
             key={car.id}
             className="porsche-card flex flex-col gap-4 hover:border-porsche-red/50 hover:shadow-xl transition-all group relative"
           >
-            <div className="w-full h-[140px] rounded-2xl overflow-hidden shadow-md relative bg-gradient-to-b from-slate-900 to-black">
+            <div className="w-full h-[150px] rounded-2xl overflow-hidden shadow-md relative bg-gradient-to-b from-slate-900 to-black flex items-center justify-center">
               <VehicleImage
                 lightSrc={car.lightImg}
                 darkSrc={car.darkImg}
                 alt={car.model}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
               />
               <span className="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-full text-[9px] font-bold font-mono bg-black/70 backdrop-blur-md text-white border border-white/20">
                 {car.location}

@@ -424,12 +424,12 @@ export default function Sales() {
             {/* Configurator Photo */}
             <div
               onClick={() => setIsConfigModalOpen(true)}
-              className="w-full h-[220px] rounded-2xl overflow-hidden shadow-xl border border-black/10 dark:border-white/10 cursor-pointer group relative bg-slate-950/40"
+              className="w-full h-[220px] rounded-2xl overflow-hidden shadow-xl border border-black/10 dark:border-white/10 cursor-pointer group relative bg-black"
             >
               <img
                 src={currentData.image}
                 alt={currentData.configuratorName}
-                className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
                 <span className="text-xs font-bold text-white uppercase font-mono flex items-center gap-1">

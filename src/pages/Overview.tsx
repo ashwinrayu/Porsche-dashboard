@@ -49,30 +49,30 @@ export default function Overview() {
         </div>
       </div>
 
-      {/* 2. MAIN HERO SECTION (Headline & Dual White/Black Porsche 911 Cutouts) */}
-      <div className="relative min-h-[280px] flex items-center justify-between gap-6 py-2 overflow-visible">
+      {/* 2. MAIN HERO SECTION (Headline & Massive Floating Transparent Porsche 911 Cutout) */}
+      <div className="relative min-h-[360px] flex items-center justify-between gap-4 py-2 overflow-visible">
         {/* Ambient Red Studio Lighting Glow behind the car */}
-        <div className="absolute right-[-20px] top-1/2 -translate-y-1/2 w-[550px] h-[220px] bg-porsche-red/15 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute right-[-40px] top-1/2 -translate-y-1/2 w-[750px] h-[320px] bg-porsche-red/15 rounded-full blur-[120px] pointer-events-none" />
 
         {/* Left Side Headline & Subtitle */}
-        <div className="flex flex-col gap-3 max-w-[680px] z-10">
-          <h1 className="text-[54px] leading-[1.04] font-bold text-slate-900 dark:text-white tracking-tight">
+        <div className="flex flex-col gap-3 max-w-[580px] z-10">
+          <h1 className="text-[56px] leading-[1.04] font-bold text-slate-900 dark:text-white tracking-tight">
             Driving Porsche <br />
             <span className="text-porsche-red">Operations</span>
           </h1>
-          <p className="text-[17px] text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
+          <p className="text-[18px] text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
             Real-time intelligence. Smarter decisions. <br />
             Superior performance.
           </p>
         </div>
 
-        {/* Right Side Vehicle Dual Cutouts (White in Light mode, Black in Dark mode) */}
-        <div className="hidden lg:block w-[600px] h-[280px] relative shrink-0 z-10">
+        {/* Right Side Transparent Vehicle Cutouts (Massive Size: 880px x 420px) */}
+        <div className="hidden lg:block w-[880px] h-[420px] relative shrink-0 z-10 -mr-16 -mt-8">
           <VehicleImage
             lightSrc="/porsche-911-light.png"
             darkSrc="/porsche-911-dark.png"
             alt="Porsche 911 Operations Vehicle"
-            className="w-full h-full object-contain filter drop-shadow-[0_25px_35px_rgba(0,0,0,0.35)] transform hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-contain filter drop-shadow-[0_35px_50px_rgba(0,0,0,0.5)] transform hover:scale-105 transition-transform duration-500"
           />
         </div>
       </div>

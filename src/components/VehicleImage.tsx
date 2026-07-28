@@ -13,21 +13,21 @@ export function VehicleImage({ lightSrc, darkSrc, alt, className = '', container
   const { theme } = useTheme();
 
   return (
-    <div className={`relative overflow-hidden ${containerClassName}`}>
-      {/* Light Mode Vehicle Image (White/Silver Studio) */}
+    <div className={`relative overflow-visible ${containerClassName}`}>
+      {/* Light Mode Vehicle Image (White Porsche 911 Cutout) */}
       <img
         src={lightSrc}
-        alt={`${alt} Light Studio`}
-        className={`w-full h-full object-cover transition-opacity duration-600 ease-in-out ${
-          theme === 'light' ? 'opacity-100 scale-100' : 'opacity-0 scale-98 absolute inset-0 pointer-events-none'
+        alt={`${alt} Light`}
+        className={`w-full h-full object-contain transition-opacity duration-500 ease-in-out ${
+          theme === 'light' ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-98 absolute inset-0 pointer-events-none'
         } ${className}`}
       />
-      {/* Dark Mode Vehicle Image (Jet Black / Mission Control Cinematic) */}
+      {/* Dark Mode Vehicle Image (Black Porsche 911 Cutout) */}
       <img
         src={darkSrc}
-        alt={`${alt} Dark Cinematic`}
-        className={`w-full h-full object-cover transition-opacity duration-600 ease-in-out ${
-          theme === 'dark' ? 'opacity-100 scale-100' : 'opacity-0 scale-98 absolute inset-0 pointer-events-none'
+        alt={`${alt} Dark`}
+        className={`w-full h-full object-contain transition-opacity duration-500 ease-in-out ${
+          theme === 'dark' ? 'opacity-100 scale-100 z-10' : 'opacity-0 scale-98 absolute inset-0 pointer-events-none'
         } ${className}`}
       />
     </div>

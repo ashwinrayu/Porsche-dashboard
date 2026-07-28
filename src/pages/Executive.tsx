@@ -24,6 +24,7 @@ import {
 } from 'recharts';
 import { CountUp } from '../components/CountUp';
 import { useTheme } from '../context/ThemeContext';
+import { PorscheLogo } from '../components/PorscheLogo';
 
 export default function Executive() {
   const { theme } = useTheme();
@@ -75,11 +76,7 @@ export default function Executive() {
           <div className="relative w-full max-w-md h-[260px] flex items-center justify-center">
             {/* Glowing Central Crest Node */}
             <div className="w-28 h-28 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex flex-col items-center justify-center shadow-glow-red z-20 border-4 border-porsche-red p-4">
-              <img 
-                src="https://upload.wikimedia.org/wikipedia/de/2/2d/Porsche_Logo.svg" 
-                alt="Porsche Crest Logo" 
-                className="w-full h-full object-contain filter drop-shadow-md animate-pulse"
-              />
+              <PorscheLogo size={48} />
             </div>
 
             {/* 5 Surrounding Radiating Nodes */}

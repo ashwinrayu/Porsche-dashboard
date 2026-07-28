@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   TrendingUp, 
+  Users,
   Wrench, 
   Brain, 
   UserCircle,
@@ -27,6 +28,7 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps) {
   const navItems = [
     { to: '/', label: t.overview, icon: <LayoutDashboard size={18} /> },
     { to: '/sales', label: t.sales, icon: <TrendingUp size={18} /> },
+    { to: '/customer-360', label: t.customers, icon: <Users size={18} /> },
     { to: '/logistics', label: t.logistics, icon: <Wrench size={18} /> },
     { to: '/executive', label: t.executive, icon: <Brain size={18} /> },
     { to: '/profile', label: t.profile, icon: <UserCircle size={18} /> },

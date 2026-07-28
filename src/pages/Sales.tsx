@@ -349,11 +349,11 @@ export default function Sales() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="border-b border-black/10 dark:border-white/10 text-[10px] uppercase font-mono text-slate-400">
-                    <th className="pb-3 px-2">Customer</th>
-                    <th className="pb-3 px-2">Model</th>
-                    <th className="pb-3 px-2">Score</th>
-                    <th className="pb-3 px-2">Value</th>
-                    <th className="pb-3 px-2">Stage</th>
+                    <th className="pb-3 px-2">Lead Prospect</th>
+                    <th className="pb-3 px-2">Target Model</th>
+                    <th className="pb-3 px-2">Lead Score</th>
+                    <th className="pb-3 px-2">Est. Value</th>
+                    <th className="pb-3 px-2">Conversion Stage</th>
                     <th className="pb-3 px-2 text-right">Last Activity</th>
                   </tr>
                 </thead>
@@ -381,14 +381,18 @@ export default function Sales() {
                       </td>
                       <td className="py-3 px-2 text-xs text-slate-600 dark:text-slate-300 font-semibold">{lead.model}</td>
                       <td className="py-3 px-2">
-                        <span className="text-[11px] font-bold text-porsche-red bg-porsche-red/10 px-2 py-0.5 rounded-full">
-                          {lead.score}
+                        <span className="text-[11px] font-bold text-porsche-red bg-porsche-red/10 px-2 py-0.5 rounded-full border border-porsche-red/20">
+                          {lead.score} / 100
                         </span>
                       </td>
                       <td className="py-3 px-2 text-xs font-bold text-slate-900 dark:text-white">{lead.value}</td>
                       <td className="py-3 px-2">
-                        <span className="text-[10px] font-bold uppercase font-mono px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-slate-300">
-                          {lead.stage}
+                        <span className={`text-[10px] font-bold uppercase font-mono px-2.5 py-0.5 rounded-full border ${
+                          lead.score >= 80 
+                            ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' 
+                            : 'bg-porsche-red/10 text-porsche-red border-porsche-red/20'
+                        }`}>
+                          {lead.stage} ({lead.score}%)
                         </span>
                       </td>
                       <td className="py-3 px-2 text-right text-[10px] text-slate-400 font-mono">{lead.activity}</td>

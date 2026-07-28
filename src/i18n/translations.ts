@@ -3,6 +3,7 @@ export const translations = {
     // Nav
     overview: 'Overview',
     sales: 'Sales & Conversion',
+    customers: 'Customers 360',
     logistics: 'Logistics & After-Sales',
     executive: 'Executive Intelligence',
     profile: 'Profile & Settings',
@@ -134,6 +135,7 @@ export const translations = {
     // Nav
     overview: 'Visión General',
     sales: 'Ventas y Conversión',
+    customers: 'Clientes 360',
     logistics: 'Logística y Posventa',
     executive: 'Inteligencia Ejecutiva',
     profile: 'Perfil y Configuración',

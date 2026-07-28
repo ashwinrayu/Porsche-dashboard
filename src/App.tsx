@@ -94,6 +94,7 @@ function MainLayout() {
               <Route path="/ai-assistant" element={<PageWrapper><AiAssistant /></PageWrapper>} />
               <Route path="/configurator" element={<PageWrapper><Configurator /></PageWrapper>} />
               <Route path="/customer-360" element={<PageWrapper><Customer360 /></PageWrapper>} />
+              <Route path="/customers" element={<PageWrapper><Customer360 /></PageWrapper>} />
               <Route path="/customer-360/:customerId" element={<PageWrapper><Customer360 /></PageWrapper>} />
               <Route path="/analytics" element={<PageWrapper><Analytics /></PageWrapper>} />
               <Route path="/reports" element={<PageWrapper><Reports /></PageWrapper>} />

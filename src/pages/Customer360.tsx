@@ -620,6 +620,7 @@ export default function Customer360() {
   const navigate = useNavigate();
 
   const [activeKey, setActiveKey] = useState<string>(customerId || 'luis-corripio');
+  const [customerSearch, setCustomerSearch] = useState('');
 
   useEffect(() => {
     if (customerId) setActiveKey(customerId);
@@ -631,44 +632,84 @@ export default function Customer360() {
     navigate(`/customer-360/${key}`);
   };
 
+  const filteredKeys = CLIENT_KEYS.filter((key) => {
+    const c = ALL_CLIENTS[key];
+    const q = customerSearch.toLowerCase();
+    return (
+      c.name.toLowerCase().includes(q) ||
+      c.id.toLowerCase().includes(q) ||
+      c.interestedModel.toLowerCase().includes(q) ||
+      c.location.toLowerCase().includes(q)
+    );
+  });
+
   return (
     <div className="flex flex-col gap-10">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
         <div>
           <div className="text-xs font-mono uppercase tracking-widest text-porsche-red font-bold mb-1">
-            {t.customer360Subtitle}
+            VIP CLIENT DIRECTORY & TELEMETRY
           </div>
           <h1 className="text-title-48 font-bold text-slate-900 dark:text-white tracking-tight">
-            {t.customer360Title}
+            Customer 360 Hub
           </h1>
+          <p className="text-xs text-slate-500 font-mono mt-1">Select any client below to inspect complete fleet, financial, and engagement telemetry</p>
         </div>
 
         {/* Back to Sales */}
         <button
           onClick={() => navigate('/sales')}
-          className="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-porsche-red transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-porsche-red transition-colors cursor-pointer self-start sm:self-auto"
         >
           <ChevronLeft size={14} />
           Back to Sales
         </button>
       </div>
 
-      {/* Customer Switcher Pills — all 10 */}
-      <div className="flex items-center gap-2 flex-wrap">
-        {CLIENT_KEYS.map((key) => (
-          <button
-            key={key}
-            onClick={() => switchTo(key)}
-            className={`px-3 py-1.5 rounded-full text-[11px] font-bold theme-transition cursor-pointer whitespace-nowrap ${
-              activeKey === key
-                ? 'bg-porsche-red text-white shadow-glow-red'
-                : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-            }`}
-          >
-            {ALL_CLIENTS[key].name}
-          </button>
-        ))}
+      {/* Customer Switcher Search & Pills */}
+      <div className="porsche-card flex flex-col gap-4">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-porsche-red" />
+            <span className="text-xs font-bold font-mono text-slate-900 dark:text-white uppercase">
+              All Clients Directory ({filteredKeys.length} / {CLIENT_KEYS.length})
+            </span>
+          </div>
+
+          {/* Search bar */}
+          <div className="relative min-w-[240px] sm:min-w-[320px]">
+            <input
+              type="text"
+              value={customerSearch}
+              onChange={(e) => setCustomerSearch(e.target.value)}
+              placeholder="Search clients by name, model, location..."
+              className="w-full pl-3 pr-4 py-1.5 rounded-xl bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-porsche-red"
+            />
+          </div>
+        </div>
+
+        {/* Pills */}
+        <div className="flex items-center gap-2 flex-wrap max-h-[160px] overflow-y-auto pr-1">
+          {filteredKeys.map((key) => (
+            <button
+              key={key}
+              onClick={() => switchTo(key)}
+              className={`px-3 py-1.5 rounded-full text-[11px] font-bold theme-transition cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+                activeKey === key
+                  ? 'bg-porsche-red text-white shadow-glow-red'
+                  : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <span>{ALL_CLIENTS[key].name}</span>
+              <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-mono ${
+                activeKey === key ? 'bg-white/20 text-white' : 'bg-black/10 dark:bg-white/10 text-slate-400'
+              }`}>
+                {ALL_CLIENTS[key].aiPurchaseScore} pts
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* 1. VIP HEADER CARD */}

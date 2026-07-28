@@ -51,7 +51,7 @@ export const translations = {
 
     // Sales Page
     salesTitle: 'Sales & Conversion',
-    salesSubtitle: 'Tesla-style CRM • Live Lead Pipeline • Configurator Preview',
+    salesSubtitle: 'Porsche Executive CRM • Live Lead Pipeline • Vehicle Spec Engine',
     totalPipeline: 'TOTAL PIPELINE',
     winProbability: 'WIN PROBABILITY',
     activeLeadsTitle: 'Active Leads & Pipeline',
@@ -67,7 +67,7 @@ export const translations = {
 
     // Logistics Page
     logisticsTitle: 'Logistics & After-Sales',
-    logisticsSubtitle: 'Mission Control • Spare Parts AI Scanner • Connected Fleet',
+    logisticsSubtitle: 'Mission Control • Spare Parts AI Scanner • Connected Fleet Telemetry',
     partsHeatmap: 'Parts Inventory Risk Heatmap',
     aiScanner: 'AI Parts Scanner (Computer Vision)',
     dropScan: 'Drop part photo here or click to simulate scan',
@@ -102,7 +102,7 @@ export const translations = {
 
     // AI Assistant Page
     aiAssistantTitle: 'Porsche Enterprise AI Copilot',
-    aiAssistantSubtitle: 'ChatGPT Enterprise • Operations, Inventory & Customer Intelligence',
+    aiAssistantSubtitle: 'Porsche Executive Intelligence • Operations & Customer Telemetry',
     suggestedPrompts: 'Suggested Prompts',
     typeMessage: 'Ask Porsche Enterprise AI anything...',
 
@@ -182,7 +182,7 @@ export const translations = {
 
     // Sales Page
     salesTitle: 'Ventas y Conversión',
-    salesSubtitle: 'CRM Estilo Tesla • Embudo de Prospectos • Vista Previa del Configurador',
+    salesSubtitle: 'CRM Ejecutivo Porsche • Embudo de Prospectos • Motor de Especificaciones',
     totalPipeline: 'CANAL DE VENTAS TOTAL',
     winProbability: 'PROBABILIDAD DE GANANCIA',
     activeLeadsTitle: 'Prospectos Activos y Embudo',
@@ -198,7 +198,7 @@ export const translations = {
 
     // Logistics Page
     logisticsTitle: 'Logística y Posventa',
-    logisticsSubtitle: 'Control de Misión • Escáner IA de Repuestos • Flota Conectada',
+    logisticsSubtitle: 'Control de Misión • Escáner IA de Repuestos • Telemetría de Flota Conectada',
     partsHeatmap: 'Mapa de Riesgo de Inventario de Repuestos',
     aiScanner: 'Escáner IA de Repuestos (Visión por Computadora)',
     dropScan: 'Arrastre foto del repuesto aquí o haga clic para escanear',
@@ -233,7 +233,7 @@ export const translations = {
 
     // AI Assistant Page
     aiAssistantTitle: 'Copiloto IA Empresarial Porsche',
-    aiAssistantSubtitle: 'ChatGPT Enterprise • Operaciones, Inventario e Inteligencia de Clientes',
+    aiAssistantSubtitle: 'Inteligencia Ejecutiva Porsche • Operaciones y Telemetría de Clientes',
     suggestedPrompts: 'Sugerencias de Prompts',
     typeMessage: 'Pregunte lo que sea a la IA Empresarial Porsche...',
 

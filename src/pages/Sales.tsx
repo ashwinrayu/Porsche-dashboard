@@ -126,9 +126,18 @@ export default function Sales() {
 
           {/* TOP ACTIVE LEADS TABLE */}
           <div className="porsche-card flex flex-col gap-4">
-            <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-widest">
-              TOP ACTIVE LEADS
-            </span>
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] text-slate-400 font-mono uppercase font-bold tracking-widest">
+                TOP ACTIVE LEADS
+              </span>
+              <button
+                onClick={() => { window.location.hash = '#/customer-360'; }}
+                className="text-xs font-bold text-porsche-red hover:underline flex items-center gap-1 cursor-pointer"
+              >
+                <span>View All Leads</span>
+                <ChevronRight size={14} />
+              </button>
+            </div>
 
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -144,13 +153,17 @@ export default function Sales() {
                 </thead>
                 <tbody className="divide-y divide-black/5 dark:divide-white/5">
                   {topActiveLeads.map((lead, idx) => (
-                    <tr key={idx} className="hover:bg-black/5 dark:hover:bg-white/5 theme-transition">
+                    <tr
+                      key={idx}
+                      onClick={() => { window.location.hash = '#/customer-360'; }}
+                      className="hover:bg-black/5 dark:hover:bg-white/5 theme-transition cursor-pointer group"
+                    >
                       <td className="py-3 px-2">
                         <div className="flex items-center gap-2">
-                          <div className="w-7 h-7 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs flex items-center justify-center">
+                          <div className="w-7 h-7 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs flex items-center justify-center group-hover:bg-porsche-red group-hover:text-white transition-colors">
                             {lead.avatar}
                           </div>
-                          <span className="text-xs font-bold text-slate-900 dark:text-white">{lead.name}</span>
+                          <span className="text-xs font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{lead.name}</span>
                         </div>
                       </td>
                       <td className="py-3 px-2 text-xs text-slate-600 dark:text-slate-300 font-semibold">{lead.model}</td>
@@ -178,13 +191,19 @@ export default function Sales() {
         <div className="lg:col-span-5 flex flex-col gap-6">
           {/* Win Probability & Avg Deal Value Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="porsche-card flex flex-col justify-between gap-3">
+            <div
+              onClick={() => { window.location.hash = '#/analytics'; }}
+              className="porsche-card flex flex-col justify-between gap-3 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
+            >
               <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">Win Probability (Next 90 Days)</span>
               <div className="text-section-30 font-bold text-slate-900 dark:text-white">$17.7M</div>
               <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+12.4% vs last quarter</span>
             </div>
 
-            <div className="porsche-card flex flex-col justify-between gap-3">
+            <div
+              onClick={() => { window.location.hash = '#/analytics'; }}
+              className="porsche-card flex flex-col justify-between gap-3 cursor-pointer hover:border-porsche-red/50 hover:shadow-lg transition-all"
+            >
               <span className="text-[10px] text-slate-400 font-mono uppercase font-bold">Avg Deal Value</span>
               <div className="text-section-30 font-bold text-slate-900 dark:text-white">$387,500</div>
               <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">+5.2% vs last quarter</span>
@@ -199,12 +218,15 @@ export default function Sales() {
             </div>
 
             {/* Configurator Photo */}
-            <div className="w-full h-[220px] rounded-2xl overflow-hidden shadow-xl border border-black/10 dark:border-white/10">
+            <div
+              onClick={() => { window.location.hash = '#/configurator'; }}
+              className="w-full h-[220px] rounded-2xl overflow-hidden shadow-xl border border-black/10 dark:border-white/10 cursor-pointer group"
+            >
               <VehicleImage
                 lightSrc="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80"
                 darkSrc="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
                 alt="911 Carrera GTS"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
             </div>
 
@@ -229,7 +251,10 @@ export default function Sales() {
               </div>
             </div>
 
-            <button className="w-full py-3.5 rounded-2xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition cursor-pointer uppercase">
+            <button
+              onClick={() => { window.location.hash = '#/configurator'; }}
+              className="w-full py-3.5 rounded-2xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition cursor-pointer uppercase"
+            >
               VIEW FULL CONFIGURATION
             </button>
           </div>

@@ -79,7 +79,13 @@ export default function Logistics() {
               <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">{t.partsHeatmap}</h3>
               <p className="text-small-13 text-slate-500">{t.logisticsSubtitle}</p>
             </div>
-            <MapPin size={18} className="text-porsche-red" />
+            <button
+              onClick={() => { window.location.hash = '#/reports'; }}
+              className="px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:border-porsche-red cursor-pointer flex items-center gap-1.5"
+            >
+              <span>View Full Inventory Report</span>
+              <ArrowRight size={13} />
+            </button>
           </div>
 
           {/* Map Representation Container */}

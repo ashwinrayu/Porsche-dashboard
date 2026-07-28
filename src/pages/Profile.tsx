@@ -1,19 +1,17 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  UserCircle, 
   Award, 
-  Sparkles, 
-  TrendingUp, 
   Phone, 
   Mail, 
   MapPin, 
-  CheckCircle2, 
-  Clock, 
-  Activity, 
-  ShieldCheck, 
   Bot, 
-  Star 
+  X,
+  Check,
+  Camera,
+  User,
+  Building2,
+  Save
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
@@ -24,6 +22,34 @@ export default function Profile() {
   const { theme } = useTheme();
   const { language } = useLanguage();
   const t = translations[language];
+
+  // Profile state
+  const [profile, setProfile] = useState({
+    name: 'Eduardo Bisonó',
+    role: 'Senior Sales Advisor',
+    location: 'Porsche Center Santo Domingo',
+    phone: '+1 (809) 555-0142',
+    email: 'eduardo.bisono@porsche.com.do',
+  });
+
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [editForm, setEditForm] = useState({ ...profile });
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  const openEdit = () => {
+    setEditForm({ ...profile });
+    setSaveSuccess(false);
+    setIsEditOpen(true);
+  };
+
+  const handleSave = () => {
+    setProfile({ ...editForm });
+    setSaveSuccess(true);
+    setTimeout(() => {
+      setIsEditOpen(false);
+      setSaveSuccess(false);
+    }, 1200);
+  };
 
   const activities = [
     { text: 'Configured 911 Carrera GTS', detail: 'For Luis Corripio', time: '2m ago' },
@@ -53,16 +79,30 @@ export default function Profile() {
         <div className="lg:col-span-7 porsche-card flex flex-col justify-between gap-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-5">
-              <div className="w-20 h-20 rounded-2xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-2xl flex items-center justify-center shrink-0 border-2 border-porsche-red shadow-glow-red">
-                EB
+              {/* Profile Photo */}
+              <div className="relative shrink-0">
+                <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-porsche-red shadow-[0_0_20px_rgba(213,0,28,0.5)]">
+                  <img
+                    src="/profile-eduardo.png"
+                    alt={profile.name}
+                    className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                {/* Online status dot */}
+                <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900 shadow" />
               </div>
               <div className="flex flex-col">
-                <h2 className="text-card-22 font-bold text-slate-900 dark:text-white">Eduardo Bisonó</h2>
-                <span className="text-xs text-slate-500 font-semibold">Senior Sales Advisor</span>
+                <h2 className="text-card-22 font-bold text-slate-900 dark:text-white">{profile.name}</h2>
+                <span className="text-xs text-slate-500 font-semibold">{profile.role}</span>
               </div>
             </div>
 
-            <button className="px-4 py-2 rounded-full border border-black/10 dark:border-white/10 text-xs font-bold text-slate-700 dark:text-slate-300 hover:border-porsche-red theme-transition">
+            {/* Edit Profile Button — now wired up */}
+            <button
+              onClick={openEdit}
+              className="px-5 py-2.5 rounded-full border border-porsche-red/40 text-xs font-bold text-porsche-red hover:bg-porsche-red hover:text-white shadow-glow-red-sm theme-transition cursor-pointer flex items-center gap-2"
+            >
+              <User size={13} />
               Edit Profile
             </button>
           </div>
@@ -70,16 +110,16 @@ export default function Profile() {
           {/* Contact & Location Details */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono text-slate-600 dark:text-slate-400 pt-4 border-t border-black/5 dark:border-white/5">
             <div className="flex items-center gap-2">
-              <MapPin size={14} className="text-porsche-red" />
-              <span>Porsche Center Santo Domingo</span>
+              <MapPin size={14} className="text-porsche-red shrink-0" />
+              <span>{profile.location}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Phone size={14} className="text-porsche-red" />
-              <span>+1 (809) 555-0142</span>
+              <Phone size={14} className="text-porsche-red shrink-0" />
+              <span>{profile.phone}</span>
             </div>
             <div className="flex items-center gap-2">
-              <Mail size={14} className="text-porsche-red" />
-              <span>eduardo.bisono@porsche.com.do</span>
+              <Mail size={14} className="text-porsche-red shrink-0" />
+              <span className="truncate">{profile.email}</span>
             </div>
           </div>
 
@@ -140,7 +180,7 @@ export default function Profile() {
         </div>
       </div>
 
-      {/* 2. BOTTOM ROW: PERFORMANCE OVERVIEW (4 DIALS & BADGES) & RECENT ACTIVITY */}
+      {/* 2. BOTTOM ROW: PERFORMANCE OVERVIEW & RECENT ACTIVITY */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Performance Overview (7 Cols) */}
         <div className="lg:col-span-7 porsche-card flex flex-col justify-between gap-6">
@@ -149,50 +189,26 @@ export default function Profile() {
             <p className="text-small-13 text-slate-500">This Month</p>
           </div>
 
-          {/* 4 Metric Radial Circles */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div
-              onClick={() => { window.location.hash = '#/sales'; }}
-              className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-porsche-red/50 transition-all"
-            >
-              <div className="w-16 h-16 rounded-full border-4 border-porsche-red flex items-center justify-center text-body-16 font-bold text-slate-900 dark:text-white font-mono">
-                73
+            {[
+              { val: '73', label: 'Lead Score', color: 'border-porsche-red' },
+              { val: '11.4', label: 'Avg. Days to Close', color: 'border-amber-500' },
+              { val: '312', label: 'Closed Deals', color: 'border-emerald-500' },
+              { val: '4.9★', label: 'Avg. Rating', color: 'border-blue-500' },
+            ].map((m) => (
+              <div
+                key={m.label}
+                onClick={() => { window.location.hash = '#/sales'; }}
+                className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-porsche-red/50 transition-all"
+              >
+                <div className={`w-16 h-16 rounded-full border-4 ${m.color} flex items-center justify-center text-body-16 font-bold text-slate-900 dark:text-white font-mono`}>
+                  {m.val}
+                </div>
+                <span className="text-[10px] text-slate-400 font-mono uppercase">{m.label}</span>
               </div>
-              <span className="text-[10px] text-slate-400 font-mono uppercase">Lead Score</span>
-            </div>
-
-            <div
-              onClick={() => { window.location.hash = '#/sales'; }}
-              className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-amber-500/50 transition-all"
-            >
-              <div className="w-16 h-16 rounded-full border-4 border-amber-500 flex items-center justify-center text-body-16 font-bold text-slate-900 dark:text-white font-mono">
-                11.4
-              </div>
-              <span className="text-[10px] text-slate-400 font-mono uppercase">Avg. Days to Close</span>
-            </div>
-
-            <div
-              onClick={() => { window.location.hash = '#/sales'; }}
-              className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-emerald-500/50 transition-all"
-            >
-              <div className="w-16 h-16 rounded-full border-4 border-emerald-500 flex items-center justify-center text-body-16 font-bold text-slate-900 dark:text-white font-mono">
-                312
-              </div>
-              <span className="text-[10px] text-slate-400 font-mono uppercase">Closed Deals</span>
-            </div>
-
-            <div
-              onClick={() => { window.location.hash = '#/profile'; }}
-              className="flex flex-col items-center gap-2 text-center p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 cursor-pointer hover:border-blue-500/50 transition-all"
-            >
-              <div className="w-16 h-16 rounded-full border-4 border-blue-500 flex items-center justify-center text-body-16 font-bold text-slate-900 dark:text-white font-mono">
-                4.9★
-              </div>
-              <span className="text-[10px] text-slate-400 font-mono uppercase">Avg. Rating</span>
-            </div>
+            ))}
           </div>
 
-          {/* Porsche Crest Badges Row */}
           <div className="flex items-center justify-around pt-4 border-t border-black/5 dark:border-white/5">
             {[1, 2, 3, 4].map((badge) => (
               <div key={badge} className="w-10 h-10 rounded-xl bg-porsche-red/10 text-porsche-red flex items-center justify-center border border-porsche-red/20 shadow-glow-red hover:scale-110 transition-transform cursor-pointer">
@@ -231,6 +247,157 @@ export default function Profile() {
           </div>
         </div>
       </div>
+
+      {/* ── EDIT PROFILE MODAL ── */}
+      <AnimatePresence>
+        {isEditOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.94, y: 24 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 24 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="w-full max-w-lg rounded-3xl bg-white dark:bg-[#121417] border border-black/10 dark:border-white/10 shadow-2xl overflow-hidden"
+            >
+              {/* Modal Header */}
+              <div className="flex items-center justify-between px-6 py-5 border-b border-black/10 dark:border-white/10">
+                <div>
+                  <span className="text-[10px] font-mono text-porsche-red uppercase font-bold tracking-widest">
+                    PORSCHE COMMAND CENTER
+                  </span>
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white mt-0.5">Edit Profile</h2>
+                </div>
+                <button
+                  onClick={() => setIsEditOpen(false)}
+                  className="w-9 h-9 rounded-full bg-slate-100 dark:bg-white/10 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors cursor-pointer"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Modal Body */}
+              <div className="p-6 flex flex-col gap-5">
+
+                {/* Profile photo preview */}
+                <div className="flex items-center gap-4">
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-2xl overflow-hidden border-2 border-porsche-red shadow-[0_0_16px_rgba(213,0,28,0.4)]">
+                      <img src="/profile-eduardo.png" alt="Profile" className="w-full h-full object-cover object-top" />
+                    </div>
+                    <button className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-porsche-red text-white flex items-center justify-center shadow cursor-pointer hover:bg-red-700 transition-colors">
+                      <Camera size={11} />
+                    </button>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">{editForm.name}</p>
+                    <p className="text-xs text-slate-400">{editForm.role}</p>
+                  </div>
+                </div>
+
+                {/* Form fields */}
+                <div className="grid grid-cols-1 gap-4">
+
+                  {/* Full Name */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-mono">Full Name</label>
+                    <div className="relative">
+                      <User size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        value={editForm.name}
+                        onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-porsche-red transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Role */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-mono">Job Title</label>
+                    <div className="relative">
+                      <Building2 size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        value={editForm.role}
+                        onChange={(e) => setEditForm({ ...editForm, role: e.target.value })}
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-porsche-red transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-mono">Location</label>
+                    <div className="relative">
+                      <MapPin size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        value={editForm.location}
+                        onChange={(e) => setEditForm({ ...editForm, location: e.target.value })}
+                        className="w-full pl-10 pr-4 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-porsche-red transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Phone & Email */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-mono">Phone</label>
+                      <div className="relative">
+                        <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <input
+                          type="text"
+                          value={editForm.phone}
+                          onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
+                          className="w-full pl-9 pr-3 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-porsche-red transition-colors"
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-mono">Email</label>
+                      <div className="relative">
+                        <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                        <input
+                          type="email"
+                          value={editForm.email}
+                          onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                          className="w-full pl-9 pr-3 py-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/10 dark:border-white/10 text-sm text-slate-900 dark:text-white font-semibold focus:outline-none focus:border-porsche-red transition-colors"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="px-6 py-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between gap-3 bg-slate-50 dark:bg-[#0E1013]">
+                <button
+                  onClick={() => setIsEditOpen(false)}
+                  className="px-5 py-2.5 rounded-full bg-slate-200 dark:bg-white/10 text-slate-700 dark:text-white text-xs font-bold hover:bg-slate-300 dark:hover:bg-white/20 transition-colors cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSave}
+                  className="px-8 py-2.5 rounded-full bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition cursor-pointer flex items-center gap-2 uppercase"
+                >
+                  {saveSuccess ? (
+                    <>
+                      <Check size={14} />
+                      <span>Saved!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Save size={14} />
+                      <span>Save Changes</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

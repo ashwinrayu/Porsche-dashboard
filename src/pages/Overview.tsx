@@ -38,22 +38,6 @@ export default function Overview() {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className="flex flex-col gap-8 pb-12"
     >
-      {/* 1. TOP STATUS BAR */}
-      <div className="h-[56px] rounded-[20px] bg-porsche-red/[0.02] border border-porsche-red/20 px-6 flex items-center justify-between text-xs font-mono shrink-0">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-porsche-red animate-ping" />
-          <span className="font-bold text-slate-900 dark:text-white">{t.connectedTo}</span>
-          <span className="text-porsche-red font-bold uppercase">• {t.live}</span>
-        </div>
-
-        <div className="hidden sm:flex items-center gap-8 text-slate-500 dark:text-slate-400">
-          <span>{t.latency}: <strong className="text-slate-900 dark:text-white font-bold">16ms</strong></span>
-          <span>{t.vehicleNetworks}: <strong className="text-slate-900 dark:text-white font-bold">128</strong></span>
-          <span>{t.aiEngine}: <strong className="text-porsche-red font-bold">{t.active}</strong></span>
-          <span>{t.lastSync}: <strong className="text-slate-900 dark:text-white font-bold">10:24 AM</strong></span>
-        </div>
-      </div>
-
       {/* 2. MAIN HERO SECTION */}
       <div className="relative min-h-[360px] flex items-center justify-between gap-4 py-2 overflow-visible">
         {/* Ambient Red Studio Lighting Glow behind the car */}

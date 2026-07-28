@@ -6,27 +6,35 @@ export function LanguageToggle() {
   const { language, setLanguage } = useLanguage();
 
   return (
-    <div className="flex items-center p-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 theme-transition">
+    <div className="flex items-center p-1 rounded-full bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/15 theme-transition shadow-sm">
+      <div className="pl-2 pr-1 text-slate-400">
+        <Globe size={15} />
+      </div>
+
       <button
         onClick={() => setLanguage('en')}
-        className={`px-3 py-1 rounded-full text-xs font-mono font-bold theme-transition cursor-pointer flex items-center gap-1.5 ${
+        type="button"
+        title="English"
+        className={`px-2.5 py-1 rounded-full text-xs font-mono font-bold transition-all duration-300 cursor-pointer ${
           language === 'en'
-            ? 'bg-porsche-red text-white shadow-glow-red'
-            : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            ? 'bg-porsche-red text-white shadow-glow-red scale-105'
+            : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'
         }`}
       >
-        <span>EN</span>
+        EN
       </button>
 
       <button
         onClick={() => setLanguage('es')}
-        className={`px-3 py-1 rounded-full text-xs font-mono font-bold theme-transition cursor-pointer flex items-center gap-1.5 ${
+        type="button"
+        title="Español"
+        className={`px-2.5 py-1 rounded-full text-xs font-mono font-bold transition-all duration-300 cursor-pointer ${
           language === 'es'
-            ? 'bg-porsche-red text-white shadow-glow-red'
-            : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+            ? 'bg-porsche-red text-white shadow-glow-red scale-105'
+            : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'
         }`}
       >
-        <span>ES</span>
+        ES
       </button>
     </div>
   );

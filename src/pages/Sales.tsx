@@ -16,17 +16,21 @@ import {
   Building2 
 } from 'lucide-react';
 import { VehicleImage } from '../components/VehicleImage';
+import { CountUp } from '../components/CountUp';
 import { useTheme } from '../context/ThemeContext';
+import { useLanguage } from '../context/LanguageContext';
+import { translations } from '../i18n/translations';
 
 export default function Sales() {
   const { theme } = useTheme();
+  const { language } = useLanguage();
+  const t = translations[language];
   const [selectedFilter, setSelectedFilter] = useState('All');
 
-  const funnelData = [
-    { label: 'New Leads', val: 412, width: 'w-full bg-porsche-red/10 border-porsche-red/30' },
-    { label: 'Qualified', val: 284, width: 'w-[85%] bg-porsche-red/20 border-porsche-red/40' },
-    { label: 'Showroom / Test Drive', val: 158, width: 'w-[70%] bg-porsche-red/30 border-porsche-red/50' },
-    { label: 'Configuration', val: 94, width: 'w-[55%] bg-porsche-red/40 border-porsche-red/60' },
+  const funnelStages = [
+    { label: 'Leads', val: 328, width: 'w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900' },
+    { label: 'Qualified', val: 184, width: 'w-[75%] bg-porsche-red/20 border-porsche-red/30 text-porsche-red' },
+    { label: 'Test Drive', val: 92, width: 'w-[55%] bg-porsche-red/40 border-porsche-red/50' },
     { label: 'Proposal', val: 61, width: 'w-[40%] bg-porsche-red/60 border-porsche-red/70' },
     { label: 'Closed', val: 41, width: 'w-[28%] bg-porsche-red border-porsche-red text-white' },
   ];
@@ -51,10 +55,10 @@ export default function Sales() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
         <div>
           <span className="text-[10px] text-porsche-red font-mono uppercase font-bold tracking-widest">
-            AI POWERED SALES PIPELINE AND INTELLIGENT LEAD MANAGEMENT
+            {t.salesSubtitle}
           </span>
           <h1 className="text-title-48 font-bold text-slate-900 dark:text-white tracking-tight">
-            Live Sales Pipeline
+            {t.salesTitle}
           </h1>
         </div>
 

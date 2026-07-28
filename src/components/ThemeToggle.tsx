@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sun, Moon, ShieldAlert } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
 export function ThemeToggle() {
@@ -10,30 +10,26 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       type="button"
       title={`Switch to ${theme === 'light' ? 'Mission Control (Dark)' : 'Executive Studio (Light)'} Mode`}
-      className="relative flex items-center p-1 rounded-full bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/15 cursor-pointer theme-transition group hover:scale-105 active:scale-95"
+      className="flex items-center p-1 rounded-full bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/15 cursor-pointer theme-transition hover:scale-105 active:scale-95 shadow-sm"
     >
       <div
-        className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-600 ease-in-out ${
+        className={`p-2 rounded-full transition-all duration-300 ${
           theme === 'light'
-            ? 'bg-white text-slate-900 shadow-sm'
-            : 'bg-porsche-red text-white shadow-glow-red'
+            ? 'bg-porsche-red text-white shadow-glow-red scale-105'
+            : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'
         }`}
       >
-        {theme === 'light' ? (
-          <>
-            <Sun size={14} className="text-amber-500 transition-transform duration-600 group-hover:rotate-45" />
-            <span className="text-[11px] font-bold tracking-wide">Studio</span>
-          </>
-        ) : (
-          <>
-            <Moon size={14} className="text-white transition-transform duration-600 group-hover:-rotate-12" />
-            <span className="text-[11px] font-bold tracking-wide">Mission Control</span>
-          </>
-        )}
+        <Sun size={16} />
       </div>
 
-      <div className="flex items-center px-2 text-[10px] text-slate-500 dark:text-slate-400 font-semibold tracking-wider uppercase">
-        {theme === 'light' ? 'Dark' : 'Light'}
+      <div
+        className={`p-2 rounded-full transition-all duration-300 ${
+          theme === 'dark'
+            ? 'bg-porsche-red text-white shadow-glow-red scale-105'
+            : 'text-slate-400 hover:text-slate-900 dark:hover:text-white'
+        }`}
+      >
+        <Moon size={16} />
       </div>
     </button>
   );

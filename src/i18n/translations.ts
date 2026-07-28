@@ -49,6 +49,84 @@ export const translations = {
     inProgress: 'In Progress',
     upcoming: 'Upcoming',
 
+    // Sales Page
+    salesTitle: 'Sales & Conversion',
+    salesSubtitle: 'Tesla-style CRM • Live Lead Pipeline • Configurator Preview',
+    totalPipeline: 'TOTAL PIPELINE',
+    winProbability: 'WIN PROBABILITY',
+    activeLeadsTitle: 'Active Leads & Pipeline',
+    searchLeadsPlaceholder: 'Search leads, advisors, models...',
+    liveConfigurator: 'Live Spec Configurator',
+    customerJourneyTimeline: 'Customer Journey Timeline',
+    customer: 'Customer',
+    model: 'Model',
+    statusLabel: 'Status',
+    probability: 'Probability',
+    value: 'Value',
+    action: 'Action',
+
+    // Logistics Page
+    logisticsTitle: 'Logistics & After-Sales',
+    logisticsSubtitle: 'Mission Control • Spare Parts AI Scanner • Connected Fleet',
+    partsHeatmap: 'Parts Inventory Risk Heatmap',
+    aiScanner: 'AI Parts Scanner (Computer Vision)',
+    dropScan: 'Drop part photo here or click to simulate scan',
+    connectedFleet: 'Connected Fleet Health Telemetry',
+    scheduledServiceAppointments: 'Scheduled Service Appointments',
+
+    // Executive Page
+    executiveTitle: 'Executive Intelligence',
+    executiveSubtitle: 'AI DRIVEN INSIGHTS, PREDICTIVE ANALYTICS AND OPERATIONAL INTELLIGENCE',
+    aiBrain: 'AI Operational Brain',
+    networkSubtitle: 'Real-time operational intelligence network',
+    revenueProjection: 'Revenue Projection',
+    actualVsForecast: 'USD in millions • Actual vs Forecast',
+    topRecommendation: "Today's Top Recommendation",
+    takeAction: 'Take Action',
+
+    // Profile Page
+    profileTitle: 'Senior Sales Advisor Profile',
+    profileSubtitle: 'Porsche Executive Performance & Advisory Telemetry',
+    advisorRole: 'Senior Porsche Advisor • Santo Domingo',
+    totalSalesYtd: 'Total Sales (YTD)',
+    clientSatisfaction: 'Client Satisfaction',
+    activeQuotes: 'Active VIP Quotes',
+    recentActivity: 'Recent Advisory Activity',
+
+    // Notifications Page
+    notificationsTitle: 'Executive Notifications',
+    notificationsSubtitle: 'Real-time Priority Stream & Approval Center',
+    approveReallocation: 'Approve Reallocation',
+    sendVipContract: 'Send VIP Contract',
+    markAllRead: 'Mark All as Read',
+
+    // AI Assistant Page
+    aiAssistantTitle: 'Porsche Enterprise AI Copilot',
+    aiAssistantSubtitle: 'ChatGPT Enterprise • Operations, Inventory & Customer Intelligence',
+    suggestedPrompts: 'Suggested Prompts',
+    typeMessage: 'Ask Porsche Enterprise AI anything...',
+
+    // Customer 360 Page
+    customer360Title: 'Customer 360 Suite',
+    customer360Subtitle: 'VIP Executive Profile • Vehicle History • Financial Intelligence',
+    lifetimeValue: 'Lifetime Value (LTV)',
+    aiPurchaseScore: 'AI Purchase Score',
+    activeGarage: 'Active Garage',
+    purchaseHistory: 'Purchase History',
+    serviceHistory: 'Service History',
+    tradeInHistory: 'Trade-in History',
+
+    // Analytics Page
+    analyticsTitle: 'Executive Analytics Telemetry',
+    analyticsSubtitle: 'Regional Dealer Comparison • Revenue Forecast • Predictive Heatmap',
+    regionalHeatmap: 'Regional Dealer Sales Heatmap',
+    exportPdf: 'Export PDF Report',
+    exportCsv: 'Export CSV Data',
+
+    // Configurator Page
+    configuratorTitle: 'Porsche Vehicle Configurator',
+    configuratorSubtitle: 'Build & Spec Your Custom Porsche',
+
     // Common
     languageName: 'English',
   },
@@ -101,6 +179,84 @@ export const translations = {
     completed: 'Completado',
     inProgress: 'En Progreso',
     upcoming: 'Próximo',
+
+    // Sales Page
+    salesTitle: 'Ventas y Conversión',
+    salesSubtitle: 'CRM Estilo Tesla • Embudo de Prospectos • Vista Previa del Configurador',
+    totalPipeline: 'CANAL DE VENTAS TOTAL',
+    winProbability: 'PROBABILIDAD DE GANANCIA',
+    activeLeadsTitle: 'Prospectos Activos y Embudo',
+    searchLeadsPlaceholder: 'Buscar prospectos, asesores, modelos...',
+    liveConfigurator: 'Configurador de Especificaciones',
+    customerJourneyTimeline: 'Línea de Tiempo del Cliente',
+    customer: 'Cliente',
+    model: 'Modelo',
+    statusLabel: 'Estado',
+    probability: 'Probabilidad',
+    value: 'Valor',
+    action: 'Acción',
+
+    // Logistics Page
+    logisticsTitle: 'Logística y Posventa',
+    logisticsSubtitle: 'Control de Misión • Escáner IA de Repuestos • Flota Conectada',
+    partsHeatmap: 'Mapa de Riesgo de Inventario de Repuestos',
+    aiScanner: 'Escáner IA de Repuestos (Visión por Computadora)',
+    dropScan: 'Arrastre foto del repuesto aquí o haga clic para escanear',
+    connectedFleet: 'Telemetría de Salud de Flota Conectada',
+    scheduledServiceAppointments: 'Citas de Servicio Programadas',
+
+    // Executive Page
+    executiveTitle: 'Inteligencia Ejecutiva',
+    executiveSubtitle: 'PERSPECTIVAS IA, ANALÍTICA PREDICTIVA E INTELIGENCIA OPERATIVA',
+    aiBrain: 'Cerebro Operativo IA',
+    networkSubtitle: 'Red de inteligencia operativa en tiempo real',
+    revenueProjection: 'Proyección de Ingresos',
+    actualVsForecast: 'USD en millones • Real vs Pronóstico',
+    topRecommendation: 'Recomendación Principal de Hoy',
+    takeAction: 'Tomar Acción',
+
+    // Profile Page
+    profileTitle: 'Perfil de Asesor Senior de Ventas',
+    profileSubtitle: 'Rendimiento Ejecutivo y Telemetría Porsche',
+    advisorRole: 'Asesor Senior Porsche • Santo Domingo',
+    totalSalesYtd: 'Ventas Totales (YTD)',
+    clientSatisfaction: 'Satisfacción del Cliente',
+    activeQuotes: 'Cotizaciones VIP Activas',
+    recentActivity: 'Actividad Reciente',
+
+    // Notifications Page
+    notificationsTitle: 'Notificaciones Ejecutivas',
+    notificationsSubtitle: 'Transmisión de Prioridad en Tiempo Real y Centro de Aprobaciones',
+    approveReallocation: 'Aprobar Reasignación',
+    sendVipContract: 'Enviar Contrato VIP',
+    markAllRead: 'Marcar Todo como Leído',
+
+    // AI Assistant Page
+    aiAssistantTitle: 'Copiloto IA Empresarial Porsche',
+    aiAssistantSubtitle: 'ChatGPT Enterprise • Operaciones, Inventario e Inteligencia de Clientes',
+    suggestedPrompts: 'Sugerencias de Prompts',
+    typeMessage: 'Pregunte lo que sea a la IA Empresarial Porsche...',
+
+    // Customer 360 Page
+    customer360Title: 'Suite Cliente 360',
+    customer360Subtitle: 'Perfil Ejecutivo VIP • Historial de Vehículo • Inteligencia Financiera',
+    lifetimeValue: 'Valor de Vida (LTV)',
+    aiPurchaseScore: 'Puntaje de Compra IA',
+    activeGarage: 'Garaje Activo',
+    purchaseHistory: 'Historial de Compras',
+    serviceHistory: 'Historial de Servicios',
+    tradeInHistory: 'Historial de Intercambios',
+
+    // Analytics Page
+    analyticsTitle: 'Telemetría de Analítica Ejecutiva',
+    analyticsSubtitle: 'Comparativa Regional de Concesionarios • Pronóstico de Ingresos',
+    regionalHeatmap: 'Mapa de Calor de Ventas por Región',
+    exportPdf: 'Exportar Informe PDF',
+    exportCsv: 'Exportar Datos CSV',
+
+    // Configurator Page
+    configuratorTitle: 'Configurador de Vehículos Porsche',
+    configuratorSubtitle: 'Configure su Porsche Personalizado',
 
     // Common
     languageName: 'Español',

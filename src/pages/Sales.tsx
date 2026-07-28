@@ -1,922 +1,266 @@
-import { useState, useEffect } from 'react';
-import {
-  ArrowUpDown,
-  Sparkles,
-  Send,
-  X,
-  Clock,
-  Car,
-  CalendarCheck,
-  MessageSquare,
-  ChevronRight
-} from 'lucide-react';
-import { api } from '../services/api';
-import type { Lead } from '../services/api';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const LEAD_TIMELINES: Record<string, Array<{ event: string; detail: string; time: string; type: 'contact' | 'config' | 'visit' | 'note' }>> = {
-  'L-1000': [
-    { event: 'Showroom Visit', detail: 'Test drive — 911 GTS in Guards Red', time: '2 days ago', type: 'visit' },
-    { event: 'Config Updated', detail: 'Paint: Guards Red • Weissach Package added', time: '3 hrs ago', type: 'config' },
-    { event: 'Follow-up Call', detail: 'Advisor discussed delivery timeline & financing', time: '1 day ago', type: 'contact' },
-    { event: 'Quotation Sent', detail: '$415,000 — Sport Chrono + Race-Tex', time: '5 days ago', type: 'note' },
-  ],
-  'L-1001': [
-    { event: 'Web Inquiry', detail: 'Taycan Turbo S — online configurator submission', time: '1 week ago', type: 'contact' },
-    { event: 'Config Updated', detail: 'Paint: Chalk • Mission E Wheels', time: '2 days ago', type: 'config' },
-    { event: 'Email Follow-up', detail: 'Sent Taycan EV charging guide & incentives', time: '3 days ago', type: 'note' },
-  ],
-  'L-1002': [
-    { event: 'VIP Event', detail: 'Casa de Campo Golf Tournament attendance', time: '2 weeks ago', type: 'visit' },
-    { event: 'Initial Contact', detail: 'Cayenne E-Hybrid expressed strong interest', time: '10 days ago', type: 'contact' },
-    { event: 'Config Updated', detail: 'Jet Black • RS Spyder Wheels • Truffle Brown', time: '4 days ago', type: 'config' },
-  ],
-  'L-1003': [
-    { event: 'Instagram Lead', detail: 'Responded to Macan Electric campaign ad', time: '5 days ago', type: 'contact' },
-    { event: 'Config Updated', detail: 'Mamba Green • Macan Design Wheels', time: '1 day ago', type: 'config' },
-  ],
-  'L-1004': [
-    { event: 'Referral Intake', detail: 'Referred by Luis Pellerano (existing GT3 owner)', time: '3 weeks ago', type: 'visit' },
-    { event: 'Test Drive Booked', detail: '718 GT4 RS — Porsche Track Day experience', time: '2 weeks ago', type: 'visit' },
-    { event: 'Config Updated', detail: 'Guards Red • Weissach • Forged Magnesium Wheels', time: '6 hrs ago', type: 'config' },
-    { event: 'Negotiation Ongoing', detail: 'Customer requested extended warranty package', time: '1 day ago', type: 'note' },
-  ],
-};
-
-const TEST_DRIVE_SLOTS = [
-  'Tomorrow — 10:00 AM', 'Tomorrow — 2:00 PM', 'Sat — 9:00 AM', 'Sat — 11:00 AM', 'Mon — 10:00 AM',
-];
+import { 
+  TrendingUp, 
+  Users, 
+  Car, 
+  Calendar, 
+  Sparkles, 
+  DollarSign, 
+  CheckCircle2, 
+  Clock, 
+  ChevronRight, 
+  SlidersHorizontal,
+  X
+} from 'lucide-react';
+import { VehicleImage } from '../components/VehicleImage';
+import { CountUp } from '../components/CountUp';
+import { Link } from 'react-router-dom';
 
 export default function Sales() {
-  const [leads, setLeads] = useState<Lead[]>([]);
-  const [sortAsc, setSortAsc] = useState<boolean>(false);
-  const [selectedLeadId, setSelectedLeadId] = useState<string | null>(null);
+  const [selectedLead, setSelectedLead] = useState<string | null>(null);
+  const [tradeInValue, setTradeInValue] = useState<number>(45000);
+  const [tradeInModel, setTradeInModel] = useState('2021 Macan GTS');
+  const [bookingSuccess, setBookingSuccess] = useState(false);
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [newLeadName, setNewLeadName] = useState('');
-  const [newLeadModel, setNewLeadModel] = useState('911 Carrera GTS (992.2)');
-  const [newLeadSource, setNewLeadSource] = useState('Showroom Santo Domingo');
-  const [newLeadScore, setNewLeadScore] = useState(60);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [isConfiguratorOpen, setIsConfiguratorOpen] = useState(false);
-  const [configPaint, setConfigPaint] = useState('');
-  const [configWheels, setConfigWheels] = useState('');
-  const [configInterior, setConfigInterior] = useState('');
-  const [configPackages, setConfigPackages] = useState<string[]>([]);
-  const [isSavingConfig, setIsSavingConfig] = useState(false);
-
-  const [detailLead, setDetailLead] = useState<Lead | null>(null);
-  const [selectedDriveSlot, setSelectedDriveSlot] = useState<string | null>(null);
-  const [driveBooked, setDriveBooked] = useState<Record<string, string>>({});
-
-  const handleBookDrive = () => {
-    if (!detailLead || !selectedDriveSlot) return;
-    setDriveBooked(prev => ({ ...prev, [detailLead.id]: selectedDriveSlot }));
-    setSelectedDriveSlot(null);
-  };
-
-  const activeLead = leads.find(l => l.id === selectedLeadId) || leads[0];
-
-  const openConfigurator = (lead: Lead) => {
-    setConfigPaint(lead.specs?.paint || 'GT Silver Metallic');
-    setConfigWheels(lead.specs?.wheels || '20/21-inch Carrera S Wheels');
-    setConfigInterior(lead.specs?.interior || 'Standard Interior in Black');
-    setConfigPackages(lead.specs?.packages || ['Sport Chrono Package']);
-    setIsConfiguratorOpen(true);
-  };
-
-  useEffect(() => {
-    const fetchLeads = () => {
-      api.sales.getLeads()
-        .then(data => {
-          setLeads(data.leads);
-          setSelectedLeadId(prev => prev || data.leads[0]?.id || null);
-        })
-        .catch(console.error);
-    };
-
-    fetchLeads();
-    const interval = setInterval(fetchLeads, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const sortedLeads = [...leads].sort((a, b) => {
-    return sortAsc ? a.score - b.score : b.score - a.score;
-  });
-
-  const toggleSort = () => {
-    setSortAsc(!sortAsc);
-  };
-
-  const handleAssignAdvisor = (leadId: string, advisorName: string) => {
-    setLeads(prevLeads =>
-      prevLeads.map(lead => lead.id === leadId ? { ...lead, assignedAdvisor: advisorName } : lead)
-    );
-    api.sales.assignLeadAdvisor(leadId, advisorName)
-      .catch(err => {
-        console.error('Failed to assign advisor:', err);
-        api.sales.getLeads().then(data => setLeads(data.leads));
-      });
-  };
-
-  const handleCreateLead = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newLeadName.trim()) return;
-
-    setIsSubmitting(true);
-    try {
-      await api.sales.createLead(newLeadName, newLeadModel, newLeadSource, newLeadScore);
-      const data = await api.sales.getLeads();
-      setLeads(data.leads);
-      setNewLeadName('');
-      setNewLeadScore(60);
-      setIsDrawerOpen(false);
-    } catch (err) {
-      console.error('Failed to create lead:', err);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleSaveConfig = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!activeLead) return;
-
-    setIsSavingConfig(true);
-    const specs = {
-      paint: configPaint,
-      wheels: configWheels,
-      interior: configInterior,
-      packages: configPackages
-    };
-
-    try {
-      await api.sales.updateConfig(activeLead.id, specs);
-      setLeads(prevLeads =>
-        prevLeads.map(lead => lead.id === activeLead.id ? { ...lead, specs } : lead)
-      );
-      setMessages(prev => [
-        ...prev,
-        {
-          sender: 'ai',
-          text: `Configuration updated! ${activeLead.name} has finalized their spec: ${configPaint} with ${configWheels} and ${configInterior}. The order has been submitted to the production planning desk.`,
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }
-      ]);
-      setIsConfiguratorOpen(false);
-    } catch (err) {
-      console.error('Failed to save config:', err);
-    } finally {
-      setIsSavingConfig(false);
-    }
-  };
-
-  const [messages, setMessages] = useState<Array<{ sender: 'user' | 'ai'; text: string; time: string }>>([]);
-  const [inputVal, setInputVal] = useState('');
-
-  useEffect(() => {
-    if (activeLead) {
-      setMessages([
-        {
-          sender: 'ai',
-          text: `Analyzing active lead: ${activeLead.name}. Order profile is a ${activeLead.model} in ${activeLead.specs?.paint || 'GT Silver Metallic'} with ${activeLead.specs?.wheels || 'Carrera S Wheels'}. Ask me about logistics status or parts availability.`,
-          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }
-      ]);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedLeadId]);
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputVal.trim()) return;
-
-    const userMsg = inputVal;
-    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    setMessages(prev => [...prev, { sender: 'user', text: userMsg, time: now }]);
-    setInputVal('');
-
-    setTimeout(() => {
-      const lower = userMsg.toLowerCase();
-      let reply = "";
-
-      if (lower.includes('test drive') || lower.includes('manejo') || lower.includes('probar')) {
-        reply = "We'd love to schedule a private test drive at Porsche Center Santo Domingo. We currently have the new Taycan 4S and Cayenne Coupe available. Please specify your preferred date, and our sales desk will finalize the booking.";
-      } else if (lower.includes('financing') || lower.includes('financia') || lower.includes('popular') || lower.includes('bhd')) {
-        reply = "AutoEuropa provides customized financing packages through local Dominican banks like Banco Popular and BHD. We currently offer promotional interest rates starting at 8.5% fixed for 12 months. Would you like a financial calculator quote sent to your email?";
-      } else if (lower.includes('taycan') || lower.includes('electric') || lower.includes('cargador') || lower.includes('charge')) {
-        reply = "For all Taycan and Macan EV allocations, AutoEuropa includes a complimentary Porsche Home Charger installation, engineered for the Dominican grid. We also offer access to the Evergo fast-charging network across the island.";
-      } else if (lower.includes('location') || lower.includes('direcc') || lower.includes('donde') || lower.includes('kennedy')) {
-        reply = "Our showroom is located at Av. John F. Kennedy Esq. Abraham Lincoln, Santo Domingo, Dominican Republic. We are open Monday to Friday from 9:00 AM to 6:00 PM, and Saturdays from 9:00 AM to 1:00 PM.";
-      } else {
-        reply = "Thank you for your message. I've noted your interest. Our lead scoring AI has routed this conversation to our senior advisor, Eduardo Bisonó, who will follow up with you shortly.";
-      }
-
-      setMessages(prev => [...prev, { sender: 'ai', text: reply, time: now }]);
-    }, 800);
-  };
+  const leads = [
+    { id: 'L-1001', name: 'Luis Corripio', model: '911 GT3 RS', score: 96, status: 'Hot', advisor: 'Eduardo Bisonó', budget: '$320,000' },
+    { id: 'L-1002', name: 'María Vásquez', model: 'Taycan Turbo GT', score: 88, status: 'Hot', advisor: 'María Laura Díaz', budget: '$240,000' },
+    { id: 'L-1003', name: 'Gustavo Tavares', model: '718 Cayman GT4 RS', score: 74, status: 'Warm', advisor: 'Eduardo Bisonó', budget: '$190,000' },
+    { id: 'L-1004', name: 'Alejandro Santelises', model: 'Panamera 4 E-Hybrid', score: 62, status: 'Warm', advisor: 'Carlos Mendoza', budget: '$145,000' },
+  ];
 
   return (
-    <div className="flex flex-col gap-8">
-      <section className="flex justify-between items-start">
+    <div className="flex flex-col gap-10">
+      {/* 48px Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
         <div>
-          <h1 className="text-3xl font-light text-slate-900 tracking-tight">Pillar 1: <span className="font-semibold text-porsche-red">Sales & Conversion</span></h1>
-          <p className="text-sm text-porsche-muted font-light mt-2">Lead intelligence, customer persona configuration, and virtual showroom routing.</p>
-        </div>
-      </section>
-
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="porsche-card-glow p-5 rounded-2xl border border-porsche-red/10">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-xs font-semibold tracking-wider bg-porsche-red/5 text-porsche-red px-2 py-0.5 rounded border border-porsche-red/15 uppercase">SUV Line</span>
-            <span className="text-[10px] text-porsche-emerald font-semibold uppercase">Active campaign</span>
+          <div className="text-xs font-mono uppercase tracking-widest text-porsche-red font-bold mb-1">
+            Commercial Pipeline
           </div>
-          <h3 className="text-sm font-bold text-slate-900 mb-1.5">Cayenne & Macan Trade-In Alerts</h3>
-          <p className="text-xs text-porsche-muted font-light leading-relaxed">
-            Automatic triggers target previous-generation Cayenne owners whose lease terms are nearing completion. Dynamic valuation reports are generated in the background for showroom advisors.
-          </p>
+          <h1 className="text-title-48 font-bold text-slate-900 dark:text-white tracking-tight">
+            Sales & Lead Conversion
+          </h1>
         </div>
 
-        <div className="porsche-card-glow p-5 rounded-2xl border border-slate-200">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-xs font-semibold tracking-wider bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-200 uppercase">Sports Cars</span>
-            <span className="text-[10px] text-porsche-gold font-semibold uppercase">Allocation manager</span>
-          </div>
-          <h3 className="text-sm font-bold text-slate-900 mb-1.5">911 & 718 Allocation Queue</h3>
-          <p className="text-xs text-porsche-muted font-light leading-relaxed">
-            Predictive assignment score ranks clients based on loyalty index, track day participation, and prior GT acquisitions, reducing manual negotiation bottlenecks for 911 GT3 models.
-          </p>
+        <div className="flex items-center gap-3">
+          <Link
+            to="/configurator"
+            className="px-5 py-2.5 rounded-full bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition flex items-center gap-2 cursor-pointer"
+          >
+            <Car size={14} />
+            <span>Open Configurator Studio</span>
+          </Link>
         </div>
+      </div>
 
-        <div className="porsche-card-glow p-5 rounded-2xl border border-porsche-green/20">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-xs font-semibold tracking-wider bg-porsche-green/10 text-porsche-green px-2 py-0.5 rounded border border-porsche-green/25 uppercase">Sedans / EV</span>
-            <span className="text-[10px] text-porsche-green font-semibold uppercase">Acquisition campaigns</span>
-          </div>
-          <h3 className="text-sm font-bold text-slate-900 mb-1.5">Taycan Electric Acquisition</h3>
-          <p className="text-xs text-porsche-muted font-light leading-relaxed">
-            Geofenced social campaigns target high-income corporate districts (Naco, Piantini). Automated calculators present solar panel offset and fuel savings projections for potential buyers.
+      {/* Dual Vehicle Featured Model Showcase */}
+      <div className="porsche-card grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <div className="flex flex-col gap-4">
+          <span className="text-[11px] font-bold text-porsche-red uppercase tracking-widest bg-porsche-red/10 border border-porsche-red/20 px-3 py-1 rounded-full w-max">
+            High Demand Commercial Lead — 911 GT3 RS
+          </span>
+          <h2 className="text-section-30 font-bold text-slate-900 dark:text-white">
+            VIP Lead Priority Matrix
+          </h2>
+          <p className="text-small-13 text-slate-600 dark:text-slate-300 leading-relaxed">
+            Luis Corripio has configured a Guards Red 911 GT3 RS with Weissach Package. AI probability of close is 96% within 48 hours.
           </p>
-        </div>
-      </section>
 
-      <section className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-2 porsche-card-glow p-8 rounded-2xl flex flex-col gap-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-lg font-semibold text-slate-900 tracking-wide">Intelligent Lead Scoring</h2>
-              <p className="text-xs text-porsche-muted font-light mt-2">Real-time engagement scoring and advisor routing.</p>
+          <div className="grid grid-cols-3 gap-4 pt-2">
+            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 text-center">
+              <p className="text-[10px] text-slate-400 font-mono uppercase">Target Price</p>
+              <p className="text-body-16 font-bold text-slate-900 dark:text-white">$341,200</p>
             </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setIsDrawerOpen(true)}
-                className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold bg-porsche-red text-white hover:bg-red-700 hover:shadow-glow-red rounded-xl hover:scale-[1.01] active:scale-[0.99] transition-all uppercase tracking-wider"
-              >
-                Create Lead
-              </button>
-              <button
-                onClick={toggleSort}
-                className="flex items-center gap-2 px-4 py-2 text-xs font-medium border border-porsche-border rounded-xl text-porsche-red hover:bg-porsche-red/5 transition-colors"
-              >
-                <ArrowUpDown size={14} />
-                Sort ({sortAsc ? 'Asc' : 'Desc'})
-              </button>
+            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 text-center">
+              <p className="text-[10px] text-slate-400 font-mono uppercase">AI Intent Score</p>
+              <p className="text-body-16 font-bold text-porsche-red">96 / 100</p>
+            </div>
+            <div className="p-3 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 text-center">
+              <p className="text-[10px] text-slate-400 font-mono uppercase">Trade-In Expected</p>
+              <p className="text-body-16 font-bold text-emerald-600 dark:text-emerald-400">Yes</p>
             </div>
           </div>
+        </div>
 
-          <div className="overflow-x-auto w-full -mx-2 px-2">
-            <table className="w-full min-w-[860px] text-left border-collapse">
+        {/* Dual GT3 Image (White GT3 in Light, Black GT3 in Dark) */}
+        <div className="w-full h-[280px] rounded-2xl overflow-hidden shadow-2xl border border-black/10 dark:border-white/10">
+          <VehicleImage
+            lightSrc="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1200&q=80"
+            darkSrc="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80"
+            alt="Porsche 911 GT3"
+            className="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+
+      {/* Pipeline Stage Matrix & VIP Customer Leads */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Leads Table (2 Columns) */}
+        <div className="lg:col-span-2 porsche-card flex flex-col gap-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Active High-Intent VIP Leads</h3>
+            <span className="text-xs text-slate-400 font-mono">4 Active Accounts</span>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-porsche-border text-[11px] uppercase tracking-wider text-porsche-muted font-semibold">
-                  <th className="py-3.5 px-4 whitespace-nowrap">Lead ID</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">Customer</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">Model of Interest</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">Source</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">AI Score</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">Status</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">Advisor</th>
+                <tr className="border-b border-black/10 dark:border-white/10 text-[10px] uppercase font-mono text-slate-400">
+                  <th className="pb-3 px-2">Client</th>
+                  <th className="pb-3 px-2">Target Vehicle</th>
+                  <th className="pb-3 px-2">AI Score</th>
+                  <th className="pb-3 px-2">Advisor</th>
+                  <th className="pb-3 px-2 text-right">Action</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-porsche-border/40">
-                {sortedLeads.map((lead) => {
-                  const isSelected = activeLead?.id === lead.id;
-                  return (
-                    <tr
-                      key={lead.id}
-                      onClick={() => setSelectedLeadId(lead.id)}
-                      onDoubleClick={() => setDetailLead(lead)}
-                      className={`hover:bg-slate-900/5 transition-all duration-150 group cursor-pointer ${isSelected
-                        ? 'bg-slate-100/90 font-medium text-slate-900 relative shadow-sm'
-                        : ''
-                        }`}
-                    >
-                      <td className="py-3.5 px-4 whitespace-nowrap font-mono text-xs text-porsche-muted font-semibold">
-                        <div className="flex items-center gap-1.5">
-                          {isSelected && <span className="w-1 h-3.5 bg-porsche-red rounded-full shrink-0" />}
-                          <span className="whitespace-nowrap">{lead.id}</span>
-                        </div>
-                      </td>
-                      <td className="py-3.5 px-4 text-xs font-semibold text-slate-900 group-hover:text-porsche-red transition-colors whitespace-nowrap">
-                        {lead.name}
-                      </td>
-                      <td className="py-3.5 px-4 text-xs text-slate-800 whitespace-nowrap" title={lead.model}>
-                        {lead.model}
-                      </td>
-                      <td className="py-3.5 px-4 text-xs text-porsche-muted whitespace-nowrap">
-                        {lead.source}
-                      </td>
-                      <td className="py-3.5 px-4 whitespace-nowrap font-semibold text-slate-900">
-                        <span className="inline-flex items-center gap-2">
-                          <span className={`w-2 h-2 rounded-full shrink-0 ${lead.score >= 80 ? 'bg-porsche-red shadow-glow-red' :
-                            lead.score >= 50 ? 'bg-porsche-gold' : 'bg-porsche-muted'
-                            }`} />
-                          <span className="text-xs font-mono font-bold leading-none">{lead.score}</span>
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 whitespace-nowrap">
-                        <span className={`inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase border leading-none tracking-wider ${lead.status === 'Hot' ? 'bg-porsche-red/10 text-porsche-red border-porsche-red/20' :
-                          lead.status === 'Warm' ? 'bg-porsche-gold/10 text-porsche-gold border-porsche-gold/20' :
-                            'bg-porsche-muted/10 text-porsche-muted border-porsche-border'
-                          }`}>
-                          {lead.status}
-                        </span>
-                      </td>
-                      <td className="py-3.5 px-4 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
-                          <select
-                            value={lead.assignedAdvisor}
-                            onChange={(e) => handleAssignAdvisor(lead.id, e.target.value)}
-                            onClick={e => e.stopPropagation()}
-                            className="bg-transparent border border-slate-200 hover:border-porsche-red/40 rounded-lg px-2.5 py-1 text-xs text-slate-800 focus:outline-none focus:border-porsche-red cursor-pointer transition-all min-w-[140px]"
-                          >
-                            <option value="Unassigned">Unassigned</option>
-                            <option value="Eduardo Bisonó">Eduardo Bisonó</option>
-                            <option value="Claudia Peynado">Claudia Peynado</option>
-                            <option value="Rafael Santana">Rafael Santana</option>
-                            <option value="María Laura Díaz">María Laura Díaz</option>
-                          </select>
-                          <button
-                            onClick={e => { e.stopPropagation(); setDetailLead(lead); }}
-                            className="shrink-0 p-1 rounded-lg border border-porsche-border text-porsche-muted hover:text-porsche-red hover:border-porsche-red/40 transition-all opacity-0 group-hover:opacity-100"
-                            title="View Lead Profile"
-                          >
-                            <ChevronRight size={14} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+              <tbody className="divide-y divide-black/5 dark:divide-white/5">
+                {leads.map((lead) => (
+                  <tr key={lead.id} className="hover:bg-black/5 dark:hover:bg-white/5 theme-transition">
+                    <td className="py-4 px-2">
+                      <p className="text-body-16 font-bold text-slate-900 dark:text-white">{lead.name}</p>
+                      <p className="text-small-13 text-slate-400">{lead.id}</p>
+                    </td>
+                    <td className="py-4 px-2 text-small-13 font-semibold text-slate-700 dark:text-slate-300">
+                      {lead.model}
+                    </td>
+                    <td className="py-4 px-2">
+                      <span className="text-xs font-bold text-porsche-red bg-porsche-red/10 px-2.5 py-1 rounded-full">
+                        {lead.score}% AI Score
+                      </span>
+                    </td>
+                    <td className="py-4 px-2 text-small-13 text-slate-500 dark:text-slate-400">
+                      {lead.advisor}
+                    </td>
+                    <td className="py-4 px-2 text-right">
+                      <button
+                        onClick={() => setSelectedLead(lead.id)}
+                        className="px-3.5 py-1.5 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold hover:bg-porsche-red dark:hover:bg-porsche-red dark:hover:text-white theme-transition cursor-pointer"
+                      >
+                        Schedule Test Drive
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
 
-        <div className="flex flex-col gap-6">
-          <div className="porsche-card-glow p-6 rounded-2xl flex flex-col gap-4">
+        {/* Trade-In Value Estimator (1 Column) */}
+        <div className="porsche-card flex flex-col gap-6 justify-between">
+          <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Sparkles size={18} className="text-porsche-red" />
-                <h2 className="text-base font-semibold text-slate-900 tracking-wide">Intelligent Configurator</h2>
-              </div>
-              <span className="text-[10px] text-porsche-red font-mono uppercase tracking-widest font-bold bg-porsche-red/10 px-2 py-0.5 rounded border border-porsche-red/20">
-                AI Match
-              </span>
+              <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Trade-In Estimator</h3>
+              <DollarSign size={18} className="text-porsche-red" />
             </div>
 
-            {activeLead ? (
-              <div className="flex flex-col gap-4">
-                <div>
-                  <h3 className="text-sm font-bold text-slate-950 leading-snug">{activeLead.name}</h3>
-                  <span className="text-[10px] text-porsche-muted uppercase tracking-wider font-semibold">{activeLead.model}</span>
-                </div>
+            <p className="text-small-13 text-slate-500 dark:text-slate-400">
+              Calculate instant trade-in equity for client upgrade paths to Taycan Electric or 911 GT3.
+            </p>
 
-                <div className="pt-3 border-t border-porsche-border/40 flex flex-col gap-2.5 text-xs text-slate-800">
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-[10px] text-porsche-muted uppercase tracking-wider font-medium">Paint Finish</span>
-                    <span className="font-semibold text-slate-900">{activeLead.specs?.paint || 'GT Silver Metallic'}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-[10px] text-porsche-muted uppercase tracking-wider font-medium">Wheels</span>
-                    <span className="font-semibold text-slate-900">{activeLead.specs?.wheels || 'Carrera S Wheels'}</span>
-                  </div>
-                  <div className="flex justify-between items-baseline">
-                    <span className="text-[10px] text-porsche-muted uppercase tracking-wider font-medium">Interior</span>
-                    <span className="font-semibold text-slate-900">{activeLead.specs?.interior || 'Standard Interior in Black'}</span>
-                  </div>
-                </div>
+            <div className="flex flex-col gap-3">
+              <label className="text-[10px] uppercase font-mono text-slate-400">Select Client Trade Vehicle</label>
+              <select
+                value={tradeInModel}
+                onChange={(e) => setTradeInModel(e.target.value)}
+                className="w-full p-3 rounded-xl bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white font-semibold"
+              >
+                <option value="2021 Macan GTS">2021 Macan GTS (32,000 km)</option>
+                <option value="2020 Cayenne Coupé">2020 Cayenne Coupé (45,000 km)</option>
+                <option value="2019 Panamera 4S">2019 Panamera 4S (50,000 km)</option>
+              </select>
 
-                <div className="flex flex-col gap-2">
-                  <span className="text-[10px] text-porsche-muted uppercase tracking-wider font-bold">Equipment Packages</span>
-                  <ul className="flex flex-wrap gap-1.5">
-                    {activeLead.specs?.packages && activeLead.specs.packages.length > 0 ? (
-                      activeLead.specs.packages.map((pkg, idx) => (
-                        <li key={idx} className="text-[10px] px-2 py-0.5 rounded bg-slate-50 border border-porsche-border text-slate-700 font-medium">
-                          {pkg}
-                        </li>
-                      ))
-                    ) : (
-                      <li className="text-[10px] text-porsche-muted font-light italic">No custom packages selected</li>
-                    )}
-                  </ul>
-                </div>
-
-                <button
-                  onClick={() => openConfigurator(activeLead)}
-                  className="w-full mt-2 py-2.5 bg-porsche-red text-white text-xs font-semibold rounded-xl hover:bg-red-700 hover:shadow-glow-red hover:scale-[1.01] active:scale-[0.99] transition-all uppercase tracking-wider"
-                >
-                  Configure Specifications
-                </button>
-              </div>
-            ) : (
-              <div className="py-8 text-center flex flex-col gap-2 justify-center items-center">
-                <span className="text-xs text-porsche-muted italic">Select a customer lead in the CRM table to launch build customization.</span>
-              </div>
-            )}
+              <label className="text-[10px] uppercase font-mono text-slate-400 mt-2">Adjust Condition Rating</label>
+              <input
+                type="range"
+                min={30000}
+                max={75000}
+                step={1000}
+                value={tradeInValue}
+                onChange={(e) => setTradeInValue(Number(e.target.value))}
+                className="w-full accent-porsche-red cursor-pointer"
+              />
+            </div>
           </div>
 
-          <div className="porsche-card-glow p-6 rounded-2xl flex flex-col h-[380px]">
-            <div className="flex items-center justify-between pb-3 border-b border-porsche-border/40 shrink-0">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-porsche-green animate-pulse shadow-glow-green" />
-                <h2 className="text-sm font-semibold text-slate-900 tracking-wide">24/7 Virtual Concierge</h2>
-              </div>
-              <span className="text-[10px] text-porsche-muted uppercase font-mono">Live Demo</span>
-            </div>
-
-            <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-3 scrollbar-thin">
-              {messages.map((msg, idx) => (
-                <div
-                  key={idx}
-                  className={`flex flex-col max-w-[85%] ${msg.sender === 'user' ? 'self-end items-end' : 'self-start items-start'}`}
-                >
-                  <div className={`p-3 rounded-2xl text-xs leading-relaxed ${msg.sender === 'user'
-                    ? 'bg-porsche-red/5 text-slate-800 rounded-br-none border border-porsche-red/20'
-                    : 'bg-slate-100 text-slate-800 rounded-bl-none border border-slate-200'
-                    }`}>
-                    {msg.text}
-                  </div>
-                  <span className="text-[9px] text-porsche-muted/70 mt-1 font-mono">{msg.time}</span>
-                </div>
-              ))}
-            </div>
-
-            <form onSubmit={handleSendMessage} className="flex gap-2 pt-3 border-t border-porsche-border/40 shrink-0">
-              <input
-                type="text"
-                placeholder="Ask about test drive, financing..."
-                value={inputVal}
-                onChange={(e) => setInputVal(e.target.value)}
-                className="flex-1 bg-white border border-porsche-border text-xs rounded-xl px-3 py-2 text-slate-800 placeholder-porsche-muted/50 focus:outline-none focus:border-porsche-red"
-              />
-              <button
-                type="submit"
-                className="p-2 rounded-xl bg-porsche-red/10 border border-porsche-red/20 text-porsche-red hover:bg-porsche-red/20 hover:scale-105 active:scale-95 transition-all"
-              >
-                <Send size={14} />
-              </button>
-            </form>
+          <div className="p-4 rounded-2xl bg-porsche-red/10 border border-porsche-red/20 text-center">
+            <p className="text-[10px] text-porsche-red uppercase font-mono font-bold">Estimated Trade-In Equity</p>
+            <p className="text-section-30 font-bold text-porsche-red mt-1">
+              ${tradeInValue.toLocaleString()} USD
+            </p>
           </div>
         </div>
-      </section>
+      </div>
 
-      {/* Create Lead Drawer */}
+      {/* Test Drive Scheduling Modal */}
       <AnimatePresence>
-        {isDrawerOpen && (
-          <>
+        {selectedLead && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsDrawerOpen(false)}
-              className="fixed inset-0 bg-slate-950/40 backdrop-blur-[2px] z-50 pointer-events-auto"
-            />
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'tween', duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white border-l border-porsche-border z-50 shadow-2xl p-8 flex flex-col gap-6"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="w-full max-w-md porsche-card flex flex-col gap-6 relative"
             >
-              <div className="flex justify-between items-center pb-4 border-b border-porsche-border">
-                <div>
-                  <h3 className="text-lg font-bold text-slate-950">Create New CRM Lead</h3>
-                  <p className="text-xs text-porsche-muted font-light mt-0.5">Add a prospective buyer for Santo Domingo Center.</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setIsDrawerOpen(false)}
-                  className="p-1.5 rounded-lg border border-porsche-border text-porsche-muted hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer"
-                >
-                  <X size={16} />
-                </button>
+              <button
+                onClick={() => setSelectedLead(null)}
+                className="absolute top-6 right-6 p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 text-slate-400 hover:text-slate-900 dark:hover:text-white"
+              >
+                <X size={18} />
+              </button>
+
+              <div>
+                <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Schedule Test Drive</h3>
+                <p className="text-small-13 text-slate-500 dark:text-slate-400">
+                  Book a 45-minute highway slot at Porsche Center Santo Domingo.
+                </p>
               </div>
 
-              <form onSubmit={handleCreateLead} className="flex flex-col gap-5 flex-1 overflow-y-auto">
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Customer Name</label>
-                  <input
-                    type="text"
-                    placeholder="e.g. Jean-Pierre Bellerose"
-                    required
-                    value={newLeadName}
-                    onChange={(e) => setNewLeadName(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-porsche-red focus:bg-white transition-all"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Model of Interest</label>
-                  <select
-                    value={newLeadModel}
-                    onChange={(e) => setNewLeadModel(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-porsche-red focus:bg-white transition-all cursor-pointer"
-                  >
-                    <option value="911 Carrera GTS (992.2)">911 Carrera GTS (992.2)</option>
-                    <option value="Taycan Turbo S">Taycan Turbo S</option>
-                    <option value="Cayenne Coupe E-Hybrid">Cayenne Coupe E-Hybrid</option>
-                    <option value="Macan Electric Turbo">Macan Electric Turbo</option>
-                    <option value="718 Cayman GT4 RS">718 Cayman GT4 RS</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Lead Source</label>
-                  <select
-                    value={newLeadSource}
-                    onChange={(e) => setNewLeadSource(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-porsche-red focus:bg-white transition-all cursor-pointer"
-                  >
-                    <option value="Showroom Santo Domingo">Showroom Santo Domingo</option>
-                    <option value="Web Configurator RD">Web Configurator RD</option>
-                    <option value="VIP Tournament Casa de Campo">VIP Tournament Casa de Campo</option>
-                    <option value="Instagram Campaign">Instagram Campaign</option>
-                    <option value="Referral">Referral</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <div className="flex justify-between items-center text-[10px] text-slate-600 font-bold uppercase tracking-wider">
-                    <span>Initial Engagement Score</span>
-                    <span className="font-mono text-xs text-porsche-red font-semibold">{newLeadScore}</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="10"
-                    max="99"
-                    value={newLeadScore}
-                    onChange={(e) => setNewLeadScore(Number(e.target.value))}
-                    className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-porsche-red focus:outline-none"
-                  />
-                </div>
-
-                <div className="mt-auto pt-6 border-t border-slate-100 flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setIsDrawerOpen(false)}
-                    className="flex-1 py-3 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-50 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="flex-1 py-3 bg-porsche-red text-white text-xs font-semibold rounded-xl hover:bg-red-700 hover:shadow-glow-red hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer"
-                  >
-                    {isSubmitting ? 'Creating...' : 'Create Lead'}
-                  </button>
-                </div>
-              </form>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Visual Configurator Drawer */}
-      <AnimatePresence>
-        {isConfiguratorOpen && activeLead && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsConfiguratorOpen(false)}
-              className="fixed inset-0 bg-slate-950/40 backdrop-blur-[2px] z-50 pointer-events-auto"
-            />
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'tween', duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white border-l border-porsche-border z-50 shadow-2xl p-8 flex flex-col gap-6"
-            >
-              <div className="flex justify-between items-center pb-4 border-b border-porsche-border shrink-0">
-                <div>
-                  <h3 className="text-lg font-bold text-slate-950">Porsche Build Configurator</h3>
-                  <p className="text-xs text-porsche-muted font-light mt-0.5">Customize order specification for {activeLead.name}.</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setIsConfiguratorOpen(false)}
-                  className="p-1.5 rounded-lg border border-porsche-border text-porsche-muted hover:text-slate-900 hover:bg-slate-50 transition-all cursor-pointer"
-                >
-                  <X size={16} />
-                </button>
-              </div>
-
-              <div className="rounded-2xl border border-porsche-border overflow-hidden relative p-4 flex flex-col gap-2 shadow-sm shrink-0 bg-slate-50">
-                <div
-                  className="absolute inset-0 opacity-20 pointer-events-none transition-all duration-300"
-                  style={{
-                    background: `linear-gradient(135deg, ${configPaint === 'Guards Red' ? '#D5001C' :
-                      configPaint === 'Racing Yellow' ? '#F59E0B' :
-                        configPaint === 'Gentian Blue Metallic' ? '#1E3A8A' :
-                          configPaint === 'Mamba Green Metallic' ? '#10B981' :
-                            configPaint === 'Chalk' ? '#E2E8F0' :
-                              configPaint === 'Jet Black Metallic' ? '#0F172A' : '#94A3B8'
-                      } 0%, transparent 100%)`
+              {!bookingSuccess ? (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setBookingSuccess(true);
+                    setTimeout(() => {
+                      setBookingSuccess(false);
+                      setSelectedLead(null);
+                    }, 2000);
                   }}
-                />
-                <div className="flex justify-between items-start z-10">
-                  <span className="text-[9px] uppercase tracking-wider font-bold bg-slate-200/60 text-slate-800 px-2 py-0.5 rounded border border-slate-300">Active Spec Review</span>
-                  <span className="text-xs font-bold text-slate-950 font-mono">{activeLead.id}</span>
-                </div>
-                <div className="mt-2 z-10 flex flex-col">
-                  <span className="text-base font-bold text-slate-950">{activeLead.model}</span>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 mt-1 text-[10px] text-porsche-muted font-mono font-medium">
-                    <span>🎨 {configPaint}</span>
-                    <span>🛞 {configWheels}</span>
-                  </div>
-                </div>
-              </div>
-
-              <form onSubmit={handleSaveConfig} className="flex flex-col gap-5 flex-1 overflow-y-auto pr-1 scrollbar-thin">
-                <div className="flex flex-col gap-2">
-                  <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Paint Finish Swatch</label>
-                  <div className="grid grid-cols-7 gap-2">
-                    {[
-                      { name: 'Guards Red', color: '#D5001C' },
-                      { name: 'Racing Yellow', color: '#F59E0B' },
-                      { name: 'Gentian Blue Metallic', color: '#1E3A8A' },
-                      { name: 'Mamba Green Metallic', color: '#10B981' },
-                      { name: 'Chalk', color: '#E2E8F0' },
-                      { name: 'Jet Black Metallic', color: '#0F172A' },
-                      { name: 'GT Silver Metallic', color: '#94A3B8' }
-                    ].map((swatch) => (
-                      <button
-                        key={swatch.name}
-                        type="button"
-                        onClick={() => setConfigPaint(swatch.name)}
-                        title={swatch.name}
-                        className={`w-10 h-10 rounded-full border relative transition-all hover:scale-105 active:scale-95 ${configPaint === swatch.name
-                          ? 'border-porsche-red ring-2 ring-porsche-red/20 scale-105'
-                          : 'border-slate-200 hover:border-slate-400'
-                          }`}
-                        style={{ backgroundColor: swatch.color }}
-                      >
-                        {configPaint === swatch.name && (
-                          <span className="absolute inset-0.5 rounded-full border border-white opacity-40" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                  <span className="text-[10px] text-slate-500 font-medium">Selected Finish: <strong className="text-slate-800 font-semibold">{configPaint}</strong></span>
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Wheel Selection</label>
-                  <select
-                    value={configWheels}
-                    onChange={(e) => setConfigWheels(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-porsche-red focus:bg-white transition-all cursor-pointer"
-                  >
-                    <option value="20/21-inch Carrera S Wheels">20/21-inch Carrera S Wheels</option>
-                    <option value="21-inch Mission E Wheels">21-inch Mission E Wheels</option>
-                    <option value="22-inch RS Spyder Design Wheels">22-inch RS Spyder Design Wheels</option>
-                    <option value="21-inch Macan Design Wheels">21-inch Macan Design Wheels</option>
-                    <option value="20-inch Forged Magnesium Wheels">20-inch Forged Magnesium Wheels</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Cabin Trim Interior</label>
-                  <select
-                    value={configInterior}
-                    onChange={(e) => setConfigInterior(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-4 py-3 text-slate-900 focus:outline-none focus:border-porsche-red focus:bg-white transition-all cursor-pointer"
-                  >
-                    <option value="Standard Interior in Black">Standard Interior in Black</option>
-                    <option value="Leather Interior in Black">Leather Interior in Black</option>
-                    <option value="Club Leather Interior in Truffle Brown">Club Leather Interior in Truffle Brown</option>
-                    <option value="Race-Tex Interior in Black">Race-Tex Interior in Black</option>
-                    <option value="Race-Tex Interior with Red Stitching">Race-Tex Interior with Red Stitching</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-2.5">
-                  <label className="text-[10px] text-slate-600 font-bold uppercase tracking-wider">Optional Equipment Packages</label>
-                  <div className="flex flex-col gap-2">
-                    {[
-                      'Sport Chrono Package',
-                      'Weissach Package',
-                      'Front Axle Lift System',
-                      'Adaptive Air Suspension',
-                      'Rear Axle Steering',
-                      'Performance Battery Plus'
-                    ].map((pkg) => {
-                      const isChecked = configPackages.includes(pkg);
-                      return (
-                        <label
-                          key={pkg}
-                          className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer select-none transition-all ${isChecked
-                            ? 'border-porsche-red/35 bg-porsche-red/5 text-slate-900'
-                            : 'border-slate-200 hover:border-slate-300 text-slate-700'
-                            }`}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={isChecked}
-                            onChange={() => {
-                              setConfigPackages(prev =>
-                                prev.includes(pkg) ? prev.filter(p => p !== pkg) : [...prev, pkg]
-                              );
-                            }}
-                            className="w-4 h-4 accent-porsche-red"
-                          />
-                          <span className="text-xs font-semibold">{pkg}</span>
-                        </label>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="mt-auto pt-6 border-t border-slate-100 flex gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setIsConfiguratorOpen(false)}
-                    className="flex-1 py-3 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl hover:bg-slate-50 hover:scale-[1.01] active:scale-[0.99] transition-all cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSavingConfig}
-                    className="flex-1 py-3 bg-porsche-red text-white text-xs font-semibold rounded-xl hover:bg-red-700 hover:shadow-glow-red hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 cursor-pointer"
-                  >
-                    {isSavingConfig ? 'Saving...' : 'Save Configuration'}
-                  </button>
-                </div>
-              </form>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Lead Detail Modal */}
-      <AnimatePresence>
-        {detailLead && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setDetailLead(null)}
-              className="fixed inset-0 bg-slate-950/50 backdrop-blur-[2px] z-50"
-            />
-            <motion.div
-              initial={{ opacity: 0, x: '100%' }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: '100%' }}
-              transition={{ type: 'tween', duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-0 right-0 bottom-0 w-full max-w-lg bg-white border-l border-porsche-border z-50 shadow-2xl flex flex-col overflow-hidden"
-            >
-              <div className="flex justify-between items-center px-6 py-5 border-b border-porsche-border bg-slate-50 shrink-0">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-porsche-red/10 border border-porsche-red/20 flex items-center justify-center text-porsche-red font-bold text-sm">
-                    {detailLead.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                  className="flex flex-col gap-4"
+                >
+                  <div>
+                    <label className="text-[10px] font-mono text-slate-400 uppercase">Preferred Date</label>
+                    <input
+                      type="date"
+                      defaultValue="2026-07-30"
+                      className="w-full p-3 rounded-xl bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white mt-1"
+                    />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-slate-900">{detailLead.name}</h3>
-                    <p className="text-[10px] text-porsche-muted uppercase tracking-wider">{detailLead.id} · {detailLead.source}</p>
+                    <label className="text-[10px] font-mono text-slate-400 uppercase">Time Slot</label>
+                    <select className="w-full p-3 rounded-xl bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white mt-1">
+                      <option>10:00 AM — 10:45 AM</option>
+                      <option>02:00 PM — 02:45 PM</option>
+                      <option>04:30 PM — 05:15 PM</option>
+                    </select>
                   </div>
+                  <button
+                    type="submit"
+                    className="w-full py-3 rounded-xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition mt-2 cursor-pointer"
+                  >
+                    Confirm VIP Booking
+                  </button>
+                </form>
+              ) : (
+                <div className="py-8 flex flex-col items-center gap-3 text-center">
+                  <CheckCircle2 size={48} className="text-emerald-500 animate-bounce" />
+                  <p className="text-body-16 font-bold text-slate-900 dark:text-white">VIP Test Drive Confirmed!</p>
+                  <p className="text-small-13 text-slate-500">Confirmation SMS sent to client.</p>
                 </div>
-                <button onClick={() => setDetailLead(null)} className="p-1.5 rounded-lg border border-porsche-border text-porsche-muted hover:text-slate-900 hover:bg-slate-100 transition-all">
-                  <X size={16} />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
-                <div className="grid grid-cols-3 gap-3">
-                  <div className="p-3 bg-slate-50 rounded-xl border border-porsche-border text-center">
-                    <p className="text-[9px] text-porsche-muted uppercase tracking-wider font-semibold">AI Score</p>
-                    <p className="text-lg font-bold text-porsche-red font-mono mt-0.5">{detailLead.score}</p>
-                  </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-porsche-border text-center">
-                    <p className="text-[9px] text-porsche-muted uppercase tracking-wider font-semibold">Status</p>
-                    <p className={`text-sm font-bold mt-0.5 ${detailLead.status === 'Hot' ? 'text-porsche-red' :
-                      detailLead.status === 'Warm' ? 'text-porsche-gold' : 'text-slate-400'
-                      }`}>{detailLead.status}</p>
-                  </div>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-porsche-border text-center">
-                    <p className="text-[9px] text-porsche-muted uppercase tracking-wider font-semibold">Advisor</p>
-                    <p className="text-[10px] font-bold text-slate-800 mt-0.5 leading-snug">{detailLead.assignedAdvisor}</p>
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-xl border border-porsche-border bg-slate-50 flex flex-col gap-2">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Car size={14} className="text-porsche-red" />
-                    <span className="text-xs font-bold text-slate-900">{detailLead.model}</span>
-                  </div>
-                  {detailLead.specs && (
-                    <div className="grid grid-cols-2 gap-2 text-[10px]">
-                      <div><span className="text-porsche-muted">Paint:</span> <span className="font-semibold text-slate-800">{detailLead.specs.paint}</span></div>
-                      <div><span className="text-porsche-muted">Wheels:</span> <span className="font-semibold text-slate-800">{detailLead.specs.wheels}</span></div>
-                      <div><span className="text-porsche-muted">Interior:</span> <span className="font-semibold text-slate-800">{detailLead.specs.interior}</span></div>
-                      <div><span className="text-porsche-muted">Packages:</span> <span className="font-semibold text-slate-800">{detailLead.specs.packages?.join(', ') || '—'}</span></div>
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-2">
-                    <CalendarCheck size={14} className="text-porsche-red" />
-                    <span className="text-xs font-bold text-slate-900">Test Drive Scheduler</span>
-                  </div>
-                  {driveBooked[detailLead.id] ? (
-                    <div className="p-3 bg-porsche-green/10 border border-porsche-green/25 rounded-xl text-xs text-porsche-green font-semibold flex items-center gap-2">
-                      <CalendarCheck size={13} />
-                      Booked: {driveBooked[detailLead.id]}
-                    </div>
-                  ) : (
-                    <>
-                      <div className="grid grid-cols-2 gap-2">
-                        {TEST_DRIVE_SLOTS.map(slot => (
-                          <button
-                            key={slot}
-                            onClick={() => setSelectedDriveSlot(slot)}
-                            className={`py-2 px-3 rounded-xl border text-[10px] font-semibold text-left transition-all ${selectedDriveSlot === slot
-                              ? 'border-porsche-red bg-porsche-red/5 text-porsche-red'
-                              : 'border-slate-200 text-slate-700 hover:border-porsche-red/40 hover:text-porsche-red'
-                              }`}
-                          >
-                            <Clock size={9} className="inline mr-1" />
-                            {slot}
-                          </button>
-                        ))}
-                      </div>
-                      {selectedDriveSlot && (
-                        <button
-                          onClick={handleBookDrive}
-                          className="w-full py-2.5 bg-porsche-red text-white text-xs font-semibold rounded-xl hover:bg-red-700 hover:shadow-glow-red transition-all"
-                        >
-                          Confirm — {selectedDriveSlot}
-                        </button>
-                      )}
-                    </>
-                  )}
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-2">
-                    <MessageSquare size={14} className="text-porsche-red" />
-                    <span className="text-xs font-bold text-slate-900">Engagement Timeline</span>
-                  </div>
-                  <div className="relative pl-4 border-l-2 border-porsche-border/40 flex flex-col gap-4">
-                    {(LEAD_TIMELINES[detailLead.id] || []).map((event, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, x: -6 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: idx * 0.06 }}
-                        className="relative"
-                      >
-                        <span className={`absolute -left-[21px] w-3 h-3 rounded-full border-2 border-white ${event.type === 'config' ? 'bg-porsche-red' :
-                          event.type === 'visit' ? 'bg-porsche-green' :
-                            event.type === 'contact' ? 'bg-porsche-gold' : 'bg-slate-300'
-                          }`} />
-                        <p className="text-xs font-semibold text-slate-900">{event.event}</p>
-                        <p className="text-[10px] text-porsche-muted">{event.detail}</p>
-                        <p className="text-[9px] text-porsche-muted/60 font-mono mt-0.5">{event.time}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="px-6 py-4 border-t border-porsche-border bg-slate-50 shrink-0">
-                <button
-                  onClick={() => { setSelectedLeadId(detailLead.id); openConfigurator(detailLead); setDetailLead(null); }}
-                  className="w-full py-2.5 bg-porsche-red text-white text-xs font-semibold rounded-xl hover:bg-red-700 hover:shadow-glow-red transition-all flex items-center justify-center gap-2"
-                >
-                  <Sparkles size={13} />
-                  Open Vehicle Configurator
-                </button>
-              </div>
+              )}
             </motion.div>
-          </>
+          </div>
         )}
       </AnimatePresence>
     </div>

@@ -1,218 +1,417 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { 
   TrendingUp, 
-  Wrench, 
-  Brain, 
-  Search, 
-  Cpu, 
-  ChevronRight, 
-  Layers, 
-  Milestone,
-  ArrowUpRight
+  DollarSign, 
+  Users, 
+  Activity, 
+  ArrowUpRight, 
+  Sparkles, 
+  Car, 
+  Zap, 
+  ShieldCheck, 
+  Clock, 
+  ArrowRight,
+  CheckCircle2,
+  Calendar,
+  Layers,
+  Award
 } from 'lucide-react';
-import { api } from '../services/api';
+import { 
+  ResponsiveContainer, 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  Tooltip 
+} from 'recharts';
+import { CountUp } from '../components/CountUp';
+import { VehicleImage } from '../components/VehicleImage';
+import { useTheme } from '../context/ThemeContext';
+import { Link } from 'react-router-dom';
 
 export default function Overview() {
-  const [metrics, setMetrics] = useState({
-    activeLeadsToday: 24,
-    logisticsTurnover: 94.2,
-    unassignedDeals: 395
-  });
+  const { theme } = useTheme();
 
-  useEffect(() => {
-    api.overview.getMetrics().then(setMetrics).catch(console.error);
-
-    const interval = setInterval(() => {
-      api.overview.getMetrics().then(setMetrics).catch(console.error);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const pillars = [
-    {
-      title: 'Sales & Conversion',
-      icon: <TrendingUp className="text-porsche-red" size={24} />,
-      desc: 'AI Lead qualification and predictive configuration routing.',
-      metricLabel: "Today's Active Leads",
-      metricValue: `${metrics.activeLeadsToday}`,
-      link: '/sales',
-      color: 'border-porsche-red/10'
-    },
-    {
-      title: 'Logistics & After-Sales',
-      icon: <Wrench className="text-porsche-green" size={24} />,
-      desc: 'Connected-fleet telematics tracking and predictive parts supply chain.',
-      metricLabel: 'Parts Turnover Rate',
-      metricValue: `${metrics.logisticsTurnover}%`,
-      link: '/logistics',
-      color: 'border-porsche-green/20'
-    },
-    {
-      title: 'Executive Intelligence',
-      icon: <Brain className="text-slate-800" size={24} />,
-      desc: 'Deal classification tracking, idle warning queues, and operational flow.',
-      metricLabel: 'Unassigned Deals',
-      metricValue: `${metrics.unassignedDeals}`,
-      link: '/executive',
-      color: 'border-slate-200'
-    }
+  const trendChartData = [
+    { month: 'Jan', revenue: 3.2, efficiency: 88 },
+    { month: 'Feb', revenue: 3.6, efficiency: 91 },
+    { month: 'Mar', revenue: 4.1, efficiency: 93 },
+    { month: 'Apr', revenue: 3.9, efficiency: 92 },
+    { month: 'May', revenue: 4.5, efficiency: 96 },
+    { month: 'Jun', revenue: 4.85, efficiency: 98.8 },
   ];
 
-  const kpis = [
-    { label: 'Lead Conversion Rate', value: 28, target: '+28%', desc: 'AI-assisted showroom follow-up', color: 'from-porsche-red to-red-500 shadow-glow-red' },
-    { label: 'After-Sales Retention', value: 22, target: '+22%', desc: 'Telematics-triggered diagnostic checkups', color: 'from-porsche-red to-red-500 shadow-glow-red' },
-    { label: 'Parts Turnover Improvement', value: 35, target: '+35%', desc: 'DGA Customs integration & predictive stocking', color: 'from-porsche-green to-emerald-500 shadow-glow-green' },
-    { label: 'Administrative Automation', value: 65, target: '+65%', desc: 'Auto-allocation & idle warnings queue', color: 'from-porsche-green to-emerald-500 shadow-glow-green' }
-  ];
-
-  const steps = [
-    { 
-      phase: '01', 
-      title: 'Operational Audit', 
-      icon: <Search className="text-porsche-red" size={20} />, 
-      desc: 'Data mapping of Porsche Center Santo Domingo sales queues and customs pipelines.' 
-    },
-    { 
-      phase: '02', 
-      title: 'AI System Design', 
-      icon: <Cpu className="text-porsche-green" size={20} />, 
-      desc: 'Model training for lead configuration prediction & telematics wear thresholds.' 
-    },
-    { 
-      phase: '03', 
-      title: 'Integration Layer', 
-      icon: <Layers className="text-slate-800" size={20} />, 
-      desc: 'Connecting CRM databases, parts inventory warehouses, and service dispatch.' 
-    },
-    { 
-      phase: '04', 
-      title: 'Expansion (Porsche RD)', 
-      icon: <Milestone className="text-porsche-red" size={20} />, 
-      desc: 'Deploying custom dealer portals across secondary locations in northern provinces.' 
-    }
+  const roadmapSteps = [
+    { phase: 'Phase 1', title: 'AI Fleet Telemetry', status: 'Completed', detail: 'Real-time Caucedo Port & showroom tracking live.' },
+    { phase: 'Phase 2', title: 'VIP Lead Matrix', status: 'Active', detail: 'Neural conversion probability scoring deployed.' },
+    { phase: 'Phase 3', title: '800V Charger Network', status: 'In Progress', detail: 'Taycan 320 kW ultra-fast grid integration.' },
+    { phase: 'Phase 4', title: 'Autonomous Routing', status: 'Scheduled Q4', detail: 'Cross-dealership inventory allocation algorithm.' },
   ];
 
   return (
-    <div className="flex flex-col gap-8">
-      <section className="flex flex-col gap-3 max-w-4xl">
-        <div className="flex items-center gap-2 text-porsche-red font-bold tracking-widest text-xs uppercase">
-          <span>Deemsys.ai</span>
-          <span>•</span>
-          <span>Porsche Center Santo Domingo</span>
-        </div>
-        <h1 className="text-4xl sm:text-5xl font-light tracking-tight text-slate-900 leading-tight">
-          Driving the Future of <br className="hidden sm:inline" />
-          <span className="font-semibold bg-gradient-to-r from-slate-900 via-porsche-red to-porsche-red bg-clip-text text-transparent">
-            Porsche RD Operations
-          </span>
-        </h1>
-        <p className="text-porsche-muted text-base sm:text-lg leading-relaxed font-light">
-          An intelligent operational command center orchestrating lead flow, predictive parts inventory, and connected car telematics to elevate dealer throughput.
-        </p>
-      </section>
+    <div className="flex flex-col gap-12">
+      {/* 1. Large Hero Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-2">
+        {/* Left Column: Heading & Subtitle */}
+        <div className="lg:col-span-7 flex flex-col gap-6">
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-porsche-red font-bold">
+            <span className="w-2.5 h-2.5 rounded-full bg-porsche-red animate-ping" />
+            Porsche Digital Executive Platform
+          </div>
 
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {pillars.map((pillar, idx) => (
-          <Link 
-            key={idx} 
-            to={pillar.link}
-            className={`porsche-card-glow flex flex-col justify-between p-6 rounded-2xl border ${pillar.color} relative overflow-hidden group`}
+          <h1 className="text-hero-64 font-bold text-slate-900 dark:text-white tracking-tight">
+            Driving Porsche <br />
+            <span className="text-porsche-red">Operations</span>
+          </h1>
+
+          <p className="text-body-16 text-slate-600 dark:text-slate-300 max-w-xl leading-relaxed">
+            The next-generation AI Command Center powering dealership operations, fleet logistics, inventory routing, and VIP client conversion for Porsche Center Santo Domingo.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <Link
+              to="/configurator"
+              className="px-8 py-4 rounded-full bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red hover:scale-105 active:scale-95 theme-transition flex items-center gap-2 cursor-pointer"
+            >
+              <Car size={16} />
+              <span>Launch Customization Studio</span>
+            </Link>
+            <Link
+              to="/executive"
+              className="px-8 py-4 rounded-full bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white text-xs font-bold hover:bg-slate-200 dark:hover:bg-white/20 theme-transition flex items-center gap-2 cursor-pointer"
+            >
+              <Sparkles size={16} className="text-porsche-red" />
+              <span>View Executive Intelligence</span>
+            </Link>
+          </div>
+        </div>
+
+        {/* Right Column: Porsche 911 Image with Soft Lighting */}
+        <div className="lg:col-span-5 w-full h-[380px] rounded-3xl overflow-hidden shadow-luxury-dark border border-black/10 dark:border-white/10 relative">
+          <VehicleImage
+            lightSrc="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1200&q=80"
+            darkSrc="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
+            alt="Porsche 911 Flagship Operations"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute bottom-6 left-6 right-6 p-4 porsche-glass rounded-2xl border border-white/20 dark:border-white/10 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] text-porsche-red font-mono uppercase font-bold">Flagship Vehicle</p>
+              <p className="text-body-16 font-bold text-slate-900 dark:text-white">Porsche 911 GT3 RS</p>
+            </div>
+            <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full">
+              98.4% Demand
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Large KPI Cards Section (6 Key Metrics) */}
+      <div className="flex flex-col gap-4">
+        <h2 className="text-section-30 font-bold text-slate-900 dark:text-white">
+          Key Operational Telemetry
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Revenue */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="porsche-card flex flex-col gap-3"
           >
-            <div className="absolute inset-0 bg-gradient-to-tr from-porsche-cyan/0 to-porsche-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-            
-            <div className="flex flex-col gap-4">
-              <div className="flex justify-between items-start">
-                <div className="p-3 rounded-xl bg-slate-100 border border-porsche-border group-hover:border-porsche-cyan/30 transition-colors">
-                  {pillar.icon}
-                </div>
-                <div className="flex items-center gap-1 text-[10px] text-porsche-red tracking-wider font-semibold uppercase group-hover:translate-x-1 transition-transform">
-                  Explore <ArrowUpRight size={14} />
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 mb-2">{pillar.title}</h3>
-                <p className="text-sm text-porsche-muted font-light leading-relaxed">{pillar.desc}</p>
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-porsche-border/40 flex justify-between items-baseline">
-              <span className="text-xs text-porsche-muted uppercase tracking-wider">{pillar.metricLabel}</span>
-              <span className="text-2xl font-bold tracking-tight text-slate-900 group-hover:text-porsche-red transition-colors">
-                {pillar.metricValue}
+            <div className="flex items-center justify-between">
+              <span className="text-small-13 text-slate-500 dark:text-slate-400 font-semibold uppercase">
+                Monthly Revenue
               </span>
+              <div className="p-2.5 rounded-xl bg-porsche-red/10 text-porsche-red">
+                <DollarSign size={18} />
+              </div>
             </div>
-          </Link>
-        ))}
-      </section>
-
-      <section className="porsche-card-glow p-6 sm:p-8 rounded-2xl">
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-slate-900 tracking-wide">Projected Operational Impact</h2>
-          <p className="text-sm text-porsche-muted font-light mt-1">Expected optimization gains through Deemsys.ai system rollout.</p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-6">
-          {kpis.map((kpi, idx) => (
-            <div key={idx} className="flex flex-col gap-2">
-              <div className="flex justify-between items-end">
-                <span className="text-sm font-medium text-slate-800 tracking-wide flex items-center gap-2">
-                  <span className="text-porsche-red font-bold text-xs">&gt;</span> {kpi.label}
-                </span>
-                <span className="text-sm font-bold text-porsche-red">{kpi.target}</span>
-              </div>
-              
-              <div className="h-3 w-full bg-slate-100 rounded-full border border-porsche-border/60 overflow-hidden p-[2px]">
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: `${kpi.value}%` }}
-                  transition={{ duration: 1.2, ease: 'easeOut', delay: idx * 0.1 }}
-                  className={`h-full rounded-full bg-gradient-to-r ${kpi.color}`}
-                />
-              </div>
-              <span className="text-[11px] text-porsche-muted font-light">{kpi.desc}</span>
+            <div className="text-section-30 font-bold text-slate-900 dark:text-white">
+              <CountUp prefix="$" end={4850000} decimals={0} />
             </div>
-          ))}
-        </div>
-      </section>
+            <div className="flex items-center gap-1.5 text-small-13 text-emerald-600 dark:text-emerald-400 font-semibold">
+              <ArrowUpRight size={14} />
+              <span>+18.4% vs last month</span>
+            </div>
+          </motion.div>
 
-      <section className="flex flex-col gap-6">
-        <div>
-          <h2 className="text-xl font-semibold text-slate-900 tracking-wide">Implementation Timeline</h2>
-          <p className="text-sm text-porsche-muted font-light mt-1">4-Phase integration map for Porsche Center Santo Domingo.</p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {steps.map((step, idx) => (
-            <div key={idx} className="porsche-card-glow p-5 rounded-2xl flex flex-col gap-4 relative">
-              <div className="flex justify-between items-center">
-                <span className="text-xs font-bold tracking-widest text-porsche-red/60 uppercase">Phase {step.phase}</span>
-                <div className="p-2 rounded-lg bg-slate-50 border border-porsche-border">
-                  {step.icon}
-                </div>
+          {/* Conversion */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
+            className="porsche-card flex flex-col gap-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-small-13 text-slate-500 dark:text-slate-400 font-semibold uppercase">
+                Conversion Rate
+              </span>
+              <div className="p-2.5 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                <TrendingUp size={18} />
               </div>
-              
+            </div>
+            <div className="text-section-30 font-bold text-slate-900 dark:text-white">
+              <CountUp suffix="%" end={94.8} decimals={1} />
+            </div>
+            <div className="flex items-center gap-1.5 text-small-13 text-emerald-600 dark:text-emerald-400 font-semibold">
+              <ArrowUpRight size={14} />
+              <span>+5.2% vs target</span>
+            </div>
+          </motion.div>
+
+          {/* Lead Health */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.3 }}
+            className="porsche-card flex flex-col gap-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-small-13 text-slate-500 dark:text-slate-400 font-semibold uppercase">
+                Lead Health Index
+              </span>
+              <div className="p-2.5 rounded-xl bg-purple-500/10 text-purple-600 dark:text-purple-400">
+                <Users size={18} />
+              </div>
+            </div>
+            <div className="text-section-30 font-bold text-slate-900 dark:text-white">
+              <CountUp suffix=" / 100" end={96} />
+            </div>
+            <div className="flex items-center gap-1.5 text-small-13 text-porsche-red font-semibold">
+              <Sparkles size={14} />
+              <span>142 Active High-Intent Leads</span>
+            </div>
+          </motion.div>
+
+          {/* Dealer Performance */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.4 }}
+            className="porsche-card flex flex-col gap-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-small-13 text-slate-500 dark:text-slate-400 font-semibold uppercase">
+                Dealer Performance
+              </span>
+              <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400">
+                <Activity size={18} />
+              </div>
+            </div>
+            <div className="text-section-30 font-bold text-slate-900 dark:text-white">
+              <CountUp suffix="%" end={98.8} decimals={1} />
+            </div>
+            <div className="flex items-center gap-1.5 text-small-13 text-slate-500 font-semibold">
+              <ShieldCheck size={14} />
+              <span>Optimal Showroom Speed</span>
+            </div>
+          </motion.div>
+
+          {/* Vehicle Deliveries */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.5 }}
+            className="porsche-card flex flex-col gap-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-small-13 text-slate-500 dark:text-slate-400 font-semibold uppercase">
+                Vehicle Deliveries
+              </span>
+              <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                <Car size={18} />
+              </div>
+            </div>
+            <div className="text-section-30 font-bold text-slate-900 dark:text-white">
+              <CountUp suffix=" Units" end={14} />
+            </div>
+            <div className="flex items-center gap-1.5 text-small-13 text-emerald-600 dark:text-emerald-400 font-semibold">
+              <Clock size={14} />
+              <span>En Route from Caucedo Port</span>
+            </div>
+          </motion.div>
+
+          {/* Customer Satisfaction */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.6 }}
+            className="porsche-card flex flex-col gap-3"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-small-13 text-slate-500 dark:text-slate-400 font-semibold uppercase">
+                Customer CSAT Score
+              </span>
+              <div className="p-2.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400">
+                <Award size={18} />
+              </div>
+            </div>
+            <div className="text-section-30 font-bold text-slate-900 dark:text-white">
+              4.98 / 5.0
+            </div>
+            <div className="flex items-center gap-1.5 text-small-13 text-porsche-red font-semibold">
+              <Sparkles size={14} />
+              <span>Rank 1 in Porsche Latin America</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* 3. Operational Impact Section */}
+      <div className="flex flex-col gap-8 pt-4 border-t border-black/[0.08] dark:border-white/[0.08]">
+        <div className="flex flex-col">
+          <span className="text-[10px] text-porsche-red font-mono uppercase font-bold tracking-widest">
+            Strategic Optimization
+          </span>
+          <h2 className="text-section-30 font-bold text-slate-900 dark:text-white">
+            Operational Impact & Insights
+          </h2>
+        </div>
+
+        {/* Grid 1: Animated Trend Chart & Implementation Roadmap */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Animated Trend Chart */}
+          <div className="porsche-card flex flex-col gap-6">
+            <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-semibold text-slate-900 mb-1.5 flex items-center gap-1.5">
-                  {step.title}
+                <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">
+                  Efficiency & Revenue Trend
                 </h3>
-                <p className="text-xs text-porsche-muted font-light leading-relaxed">
-                  {step.desc}
+                <p className="text-small-13 text-slate-500">6-Month Operational Growth Telemetry</p>
+              </div>
+              <span className="text-xs font-mono text-porsche-red font-bold">+18.4% YoY</span>
+            </div>
+
+            <div className="h-[260px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={trendChartData}>
+                  <defs>
+                    <linearGradient id="heroRedGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#D5001C" stopOpacity={0.4} />
+                      <stop offset="95%" stopColor="#D5001C" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="month" stroke={theme === 'dark' ? '#666' : '#999'} fontSize={12} />
+                  <YAxis stroke={theme === 'dark' ? '#666' : '#999'} fontSize={12} />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: theme === 'dark' ? '#121417' : '#FFFFFF',
+                      borderColor: '#D5001C',
+                      borderRadius: '12px',
+                      color: theme === 'dark' ? '#FFF' : '#000',
+                    }}
+                  />
+                  <Area type="monotone" dataKey="revenue" stroke="#D5001C" strokeWidth={3} fillOpacity={1} fill="url(#heroRedGrad)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Implementation Roadmap */}
+          <div className="porsche-card flex flex-col gap-6">
+            <div>
+              <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">
+                AI Command Roadmap
+              </h3>
+              <p className="text-small-13 text-slate-500">Porsche Center Santo Domingo Digital Deployment</p>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              {roadmapSteps.map((step, idx) => (
+                <div
+                  key={idx}
+                  className="p-4 rounded-2xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-between gap-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-mono font-bold text-porsche-red bg-porsche-red/10 px-2.5 py-1 rounded-full shrink-0">
+                      {step.phase}
+                    </span>
+                    <div>
+                      <p className="text-body-16 font-bold text-slate-900 dark:text-white">{step.title}</p>
+                      <p className="text-small-13 text-slate-500">{step.detail}</p>
+                    </div>
+                  </div>
+                  <span className={`text-[11px] font-bold px-3 py-1 rounded-full shrink-0 ${
+                    step.status === 'Completed' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' :
+                    step.status === 'Active' ? 'bg-porsche-red/10 text-porsche-red' :
+                    'bg-slate-200 dark:bg-white/10 text-slate-600 dark:text-slate-400'
+                  }`}>
+                    {step.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Grid 2: Executive AI Summary, Recent Activity & Daily Insights */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Executive AI Summary (1 Column) */}
+          <div className="porsche-card flex flex-col justify-between gap-6 bg-gradient-to-br from-porsche-red/5 to-transparent">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center gap-2">
+                <div className="p-2 rounded-xl bg-porsche-red text-white shadow-glow-red">
+                  <Sparkles size={18} />
+                </div>
+                <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Executive AI Summary</h3>
+              </div>
+              <p className="text-small-13 text-slate-700 dark:text-slate-300 leading-relaxed">
+                "Demand for Macan Electric and 911 GT3 RS is at an all-time peak. Reallocating 4 units from Santiago warehouse resolves potential 3-week delivery bottlenecks."
+              </p>
+            </div>
+
+            <Link
+              to="/executive"
+              className="w-full py-3.5 rounded-2xl bg-porsche-red text-white text-xs font-bold text-center hover:bg-red-700 shadow-glow-red theme-transition cursor-pointer"
+            >
+              Review AI Strategic Actions
+            </Link>
+          </div>
+
+          {/* Recent Activity (1 Column) */}
+          <div className="porsche-card flex flex-col gap-6">
+            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Recent Activity</h3>
+            <div className="flex flex-col gap-3">
+              {[
+                { title: 'Config Saved — Luis Corripio', detail: '911 GT3 RS Weissach Package', time: '10m ago' },
+                { title: 'Caucedo Port Clearance', detail: 'Taycan Turbo GT VIN-TYC-4410', time: '42m ago' },
+                { title: 'VIP Test Drive Booked', detail: 'María Vásquez — Taycan 800V', time: '1h ago' },
+              ].map((act, i) => (
+                <div key={i} className="p-3 rounded-xl bg-slate-50 dark:bg-white/5 border border-black/5 dark:border-white/5">
+                  <p className="text-xs font-bold text-slate-900 dark:text-white">{act.title}</p>
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 font-mono mt-0.5">
+                    <span>{act.detail}</span>
+                    <span>{act.time}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Daily Insights (1 Column) */}
+          <div className="porsche-card flex flex-col gap-6">
+            <h3 className="text-card-22 font-bold text-slate-900 dark:text-white">Daily Insights</h3>
+            <div className="flex flex-col gap-4">
+              <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
+                <p className="text-xs font-bold text-emerald-600 dark:text-emerald-400">Peak Showroom Energy</p>
+                <p className="text-small-13 text-slate-600 dark:text-slate-300 mt-1">
+                  800V Taycan station operating at 320 kW peak efficiency. Zero queue latency.
                 </p>
               </div>
 
-              {idx < steps.length - 1 && (
-                <div className="hidden lg:block absolute right-[-15px] top-1/2 -translate-y-1/2 z-10 text-porsche-red">
-                  <ChevronRight size={18} className="opacity-50" />
-                </div>
-              )}
+              <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+                <p className="text-xs font-bold text-amber-600 dark:text-amber-400">Inventory Alert</p>
+                <p className="text-small-13 text-slate-600 dark:text-slate-300 mt-1">
+                  High-Voltage charging socket plugs low at 2 units. Reorder auto-triggered.
+                </p>
+              </div>
             </div>
-          ))}
+          </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 }

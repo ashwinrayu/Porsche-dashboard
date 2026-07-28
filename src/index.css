@@ -3,84 +3,170 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
   body {
-    background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
-    color: #0F172A;
-    @apply min-h-screen font-sans antialiased overflow-x-hidden;
+    background-color: #F7F7F5;
+    color: #111111;
+    font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    @apply min-h-screen antialiased overflow-x-hidden;
+    transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1), color 600ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark body {
+    background-color: #090909;
+    color: #FFFFFF;
   }
 
   ::selection {
-    background-color: rgba(213, 0, 28, 0.1);
+    background-color: rgba(213, 0, 28, 0.25);
     color: #D5001C;
   }
 }
 
-/* Custom scrollbars */
+/* 600ms Smooth Theme Transition Utility across all theme-aware elements */
+.theme-transition {
+  transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 200ms ease;
+}
+
+/* Strict Font Size Specifications */
+.text-hero-64 {
+  font-size: 64px;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+}
+
+.text-title-48 {
+  font-size: 48px;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.text-section-30 {
+  font-size: 30px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.text-card-22 {
+  font-size: 22px;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+.text-body-16 {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.text-small-13 {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
-  background: rgba(213, 0, 28, 0.2);
-  border-radius: 3px;
+  background: rgba(17, 17, 17, 0.2);
+  border-radius: 9999px;
 }
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(213, 0, 28, 0.45);
+  background: #D5001C;
 }
 
-/* Glowing card class */
-.porsche-card-glow {
-  background: #FFFFFF;
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.03);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Luxury Floating Card Component */
+.porsche-card {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+  transition: background-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 600ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 200ms ease;
 }
 
-.porsche-card-glow:hover {
-  border-color: rgba(213, 0, 28, 0.22);
-  box-shadow: 0 0 18px rgba(213, 0, 28, 0.04), 0 8px 30px -4px rgba(15, 23, 42, 0.06);
-  background: #FFFFFF;
+.dark .porsche-card {
+  background-color: #121417;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.8);
 }
 
-/* Pulsing Guards Red accent points */
-@keyframes pulse-red {
-  0%, 100% {
-    opacity: 0.6;
-    filter: drop-shadow(0 0 2px rgba(213, 0, 28, 0.3));
-  }
-  50% {
-    opacity: 1;
-    filter: drop-shadow(0 0 8px rgba(213, 0, 28, 0.7));
-  }
+.porsche-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(213, 0, 28, 0.3);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
 }
 
-.pulse-glow-red {
-  animation: pulse-red 3.5s infinite ease-in-out;
+.dark .porsche-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(213, 0, 28, 0.4);
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 25px rgba(213, 0, 28, 0.15);
 }
 
-/* Pulsing Acid Green E-Hybrid accent points */
-@keyframes pulse-green {
-  0%, 100% {
-    opacity: 0.6;
-    filter: drop-shadow(0 0 2px rgba(162, 230, 0, 0.3));
-  }
-  50% {
-    opacity: 1;
-    filter: drop-shadow(0 0 8px rgba(162, 230, 0, 0.7));
-  }
+/* Glassmorphic Overlays */
+.porsche-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: background 600ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.pulse-glow-green {
-  animation: pulse-green 3.5s infinite ease-in-out;
+.dark .porsche-glass {
+  background: rgba(18, 20, 23, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
-/* Faint grid overlay */
-.bg-grid-overlay {
+/* Subtle Grid Backgrounds */
+.bg-studio-grid {
   background-size: 40px 40px;
   background-image: 
-    linear-gradient(to right, rgba(15, 23, 42, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.015) 1px, transparent 1px);
+    linear-gradient(to right, rgba(17, 17, 17, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(17, 17, 17, 0.03) 1px, transparent 1px);
+}
+
+.dark .bg-studio-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* Pulse Red Glow Animation */
+@keyframes pulse-red-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(213, 0, 28, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(213, 0, 28, 0.6);
+  }
+}
+
+.animate-porsche-glow {
+  animation: pulse-red-glow 3s infinite ease-in-out;
 }

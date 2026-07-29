@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Wrench, 
-  Zap, 
-  Truck, 
-  AlertTriangle, 
-  CheckCircle2, 
-  Clock, 
-  ShieldAlert, 
-  MapPin, 
-  Scan, 
-  UploadCloud, 
-  ArrowRight, 
+import {
+  Wrench,
+  Zap,
+  Truck,
+  AlertTriangle,
+  CheckCircle2,
+  Clock,
+  ShieldAlert,
+  MapPin,
+  Scan,
+  UploadCloud,
+  ArrowRight,
   Car,
   Search,
   Filter,
@@ -256,189 +256,189 @@ export default function Logistics() {
   ];
 
   const serviceAppointments = [
-    { 
+    {
       id: 's-1',
-      service: 'Brake Replacement (PCCB Rotors)', 
-      model: '911 Carrera GTS', 
+      service: 'Brake Replacement (PCCB Rotors)',
+      model: '911 Carrera GTS',
       client: 'Carlos Llenas',
       customerId: 'carlos-llenas',
       date: 'Today • 2:30 PM',
       tech: 'Marcus Vance',
       bay: 'Bay 04',
       cost: '$2,450',
-      status: 'Confirmed', 
-      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' 
+      status: 'Confirmed',
+      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
     },
-    { 
+    {
       id: 's-2',
-      service: 'Cabin Filter & HEPA Air Flush', 
-      model: 'Macan Turbo S', 
+      service: 'Cabin Filter & HEPA Air Flush',
+      model: 'Macan Turbo S',
       client: 'Milo Espaillat',
       customerId: 'milo-espaillat',
       date: 'Tomorrow • 10:00 AM',
       tech: 'Alex Ruiz',
       bay: 'Bay 02',
       cost: '$480',
-      status: 'Scheduled', 
-      statusColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' 
+      status: 'Scheduled',
+      statusColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
     },
-    { 
+    {
       id: 's-3',
-      service: 'PASM Air Suspension Calibration', 
-      model: 'Cayenne E-Hybrid', 
+      service: 'PASM Air Suspension Calibration',
+      model: 'Cayenne E-Hybrid',
       client: 'Juan Vich',
       customerId: 'juan-vich',
       date: 'July 30 • 11:30 AM',
       tech: 'David Ortiz',
       bay: 'Bay 01',
       cost: '$1,200',
-      status: 'Scheduled', 
-      statusColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' 
+      status: 'Scheduled',
+      statusColor: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20'
     },
-    { 
+    {
       id: 's-4',
-      service: '800V High-Voltage Battery Diagnostic', 
-      model: 'Taycan Turbo GT', 
+      service: '800V High-Voltage Battery Diagnostic',
+      model: 'Taycan Turbo GT',
       client: 'María Vásquez',
       customerId: 'maria-vasquez',
       date: 'July 30 • 3:00 PM',
       tech: 'Stefan Weiss',
       bay: 'Bay 05',
       cost: '$850',
-      status: 'Confirmed', 
-      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' 
+      status: 'Confirmed',
+      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
     },
-    { 
+    {
       id: 's-5',
-      service: 'PDK 8-Speed Gearbox Service', 
-      model: 'Panamera 4 E-Hybrid', 
+      service: 'PDK 8-Speed Gearbox Service',
+      model: 'Panamera 4 E-Hybrid',
       client: 'Eduardo Najri',
       customerId: 'eduardo-najri',
       date: 'July 31 • 9:00 AM',
       tech: 'Marcus Vance',
       bay: 'Bay 03',
       cost: '$1,890',
-      status: 'In Progress', 
-      statusColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' 
+      status: 'In Progress',
+      statusColor: 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20'
     },
-    { 
+    {
       id: 's-6',
-      service: 'Carbon Ceramic Rotor Inspection', 
-      model: '718 Cayman GT4 RS', 
+      service: 'Carbon Ceramic Rotor Inspection',
+      model: '718 Cayman GT4 RS',
       client: 'Gustavo Tavares',
       customerId: 'gustavo-tavares',
       date: 'Aug 01 • 1:00 PM',
       tech: 'Stefan Weiss',
       bay: 'Bay 06',
       cost: '$3,200',
-      status: 'Urgent', 
-      statusColor: 'bg-porsche-red/10 text-porsche-red border-porsche-red/20' 
+      status: 'Urgent',
+      statusColor: 'bg-porsche-red/10 text-porsche-red border-porsche-red/20'
     },
-    { 
+    {
       id: 's-7',
-      service: 'ECU Telemetry Firmware Update', 
-      model: '911 GT3 RS', 
+      service: 'ECU Telemetry Firmware Update',
+      model: '911 GT3 RS',
       client: 'Luis Corripio',
       customerId: 'luis-corripio',
       date: 'Aug 02 • 10:30 AM',
       tech: 'Alex Ruiz',
       bay: 'Bay 04',
       cost: '$350',
-      status: 'Confirmed', 
-      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20' 
+      status: 'Confirmed',
+      statusColor: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
     },
   ];
 
   const tradeInOpportunities = [
-    { 
+    {
       id: 't-1',
-      client: 'Carlos Llenas', 
+      client: 'Carlos Llenas',
       customerId: 'carlos-llenas',
-      vehicle: '2021 911 Carrera S', 
+      vehicle: '2021 911 Carrera S',
       appraisal: '$118,000',
       upgradeTarget: '911 Carrera GTS',
       expiry: '1 month remaining',
-      tag: 'High Value', 
-      tagColor: 'bg-porsche-red text-white' 
+      tag: 'High Value',
+      tagColor: 'bg-porsche-red text-white'
     },
-    { 
+    {
       id: 't-2',
-      client: 'Milo Espaillat', 
+      client: 'Milo Espaillat',
       customerId: 'milo-espaillat',
-      vehicle: '2020 Macan Turbo', 
+      vehicle: '2020 Macan Turbo',
       appraisal: '$62,000',
       upgradeTarget: 'Macan Electric',
       expiry: '2 weeks remaining',
-      tag: 'Renewal', 
-      tagColor: 'bg-blue-600 text-white' 
+      tag: 'Renewal',
+      tagColor: 'bg-blue-600 text-white'
     },
-    { 
+    {
       id: 't-3',
-      client: 'Juan Vich', 
+      client: 'Juan Vich',
       customerId: 'juan-vich',
-      vehicle: '2018 Cayenne E-Hybrid', 
+      vehicle: '2018 Cayenne E-Hybrid',
       appraisal: '$54,000',
       upgradeTarget: 'Cayenne Turbo GT',
       expiry: '3 months remaining',
-      tag: 'Medium', 
-      tagColor: 'bg-amber-500 text-white' 
+      tag: 'Medium',
+      tagColor: 'bg-amber-500 text-white'
     },
-    { 
+    {
       id: 't-4',
-      client: 'María Vásquez', 
+      client: 'María Vásquez',
       customerId: 'maria-vasquez',
-      vehicle: '2022 Taycan 4S', 
+      vehicle: '2022 Taycan 4S',
       appraisal: '$85,000',
       upgradeTarget: 'Taycan Turbo GT',
       expiry: '1 week remaining',
-      tag: 'High Value', 
-      tagColor: 'bg-porsche-red text-white' 
+      tag: 'High Value',
+      tagColor: 'bg-porsche-red text-white'
     },
-    { 
+    {
       id: 't-5',
-      client: 'Gustavo Tavares', 
+      client: 'Gustavo Tavares',
       customerId: 'gustavo-tavares',
-      vehicle: '2019 718 Cayman S', 
+      vehicle: '2019 718 Cayman S',
       appraisal: '$48,000',
       upgradeTarget: '718 Cayman GT4 RS',
       expiry: 'Immediate',
-      tag: 'Upgrade Eligible', 
-      tagColor: 'bg-emerald-600 text-white' 
+      tag: 'Upgrade Eligible',
+      tagColor: 'bg-emerald-600 text-white'
     },
-    { 
+    {
       id: 't-6',
-      client: 'Eduardo Najri', 
+      client: 'Eduardo Najri',
       customerId: 'eduardo-najri',
-      vehicle: '2021 Panamera GTS', 
+      vehicle: '2021 Panamera GTS',
       appraisal: '$92,000',
       upgradeTarget: 'Panamera Turbo E-Hybrid',
       expiry: '1 month remaining',
-      tag: 'Renewal', 
-      tagColor: 'bg-blue-600 text-white' 
+      tag: 'Renewal',
+      tagColor: 'bg-blue-600 text-white'
     },
   ];
 
   // Filters for Modals
   const filteredFleet = fleetData.filter((car) => {
-    const matchesSearch = car.model.toLowerCase().includes(fleetSearch.toLowerCase()) || 
-                          car.owner.toLowerCase().includes(fleetSearch.toLowerCase()) ||
-                          car.vin.toLowerCase().includes(fleetSearch.toLowerCase());
+    const matchesSearch = car.model.toLowerCase().includes(fleetSearch.toLowerCase()) ||
+      car.owner.toLowerCase().includes(fleetSearch.toLowerCase()) ||
+      car.vin.toLowerCase().includes(fleetSearch.toLowerCase());
     const matchesFilter = fleetFilter === 'all' || car.status.toLowerCase().includes(fleetFilter.toLowerCase());
     return matchesSearch && matchesFilter;
   });
 
   const filteredService = serviceAppointments.filter((item) => {
     const matchesSearch = item.service.toLowerCase().includes(serviceSearch.toLowerCase()) ||
-                          item.client.toLowerCase().includes(serviceSearch.toLowerCase()) ||
-                          item.model.toLowerCase().includes(serviceSearch.toLowerCase());
+      item.client.toLowerCase().includes(serviceSearch.toLowerCase()) ||
+      item.model.toLowerCase().includes(serviceSearch.toLowerCase());
     const matchesFilter = serviceFilter === 'all' || item.status.toLowerCase().includes(serviceFilter.toLowerCase());
     return matchesSearch && matchesFilter;
   });
 
   const filteredTradeIn = tradeInOpportunities.filter((opp) => {
     const matchesSearch = opp.client.toLowerCase().includes(tradeInSearch.toLowerCase()) ||
-                          opp.vehicle.toLowerCase().includes(tradeInSearch.toLowerCase()) ||
-                          opp.upgradeTarget.toLowerCase().includes(tradeInSearch.toLowerCase());
+      opp.vehicle.toLowerCase().includes(tradeInSearch.toLowerCase()) ||
+      opp.upgradeTarget.toLowerCase().includes(tradeInSearch.toLowerCase());
     const matchesFilter = tradeInFilter === 'all' || opp.tag.toLowerCase().includes(tradeInFilter.toLowerCase());
     return matchesSearch && matchesFilter;
   });
@@ -567,14 +567,23 @@ export default function Logistics() {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">
-                      {car.model}
-                    </h4>
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <h4 className="text-body-16 font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors leading-tight">
+                        {car.model}
+                      </h4>
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <User size={12} className="text-porsche-red shrink-0" />
+                        <span className="text-xs font-bold text-slate-700 dark:text-slate-200 font-sans">
+                          {car.owner}
+                        </span>
+                      </div>
+                    </div>
+
                     <button
                       type="button"
                       onClick={(e) => triggerAction(e, { title: `Fleet Telemetry Action: ${car.model}`, target: `Owner: ${car.owner} (${car.vin})` })}
-                      className="px-2 py-1 rounded-lg bg-porsche-red text-white text-[10px] font-bold hover:bg-red-700 transition-colors shadow-glow-red"
+                      className="px-2.5 py-1 rounded-lg bg-porsche-red text-white text-[10px] font-bold hover:bg-red-700 transition-colors shadow-glow-red shrink-0 cursor-pointer"
                     >
                       Take Action
                     </button>
@@ -596,15 +605,14 @@ export default function Logistics() {
                 <button
                   type="button"
                   onClick={(e) => toggleAiCard(e, car.id)}
-                  className={`w-full flex items-center justify-between px-4 py-2.5 border-t text-[11px] font-bold transition-all cursor-pointer ${
-                    isExpanded
+                  className={`w-full flex items-center justify-between px-4 py-2.5 border-t text-[11px] font-bold transition-all cursor-pointer ${isExpanded
                       ? 'bg-porsche-red/10 border-porsche-red/30 text-porsche-red'
                       : hasCritical
-                      ? 'bg-red-500/10 border-red-500/20 text-red-500 dark:text-red-400'
-                      : hasWarning
-                      ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400'
-                      : 'bg-emerald-500/5 border-black/5 dark:border-white/5 text-emerald-600 dark:text-emerald-400'
-                  }`}
+                        ? 'bg-red-500/10 border-red-500/20 text-red-500 dark:text-red-400'
+                        : hasWarning
+                          ? 'bg-amber-500/10 border-amber-500/20 text-amber-600 dark:text-amber-400'
+                          : 'bg-emerald-500/5 border-black/5 dark:border-white/5 text-emerald-600 dark:text-emerald-400'
+                    }`}
                 >
                   <span className="flex items-center gap-1.5">
                     <Brain size={12} />
@@ -641,28 +649,25 @@ export default function Logistics() {
                           {aiItems.map((item, idx) => (
                             <div
                               key={idx}
-                              className={`rounded-xl p-3 border flex flex-col gap-1.5 ${
-                                item.urgency === 'critical'
+                              className={`rounded-xl p-3 border flex flex-col gap-1.5 ${item.urgency === 'critical'
                                   ? 'bg-red-500/10 border-red-500/20'
                                   : item.urgency === 'warning'
-                                  ? 'bg-amber-500/10 border-amber-500/20'
-                                  : 'bg-slate-100 dark:bg-white/5 border-black/5 dark:border-white/5'
-                              }`}
+                                    ? 'bg-amber-500/10 border-amber-500/20'
+                                    : 'bg-slate-100 dark:bg-white/5 border-black/5 dark:border-white/5'
+                                }`}
                             >
                               <div className="flex items-center justify-between">
-                                <div className={`flex items-center gap-1.5 text-[11px] font-bold ${
-                                  item.urgency === 'critical' ? 'text-red-500' :
-                                  item.urgency === 'warning' ? 'text-amber-600 dark:text-amber-400' :
-                                  'text-slate-900 dark:text-white'
-                                }`}>
+                                <div className={`flex items-center gap-1.5 text-[11px] font-bold ${item.urgency === 'critical' ? 'text-red-500' :
+                                    item.urgency === 'warning' ? 'text-amber-600 dark:text-amber-400' :
+                                      'text-slate-900 dark:text-white'
+                                  }`}>
                                   {item.icon}
                                   {item.label}
                                 </div>
-                                <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full ${
-                                  item.urgency === 'critical' ? 'bg-red-500 text-white' :
-                                  item.urgency === 'warning' ? 'bg-amber-500 text-white' :
-                                  'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                                }`}>
+                                <span className={`text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full ${item.urgency === 'critical' ? 'bg-red-500 text-white' :
+                                    item.urgency === 'warning' ? 'bg-amber-500 text-white' :
+                                      'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                                  }`}>
                                   {item.urgency === 'critical' ? 'URGENT' : item.urgency === 'warning' ? 'SOON' : 'OK'}
                                 </span>
                               </div>
@@ -829,11 +834,10 @@ export default function Logistics() {
                     <button
                       key={f}
                       onClick={() => setFleetFilter(f)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono capitalize border cursor-pointer transition-all ${
-                        fleetFilter === f
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono capitalize border cursor-pointer transition-all ${fleetFilter === f
                           ? 'bg-porsche-red text-white border-porsche-red'
                           : 'bg-white dark:bg-[#1A1D24] border-black/5 dark:border-white/10 text-slate-600 dark:text-slate-400'
-                      }`}
+                        }`}
                     >
                       {f}
                     </button>
@@ -949,11 +953,10 @@ export default function Logistics() {
                     <button
                       key={f}
                       onClick={() => setServiceFilter(f)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono capitalize border cursor-pointer transition-all ${
-                        serviceFilter === f
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono capitalize border cursor-pointer transition-all ${serviceFilter === f
                           ? 'bg-porsche-red text-white border-porsche-red'
                           : 'bg-white dark:bg-[#1A1D24] border-black/5 dark:border-white/10 text-slate-600 dark:text-slate-400'
-                      }`}
+                        }`}
                     >
                       {f}
                     </button>
@@ -1061,11 +1064,10 @@ export default function Logistics() {
                     <button
                       key={f}
                       onClick={() => setTradeInFilter(f)}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono capitalize border cursor-pointer transition-all ${
-                        tradeInFilter === f
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold font-mono capitalize border cursor-pointer transition-all ${tradeInFilter === f
                           ? 'bg-porsche-red text-white border-porsche-red'
                           : 'bg-white dark:bg-[#1A1D24] border-black/5 dark:border-white/10 text-slate-600 dark:text-slate-400'
-                      }`}
+                        }`}
                     >
                       {f}
                     </button>

@@ -11,7 +11,8 @@ import {
   Camera,
   User,
   Building2,
-  Save
+  Save,
+  LogOut
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useTheme } from '../context/ThemeContext';
@@ -114,14 +115,23 @@ export default function Profile() {
               </div>
             </div>
 
-            {/* Edit Profile Button — now wired up */}
-            <button
-              onClick={openEdit}
-              className="px-5 py-2.5 rounded-full border border-porsche-red/40 text-xs font-bold text-porsche-red hover:bg-porsche-red hover:text-white shadow-glow-red-sm theme-transition cursor-pointer flex items-center gap-2"
-            >
-              <User size={13} />
-              Edit Profile
-            </button>
+            {/* Action Buttons — Edit Profile & Sign Out */}
+            <div className="flex items-center gap-2.5">
+              <button
+                onClick={openEdit}
+                className="px-4 py-2.5 rounded-full border border-porsche-red/40 text-xs font-bold text-porsche-red hover:bg-porsche-red hover:text-white shadow-glow-red-sm theme-transition cursor-pointer flex items-center gap-1.5"
+              >
+                <User size={13} />
+                Edit Profile
+              </button>
+              <button
+                onClick={() => api.auth.logout()}
+                className="px-4 py-2.5 rounded-full bg-porsche-red text-white text-xs font-bold hover:bg-red-700 shadow-glow-red theme-transition cursor-pointer flex items-center gap-1.5"
+              >
+                <LogOut size={13} />
+                Sign Out
+              </button>
+            </div>
           </div>
 
           {/* Contact & Location Details */}

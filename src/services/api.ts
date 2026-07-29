@@ -132,30 +132,21 @@ export const api = {
     logout(): void {
       localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem(USER_KEY);
+      window.location.hash = '#/';
       window.location.reload();
     },
 
     isAuthenticated(): boolean {
-      return true; // Default authenticated for frictionless demo access
+      return !!localStorage.getItem(TOKEN_KEY);
     },
 
     getCurrentUser(): User | null {
       const userStr = localStorage.getItem(USER_KEY);
-      if (!userStr) {
-        return {
-          name: 'Porsche Executive Admin',
-          role: 'Executive Director',
-          showroom: 'Santo Domingo Main'
-        };
-      }
+      if (!userStr) return null;
       try {
         return JSON.parse(userStr);
       } catch {
-        return {
-          name: 'Porsche Executive Admin',
-          role: 'Executive Director',
-          showroom: 'Santo Domingo Main'
-        };
+        return null;
       }
     }
   },

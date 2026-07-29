@@ -60,6 +60,8 @@ export default function Sales() {
     colorName: string;
     colorHex: string;
     image: string;
+    lightImage?: string;
+    darkImage?: string;
     hp: string;
     zeroToSixty: string;
     msrp: string;
@@ -75,6 +77,8 @@ export default function Sales() {
       colorName: 'Guards Red',
       colorHex: '#D5001C',
       image: '/porsche-911-dark.png',
+      lightImage: '/porsche-911-light.png',
+      darkImage: '/porsche-911-dark.png',
       hp: '532 HP',
       zeroToSixty: '2.9s',
       msrp: '$185,000 USD',
@@ -135,6 +139,8 @@ export default function Sales() {
       colorName: 'GT Silver Metallic',
       colorHex: '#C0C0C0',
       image: '/porsche-911-dark.png',
+      lightImage: '/porsche-911-light.png',
+      darkImage: '/porsche-911-dark.png',
       hp: '518 HP',
       zeroToSixty: '3.0s',
       msrp: '$241,300 USD',
@@ -184,6 +190,8 @@ export default function Sales() {
       colorName: 'Chromite Black Metallic',
       colorHex: '#111111',
       image: '/porsche-cayenne.png',
+      lightImage: '/porsche-cayenne-light.png',
+      darkImage: '/porsche-cayenne.png',
       hp: '729 HP',
       zeroToSixty: '3.6s',
       msrp: '$146,000 USD',
@@ -232,6 +240,8 @@ export default function Sales() {
       colorName: 'Frozen Blue Metallic',
       colorHex: '#4682B4',
       image: '/porsche-macan.png',
+      lightImage: '/porsche-macan-light.png',
+      darkImage: '/porsche-macan.png',
       hp: '630 HP',
       zeroToSixty: '3.1s',
       msrp: '$105,300 USD',
@@ -280,6 +290,8 @@ export default function Sales() {
       colorName: 'Carrara White Metallic',
       colorHex: '#FAFAFA',
       image: '/porsche-panamera.png',
+      lightImage: '/porsche-panamera-light.png',
+      darkImage: '/porsche-panamera.png',
       hp: '463 HP',
       zeroToSixty: '3.9s',
       msrp: '$115,500 USD',
@@ -328,6 +340,8 @@ export default function Sales() {
       colorName: 'Purple Sky Metallic',
       colorHex: '#4B0082',
       image: '/porsche-taycan.png',
+      lightImage: '/porsche-taycan-light.png',
+      darkImage: '/porsche-taycan.png',
       hp: '1,019 HP',
       zeroToSixty: '2.1s',
       msrp: '$230,000 USD',
@@ -559,12 +573,13 @@ export default function Sales() {
             {/* Configurator Photo */}
             <div
               onClick={() => setIsConfigModalOpen(true)}
-              className="w-full h-[220px] rounded-2xl overflow-hidden shadow-xl border border-black/10 dark:border-white/10 cursor-pointer group relative bg-black"
+              className="w-full h-[220px] rounded-2xl overflow-hidden shadow-xl border border-black/10 dark:border-white/10 cursor-pointer group relative bg-slate-100 dark:bg-black flex items-center justify-center p-3"
             >
-              <img
-                src={currentData.image}
+              <VehicleImage
+                lightSrc={currentData.lightImage || '/porsche-911-light.png'}
+                darkSrc={currentData.darkImage || '/porsche-911-dark.png'}
                 alt={currentData.configuratorName}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
                 <span className="text-xs font-bold text-white uppercase font-mono flex items-center gap-1">

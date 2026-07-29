@@ -38,7 +38,7 @@ const PORSCHE_MODELS: PorscheModel[] = [
     id: 'taycan-turbogt',
     name: 'Taycan Turbo GT',
     basePrice: 230000,
-    lightImg: '/porsche-taycan.png',
+    lightImg: '/porsche-taycan-light.png',
     darkImg: '/porsche-taycan.png',
     hp: '1,019 hp',
     zeroToSixty: '2.1s',
@@ -47,7 +47,7 @@ const PORSCHE_MODELS: PorscheModel[] = [
     id: 'panamera-ehybrid',
     name: 'Panamera 4 E-Hybrid',
     basePrice: 115500,
-    lightImg: '/porsche-panamera.png',
+    lightImg: '/porsche-panamera-light.png',
     darkImg: '/porsche-panamera.png',
     hp: '463 hp',
     zeroToSixty: '3.9s',
@@ -56,7 +56,7 @@ const PORSCHE_MODELS: PorscheModel[] = [
     id: 'cayenne-hybrid',
     name: 'Cayenne Coupé E-Hybrid',
     basePrice: 146000,
-    lightImg: '/porsche-cayenne.png',
+    lightImg: '/porsche-cayenne-light.png',
     darkImg: '/porsche-cayenne.png',
     hp: '729 hp',
     zeroToSixty: '3.6s',
@@ -65,7 +65,7 @@ const PORSCHE_MODELS: PorscheModel[] = [
     id: 'macan-electric',
     name: 'Macan Electric Turbo',
     basePrice: 105300,
-    lightImg: '/porsche-macan.png',
+    lightImg: '/porsche-macan-light.png',
     darkImg: '/porsche-macan.png',
     hp: '630 hp',
     zeroToSixty: '3.1s',
@@ -169,7 +169,7 @@ export default function Configurator() {
           </div>
 
           {/* Dual Vehicle Asset Display (Swaps White <-> Black based on theme) */}
-          <div className="w-full h-[360px] rounded-2xl overflow-hidden shadow-2xl border border-black/10 dark:border-white/10 flex items-center justify-center bg-slate-950/20">
+          <div className="w-full h-[360px] rounded-2xl overflow-hidden shadow-2xl border border-black/10 dark:border-white/10 flex items-center justify-center bg-slate-100 dark:bg-black/60">
             <VehicleImage
               lightSrc={selectedModel.lightImg}
               darkSrc={selectedModel.darkImg}

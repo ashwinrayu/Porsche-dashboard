@@ -129,7 +129,7 @@ export default function Logistics() {
       location: 'Santiago Hub',
       vin: 'WP0ZZZY1ZMSA91823',
       batteryFuel: '88% Battery (800V)',
-      lightImg: '/porsche-taycan.png',
+      lightImg: '/porsche-taycan-light.png',
       darkImg: '/porsche-taycan.png',
       status: 'Optimal',
     },
@@ -144,7 +144,7 @@ export default function Logistics() {
       location: 'Punta Cana Depot',
       vin: 'WP1AA2AY2PDA19231',
       batteryFuel: '95% Hybrid',
-      lightImg: '/porsche-cayenne.png',
+      lightImg: '/porsche-cayenne-light.png',
       darkImg: '/porsche-cayenne.png',
       status: 'Service Due',
     },
@@ -159,7 +159,7 @@ export default function Logistics() {
       location: 'Santo Domingo Main',
       vin: 'WP1AA2A58RDA88219',
       batteryFuel: '90% EV',
-      lightImg: '/porsche-macan.png',
+      lightImg: '/porsche-macan-light.png',
       darkImg: '/porsche-macan.png',
       status: 'Optimal',
     },
@@ -174,7 +174,7 @@ export default function Logistics() {
       location: 'Santo Domingo Main',
       vin: 'WP0AA2A79PSA11204',
       batteryFuel: '97% Hybrid',
-      lightImg: '/porsche-panamera.png',
+      lightImg: '/porsche-panamera-light.png',
       darkImg: '/porsche-panamera.png',
       status: 'Optimal',
     },
@@ -219,7 +219,7 @@ export default function Logistics() {
       location: 'Punta Cana Depot',
       vin: 'WP0ZZZY1ZNSA20194',
       batteryFuel: '84% Battery',
-      lightImg: '/porsche-taycan.png',
+      lightImg: '/porsche-taycan-light.png',
       darkImg: '/porsche-taycan.png',
       status: 'Optimal',
     },
@@ -234,7 +234,7 @@ export default function Logistics() {
       location: 'Santiago Hub',
       vin: 'WP1AA2A54PDA12903',
       batteryFuel: '79% Fuel',
-      lightImg: '/porsche-macan.png',
+      lightImg: '/porsche-macan-light.png',
       darkImg: '/porsche-macan.png',
       status: 'Service Due',
     },
@@ -249,7 +249,7 @@ export default function Logistics() {
       location: 'Punta Cana Depot',
       vin: 'WP1AA2AY5RDA90124',
       batteryFuel: '89% Fuel',
-      lightImg: '/porsche-cayenne.png',
+      lightImg: '/porsche-cayenne-light.png',
       darkImg: '/porsche-cayenne.png',
       status: 'Optimal',
     },
@@ -558,7 +558,7 @@ export default function Logistics() {
                   onClick={() => { window.location.hash = `#/customer-360/${car.customerId}`; }}
                   className="p-4 flex flex-col gap-3 cursor-pointer"
                 >
-                  <div className="w-full h-[140px] rounded-xl overflow-hidden shadow-md relative bg-slate-900/10 dark:bg-white/5 flex items-center justify-center">
+                  <div className="w-full h-[140px] rounded-xl overflow-hidden shadow-sm relative bg-slate-100 dark:bg-white/5 border border-black/5 dark:border-white/5 flex items-center justify-center">
                     <VehicleImage
                       lightSrc={car.lightImg}
                       darkSrc={car.darkImg}

@@ -16,6 +16,7 @@ import {
   Search,
   Filter,
   X,
+  User,
   UserCheck,
   ChevronRight,
   ChevronDown,

@@ -109,6 +109,50 @@ function MainLayout() {
   );
 }
 
+class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean; error: Error | null }> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Porsche Command Center Error Boundary:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center p-6 bg-slate-950 text-white font-sans text-center">
+          <div className="max-w-md p-8 bg-slate-900 border border-white/10 rounded-2xl flex flex-col items-center gap-4 shadow-2xl">
+            <div className="w-12 h-12 rounded-full bg-porsche-red/20 text-porsche-red flex items-center justify-center font-bold text-xl">
+              !
+            </div>
+            <h2 className="text-xl font-bold uppercase tracking-wider text-white">System Recovery</h2>
+            <p className="text-xs text-slate-400 leading-relaxed">
+              The dashboard encountered a transient view exception. Click below to reload cleanly.
+            </p>
+            <button
+              onClick={() => {
+                this.setState({ hasError: false, error: null });
+                window.location.hash = '#/';
+                window.location.reload();
+              }}
+              className="px-6 py-2.5 bg-porsche-red text-white text-xs font-bold rounded-xl uppercase tracking-wider hover:bg-red-700 transition-all cursor-pointer shadow-glow-red"
+            >
+              Reload Dashboard
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(api.auth.isAuthenticated());
 
@@ -121,12 +165,14 @@ export default function App() {
   }
 
   return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <HashRouter>
-          <MainLayout />
-        </HashRouter>
-      </LanguageProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <LanguageProvider>
+          <HashRouter>
+            <MainLayout />
+          </HashRouter>
+        </LanguageProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }

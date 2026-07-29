@@ -6,6 +6,7 @@ import {
   Car, 
   Award,
   ChevronLeft,
+  ChevronRight,
   Sparkles,
   Star,
   Package,
@@ -14,6 +15,12 @@ import {
   Wrench,
   Gift,
   TrendingUp,
+  Users,
+  Search,
+  ListFilter,
+  ArrowRight,
+  Table,
+  UserCheck
 } from 'lucide-react';
 import { CountUp } from '../components/CountUp';
 import { useLanguage } from '../context/LanguageContext';
@@ -735,135 +742,279 @@ export default function Customer360() {
 
   const [activeKey, setActiveKey] = useState<string>(customerId || 'luis-corripio');
   const [customerSearch, setCustomerSearch] = useState('');
+  const [modelFilter, setModelFilter] = useState('All');
+  const [viewMode, setViewMode] = useState<'table' | 'detail'>(customerId ? 'detail' : 'table');
 
   useEffect(() => {
-    if (customerId) setActiveKey(customerId);
+    if (customerId) {
+      setActiveKey(customerId);
+      setViewMode('detail');
+    } else {
+      setViewMode('table');
+    }
   }, [customerId]);
 
   const client = getClientData(activeKey);
 
   const switchTo = (key: string) => {
+    setActiveKey(key);
+    setViewMode('detail');
     navigate(`/customer-360/${key}`);
   };
 
   const filteredKeys = CLIENT_KEYS.filter((key) => {
     const c = ALL_CLIENTS[key];
     const q = customerSearch.toLowerCase();
-    return (
+    const matchesSearch = (
       c.name.toLowerCase().includes(q) ||
       c.id.toLowerCase().includes(q) ||
       c.interestedModel.toLowerCase().includes(q) ||
-      c.location.toLowerCase().includes(q)
+      c.location.toLowerCase().includes(q) ||
+      c.email.toLowerCase().includes(q)
     );
+    const matchesModel = modelFilter === 'All' || c.interestedModel.toLowerCase().includes(modelFilter.toLowerCase());
+    return matchesSearch && matchesModel;
   });
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-4 border-b border-black/[0.08] dark:border-white/[0.08]">
         <div>
           <div className="text-xs font-mono uppercase tracking-widest text-porsche-red font-bold mb-1">
-            VIP CLIENT DIRECTORY & TELEMETRY
+            VIP CLIENT DIRECTORY &amp; TELEMETRY
           </div>
           <h1 className="text-title-48 font-bold text-slate-900 dark:text-white tracking-tight">
             Customer 360 Hub
           </h1>
-          <p className="text-xs text-slate-500 font-mono mt-1">Select any client below to inspect complete fleet, financial, and engagement telemetry</p>
+          <p className="text-xs text-slate-500 font-mono mt-1">
+            {viewMode === 'table'
+              ? 'Select any customer from the directory table below to inspect complete 360 telemetry profile'
+              : `Viewing 360 Telemetry Profile for ${client.name} (${client.id})`}
+          </p>
         </div>
 
-        {/* Back to Sales */}
-        <button
-          onClick={() => navigate('/sales')}
-          className="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-porsche-red transition-colors cursor-pointer self-start sm:self-auto"
-        >
-          <ChevronLeft size={14} />
-          Back to Sales
-        </button>
+        <div className="flex items-center gap-3">
+          {viewMode === 'detail' && (
+            <button
+              onClick={() => { setViewMode('table'); navigate('/customer-360'); }}
+              className="px-3.5 py-2 rounded-xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 transition-colors shadow-glow-red flex items-center gap-1.5 cursor-pointer"
+            >
+              <ChevronLeft size={15} />
+              <span>Back to Directory Table</span>
+            </button>
+          )}
+
+          <button
+            onClick={() => navigate('/sales')}
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-400 hover:text-porsche-red transition-colors cursor-pointer self-start sm:self-auto"
+          >
+            <ChevronLeft size={14} />
+            <span>Back to Sales</span>
+          </button>
+        </div>
       </div>
 
-      {/* Customer Switcher Search & Executive Directory Bar */}
-      <div className="porsche-card flex flex-col gap-5 bg-gradient-to-r from-slate-900/[0.03] via-transparent to-porsche-red/[0.03] dark:from-white/[0.02] dark:to-porsche-red/[0.04]">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-2.5 h-2.5 rounded-full bg-porsche-red shadow-glow-red-sm" />
-            <div>
-              <h3 className="text-body-16 font-bold text-slate-900 dark:text-white uppercase font-mono">
-                VIP Client Directory ({filteredKeys.length} / {CLIENT_KEYS.length})
-              </h3>
-              <p className="text-[11px] text-slate-500 font-mono">Select client card or search below to inspect 360 telemetry</p>
+      {/* MODE 1: VIP CUSTOMERS DIRECTORY TABLE VIEW */}
+      {viewMode === 'table' && (
+        <div className="flex flex-col gap-6">
+          {/* Executive Summary Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="porsche-card flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-porsche-red/10 border border-porsche-red/20 text-porsche-red flex items-center justify-center shrink-0">
+                <Users size={22} />
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-400 font-mono uppercase font-bold">Registered Customers</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">15 VIP Clients</p>
+                <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">+3 new this month</p>
+              </div>
+            </div>
+
+            <div className="porsche-card flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <DollarSign size={22} />
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-400 font-mono uppercase font-bold">Portfolio Lifetime Value</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">$9.42M USD</p>
+                <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">Avg $628k / client</p>
+              </div>
+            </div>
+
+            <div className="porsche-card flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-500 flex items-center justify-center shrink-0">
+                <Car size={22} />
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-400 font-mono uppercase font-bold">Active Porsche Fleet</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">28 Vehicles</p>
+                <p className="text-[10px] text-slate-400 font-mono">Connected Telemetry</p>
+              </div>
+            </div>
+
+            <div className="porsche-card flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-amber-500 flex items-center justify-center shrink-0">
+                <Sparkles size={22} />
+              </div>
+              <div>
+                <p className="text-[10px] text-slate-400 font-mono uppercase font-bold">Avg AI Purchase Score</p>
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">88.4 / 100</p>
+                <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">High Purchase Intent</p>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
-            {/* Quick Dropdown Select */}
-            <select
-              value={activeKey}
-              onChange={(e) => switchTo(e.target.value)}
-              className="px-3 py-2 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-porsche-red cursor-pointer"
-            >
-              {CLIENT_KEYS.map((k) => (
-                <option key={k} value={k} className="bg-white dark:bg-[#121417] text-slate-900 dark:text-white">
-                  {ALL_CLIENTS[k].name} ({ALL_CLIENTS[k].interestedModel}) — {ALL_CLIENTS[k].aiPurchaseScore} pts
-                </option>
-              ))}
-            </select>
+          {/* Directory Controls & Table Card */}
+          <div className="porsche-card flex flex-col gap-5">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-porsche-red shadow-glow-red-sm" />
+                <h3 className="text-body-16 font-bold text-slate-900 dark:text-white uppercase font-mono">
+                  VIP Customer Directory Table ({filteredKeys.length} / {CLIENT_KEYS.length})
+                </h3>
+              </div>
 
-            {/* Instant Search Bar */}
-            <div className="relative min-w-[220px]">
-              <input
-                type="text"
-                value={customerSearch}
-                onChange={(e) => setCustomerSearch(e.target.value)}
-                placeholder="Search name, model, location..."
-                className="w-full pl-3 pr-4 py-2 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-porsche-red"
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Executive Horizontal Scrollable Client Cards Rail */}
-        <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-porsche-red/30 snap-x">
-          {filteredKeys.map((key) => {
-            const c = ALL_CLIENTS[key];
-            const isSelected = activeKey === key;
-            return (
-              <div
-                key={key}
-                onClick={() => switchTo(key)}
-                className={`snap-start min-w-[200px] max-w-[220px] p-3.5 rounded-2xl border transition-all cursor-pointer flex flex-col gap-2 shrink-0 ${
-                  isSelected
-                    ? 'bg-porsche-red text-white border-porsche-red shadow-glow-red'
-                    : 'bg-white dark:bg-white/5 border-black/[0.08] dark:border-white/[0.08] hover:border-porsche-red/40 hover:shadow-md'
-                }`}
-              >
-                <div className="flex items-center justify-between">
-                  <div className={`w-7 h-7 rounded-xl font-bold text-xs flex items-center justify-center ${
-                    isSelected ? 'bg-white text-porsche-red' : 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white'
-                  }`}>
-                    {c.name.charAt(0)}
-                  </div>
-                  <span className={`text-[9px] font-bold font-mono px-2 py-0.5 rounded-full border ${
-                    isSelected
-                      ? 'bg-white/20 text-white border-white/30'
-                      : 'bg-porsche-red/10 text-porsche-red border-porsche-red/20'
-                  }`}>
-                    {c.aiPurchaseScore} pts
-                  </span>
+              {/* Model Filter Pills & Search */}
+              <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
+                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+                  {['All', '911', 'Cayenne', 'Macan', 'Panamera', 'Taycan'].map((m) => (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() => setModelFilter(m)}
+                      className={`px-3 py-1 rounded-full text-xs font-bold font-mono transition-all cursor-pointer ${
+                        modelFilter === m
+                          ? 'bg-porsche-red text-white shadow-glow-red-sm'
+                          : 'bg-slate-100 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      {m === 'All' ? 'All Models' : m}
+                    </button>
+                  ))}
                 </div>
 
-                <div>
-                  <p className={`text-xs font-bold truncate ${isSelected ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
-                    {c.name}
-                  </p>
-                  <p className={`text-[10px] truncate font-mono ${isSelected ? 'text-white/80' : 'text-slate-400'}`}>
-                    {c.interestedModel}
-                  </p>
+                <div className="relative min-w-[220px]">
+                  <input
+                    type="text"
+                    value={customerSearch}
+                    onChange={(e) => setCustomerSearch(e.target.value)}
+                    placeholder="Search name, ID, model, location..."
+                    className="w-full pl-3 pr-4 py-2 rounded-xl bg-slate-100 dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-porsche-red"
+                  />
                 </div>
               </div>
-            );
-          })}
+            </div>
+
+            {/* Customers Table */}
+            <div className="overflow-x-auto rounded-2xl border border-black/10 dark:border-white/10">
+              <table className="w-full text-left border-collapse min-w-[900px]">
+                <thead className="bg-slate-100 dark:bg-white/5 text-[10px] uppercase font-mono text-slate-400">
+                  <tr className="border-b border-black/10 dark:border-white/10">
+                    <th className="py-3.5 px-4">VIP ID</th>
+                    <th className="py-3.5 px-4">Customer Name &amp; Contact</th>
+                    <th className="py-3.5 px-4">Location</th>
+                    <th className="py-3.5 px-4">Active Porsche Fleet</th>
+                    <th className="py-3.5 px-4">Lifetime Value</th>
+                    <th className="py-3.5 px-4">AI Score</th>
+                    <th className="py-3.5 px-4">Stage</th>
+                    <th className="py-3.5 px-4 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-black/5 dark:divide-white/5">
+                  {filteredKeys.map((key) => {
+                    const c = ALL_CLIENTS[key];
+                    return (
+                      <tr
+                        key={key}
+                        onClick={() => switchTo(key)}
+                        className="hover:bg-porsche-red/5 dark:hover:bg-white/5 transition-colors cursor-pointer group"
+                      >
+                        <td className="py-4 px-4 text-xs font-mono font-bold text-slate-400">{c.id}</td>
+                        <td className="py-4 px-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-base flex items-center justify-center group-hover:bg-porsche-red group-hover:text-white transition-colors shrink-0 shadow-sm">
+                              {c.name.charAt(0)}
+                            </div>
+                            <div>
+                              <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-porsche-red transition-colors">{c.name}</p>
+                              <p className="text-[11px] text-slate-400 font-mono">{c.email}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-4 px-4 text-xs text-slate-600 dark:text-slate-300 font-medium">{c.location}</td>
+                        <td className="py-4 px-4">
+                          <span className="text-xs font-bold text-slate-900 dark:text-white block">{c.interestedModel}</span>
+                          <span className="text-[10px] text-slate-400 font-mono">{c.currentFleet[0]?.model || 'Porsche Garage'}</span>
+                        </td>
+                        <td className="py-4 px-4 text-sm font-bold font-mono text-slate-900 dark:text-white">
+                          ${c.lifetimeValue.toLocaleString()} USD
+                        </td>
+                        <td className="py-4 px-4">
+                          <span className={`text-xs font-bold font-mono px-2.5 py-0.5 rounded-full border ${
+                            c.aiPurchaseScore >= 90
+                              ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20'
+                              : 'bg-porsche-red/10 text-porsche-red border-porsche-red/20'
+                          }`}>
+                            {c.aiPurchaseScore} / 100
+                          </span>
+                        </td>
+                        <td className="py-4 px-4">
+                          <span className="text-[10px] font-bold font-mono uppercase px-2.5 py-1 rounded-full bg-slate-100 dark:bg-white/10 text-slate-700 dark:text-slate-300">
+                            {c.stage}
+                          </span>
+                        </td>
+                        <td className="py-4 px-4 text-right">
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); switchTo(key); }}
+                            className="px-3.5 py-1.5 rounded-xl bg-porsche-red text-white text-xs font-bold hover:bg-red-700 transition-colors shadow-glow-red-sm inline-flex items-center gap-1.5 cursor-pointer"
+                          >
+                            <span>Inspect 360</span>
+                            <ChevronRight size={14} />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* MODE 2: CUSTOMER 360 TELEMETRY PROFILE */}
+      {viewMode === 'detail' && (
+        <>
+          {/* Quick Customer Switcher Bar */}
+          <div className="porsche-card flex flex-col sm:flex-row items-center justify-between gap-4 bg-gradient-to-r from-slate-900/[0.03] via-transparent to-porsche-red/[0.03] dark:from-white/[0.02] dark:to-porsche-red/[0.04]">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => { setViewMode('table'); navigate('/customer-360'); }}
+                className="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-white/10 text-slate-900 dark:text-white text-xs font-bold hover:bg-porsche-red hover:text-white transition-colors cursor-pointer flex items-center gap-1"
+              >
+                <ChevronLeft size={14} />
+                <span>Customer Directory Table</span>
+              </button>
+              <span className="text-xs text-slate-400 font-mono hidden sm:inline">• Active 360 Telemetry Profile</span>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-mono text-slate-400 font-bold hidden sm:inline">Switch Client:</span>
+              <select
+                value={activeKey}
+                onChange={(e) => switchTo(e.target.value)}
+                className="px-3 py-1.5 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-porsche-red cursor-pointer"
+              >
+                {CLIENT_KEYS.map((k) => (
+                  <option key={k} value={k} className="bg-white dark:bg-[#121417] text-slate-900 dark:text-white">
+                    {ALL_CLIENTS[k].name} ({ALL_CLIENTS[k].interestedModel}) — {ALL_CLIENTS[k].aiPurchaseScore} pts
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
       {/* 1. VIP HEADER CARD */}
       <div className="porsche-card flex flex-col md:flex-row items-center justify-between gap-8 bg-gradient-to-r from-porsche-red/10 via-transparent to-transparent">
@@ -1096,6 +1247,8 @@ export default function Customer360() {
           ))}
         </div>
       </div>
-    </div>
+    </>
+  )}
+</div>
   );
 }
